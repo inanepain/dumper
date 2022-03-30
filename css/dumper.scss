@@ -1,0 +1,99 @@
+/*
+Dumper Style
+
+@version: 1.0.3
+
+variables:
+    --dumper-font-size: smaller
+    --dumper-max-height: 80vh
+*/
+
+.dumper {
+    position: fixed;
+    z-index: 999999999999999;
+    bottom: 0px;
+    left: 0px;
+    width: 100vw;
+    border-top: 1px #c0c0c0 solid;
+    font-size: var(--dumper-font-size, smaller);
+    background: #ffffff;
+
+    div {
+        text-align: left;
+    }
+
+    summary {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0px;
+        padding: .25rem;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .dumper-window {
+        width: 100vw;
+        max-height: var(--dumper-max-height, 80vh);
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin: 0px;
+        box-shadow: 0px 0px 0px 0px inherit;
+        transition: box-shadow 1s;
+
+        &[open] {
+            box-shadow: 0px 0px 12px -3px #808080;
+        }
+
+        .dumper-title {
+            z-index: 1;
+            font-weight: 700;
+            border-bottom: 3px #808080 groove;
+            color: #8a2be2;
+            background: #f0f8ff;
+        }
+
+        .dumper-body {
+            .dump {
+                border-bottom: 1px #000000 solid;
+
+                .dump-window {
+                    summary {
+                        top: 27px;
+                        border-bottom: 1px #808080 solid;
+                        padding-left: 0.5rem;
+                        color: #2f4f4f;
+                        background: #a9a9a9;
+                        box-shadow: 0px 3px 12px -3px #808080;
+
+                        .dump-label {
+                            display: inline-block;
+                            min-width: 150px;
+                            color: inherit;
+                            transition: color .5s;
+
+                            &::after {
+                                content: ' :';
+                                float: right;
+                                color: #2f4f4f;
+                            }
+                        }
+                    }
+
+                    code {
+                        display: block;
+                        padding: .5rem;
+                        word-wrap: break-word;
+                    }
+
+                    &[open] {
+                        .dump-label {
+                            color: #ffffff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

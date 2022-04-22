@@ -52,6 +52,7 @@ namespace {
 
 namespace Inane\Dumper {
 
+    use Inane\Stdlib\Highlight;
     use Inane\Type\ArrayObject;
     use ReflectionClass;
 
@@ -99,7 +100,7 @@ namespace Inane\Dumper {
         /**
          * Dumper version
          */
-        public const VERSION = '1.7.0';
+        public const VERSION = '1.7.1';
 
         /**
          * Single instance of Dumper
@@ -156,7 +157,7 @@ namespace Inane\Dumper {
         /**
          * Colours used for display
          */
-        public static Theme $theme = Theme::CURRENT;
+        public static Highlight $highlight = Highlight::CURRENT;
 
         /**
          * The collected dumps
@@ -439,31 +440,29 @@ DUMPER_HTML;
                 if ($useVarExport) $code = var_export($data, true);
                 else $code = static::parseVariable($data);
 
-                static::$dumps[] = "{$label}{$code}" . PHP_EOL;
-                return;
-            }
+                $output = "{$label}{$code}" . PHP_EOL;
+            } else {
+                // HTML
+                $highlight = $options['highlight'] ?? static::$highlight;
+                $highlight->apply();
 
-            // HTML
-            $theme = $options['theme'] ?? static::$theme;
-            $theme->apply();
+                if ($useVarExport) $code = var_export($data, true);
+                else $code = static::parseVariable($data);
 
-            if ($useVarExport) $code = var_export($data, true);
-            else $code = static::parseVariable($data);
+                $code = highlight_string("<?php\n" . $code, true);
+                $code = str_replace("&lt;?php<br />", '', $code);
 
-            $code = highlight_string("<?php\n" . $code, true);
-            $code = str_replace("&lt;?php<br />", '', $code);
+                $text = trim($code);
+                $text = preg_replace("|^\\<code\\>\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>|", '', $text, 1);  // remove prefix
+                $text = preg_replace("|\\</code\\>\$|", '', $text, 1);  // remove suffix 1
+                $text = trim($text);  // remove line breaks
+                $text = preg_replace("|\\</span\\>\$|", '', $text, 1);  // remove suffix 2
+                $text = trim($text);  // remove line breaks
+                $code = preg_replace("|^(\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>)(&lt;\\?php&nbsp;)(.*?)(\\</span\\>)|", "\$1\$3\$4", $text);  // remove custom added "<?php "
 
-            $text = trim($code);
-            $text = preg_replace("|^\\<code\\>\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>|", '', $text, 1);  // remove prefix
-            $text = preg_replace("|\\</code\\>\$|", '', $text, 1);  // remove suffix 1
-            $text = trim($text);  // remove line breaks
-            $text = preg_replace("|\\</span\\>\$|", '', $text, 1);  // remove suffix 2
-            $text = trim($text);  // remove line breaks
-            $code = preg_replace("|^(\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>)(&lt;\\?php&nbsp;)(.*?)(\\</span\\>)|", "\$1\$3\$4", $text);  // remove custom added "<?php "
+                $open = ($options['open'] ?? false) ? 'open' : '';
 
-            $open = ($options['open'] ?? false) ? 'open' : '';
-
-            static::$dumps[] = <<<DUMPER_HTML
+                $output = <<<DUMPER_HTML
 <div class="dump">
 <details class="dump-window"{$open}>
 <summary>{$label}</summary>
@@ -473,6 +472,9 @@ DUMPER_HTML;
 </details>
 </div>
 DUMPER_HTML;
+            }
+
+            static::$dumps[] = $output;
         }
 
         /**

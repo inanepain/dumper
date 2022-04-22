@@ -15,6 +15,7 @@
 		"issues" : "http://inane.co.za"
 	},
 	"keywords" : [
+		"inane",
 		"debug"
 	],
 	"autoload" : {
@@ -31,7 +32,8 @@
 	"minimum-stability" : "stable",
 	"prefer-stable": true,
 	"require" : {
-		"php" : ">=8.1"
+		"php" : ">=8.1",
+		"inanepain/stdlib": "dev-master | dev-develop | *"
 	},
 	"require-dev": {
     }

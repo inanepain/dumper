@@ -34,7 +34,7 @@
 	"prefer-stable": true,
 	"require" : {
 		"php" : ">=8.1",
-		"inanepain/stdlib": "dev-master | dev-develop | *"
+		"inanepain/stdlib": "dev-master || dev-develop || *"
 	},
 	"require-dev": {
     }

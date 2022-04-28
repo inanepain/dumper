@@ -10,11 +10,13 @@
 		}
 	],
 	"homepage" : "http://inane.co.za",
+	"readme": "README.md",
 	"support" : {
 		"email" : "peep@inane.co.za",
 		"issues" : "http://inane.co.za"
 	},
 	"keywords" : [
+		"inane",
 		"debug"
 	],
 	"autoload" : {
@@ -28,10 +30,9 @@
 		"discard-changes" : true,
 		"sort-packages": true
     },
-	"minimum-stability" : "stable",
-	"prefer-stable": true,
 	"require" : {
-		"php" : ">=8.1"
+		"php" : ">=8.1",
+		"inanepain/stdlib": ">=0.1.1 || dev-develop || dev-master"
 	},
 	"require-dev": {
     }

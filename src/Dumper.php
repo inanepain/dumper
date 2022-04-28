@@ -52,6 +52,8 @@ namespace {
 
 namespace Inane\Dumper {
 
+    use Inane\Stdlib\Highlight;
+    use Inane\Stdlib\Parser\ObjectParser;
     use Inane\Type\ArrayObject;
     use ReflectionClass;
 
@@ -89,7 +91,7 @@ namespace Inane\Dumper {
      *
      * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
      *
-     * @version 1.7.1
+     * @version 1.7.2
      *
      * @todo: move the two rendering methods into their own classes. allow for custom renderers.
      *
@@ -99,7 +101,7 @@ namespace Inane\Dumper {
         /**
          * Dumper version
          */
-        public const VERSION = '1.7.0';
+        public const VERSION = '1.7.2';
 
         /**
          * Single instance of Dumper
@@ -156,7 +158,7 @@ namespace Inane\Dumper {
         /**
          * Colours used for display
          */
-        public static Theme $theme = Theme::CURRENT;
+        public static Highlight $highlight = Highlight::CURRENT;
 
         /**
          * The collected dumps
@@ -340,89 +342,6 @@ DUMPER_HTML;
         }
 
         /**
-         * Create the dump string for an array
-         *
-         * @param array $array the array
-         * @param int $level depth of array
-         *
-         * @since 1.6.0
-         *
-         * @return string array as string
-         */
-        private static function parseArray(array $array, int $level): string {
-            $output = '';
-
-            if (static::$depth <= $level) $output .= '[...]';
-            else if (empty($array)) $output .= '[]';
-            else {
-                $keys = array_keys($array);
-                $spaces = str_repeat(' ', $level * 4);
-                $output .= '[';
-                foreach ($keys as $key) $output .= PHP_EOL . "{$spaces}    [$key] => " . self::parseVariable($array[$key], $level + 1);
-                $output .= PHP_EOL . "{$spaces}]";
-            }
-
-            return $output;
-        }
-
-        /**
-         * Create the dump string for an object
-         *
-         * @param mixed $object the object
-         * @param int $level depth of object
-         * @param array $cache objects already parsed
-         *
-         * @since 1.6.0
-         *
-         * @return string object as string
-         */
-        private static function parseObject(mixed $object, int $level, array &$cache): string {
-            $output = '';
-            $className = get_class($object);
-
-            if (($id = array_search($object, $cache, true)) !== false) $output .= "{$className}#" . (++$id) . '(...)';
-            else if (static::$depth <= $level) $output .= "{$className}(...)";
-            else {
-                $id = array_push($cache, $object);
-                $members = (array)$object;
-                $keys = array_keys($members);
-                $spaces = str_repeat(' ', $level * 4);
-                $output .= "$className#$id {";
-
-                foreach ($keys as $key) {
-                    $keyDisplay = strtr(trim("$key"), ["\0" => ':']);
-                    $output .= PHP_EOL . "{$spaces}    [$keyDisplay] => " . self::parseVariable($members[$key], $level + 1, $cache);
-                }
-                $output .= PHP_EOL . "{$spaces}}";
-            }
-            return $output;
-        }
-
-        /**
-         * Creates the dump string for a variable
-         *
-         * @param mixed $var the variable
-         * @param int $level current depth
-         * @param array $cache parsed objects
-         *
-         * @since 1.6.0
-         *
-         * @return string dump string
-         */
-        private static function parseVariable(mixed $var, int $level = 0, array &$cache = []): string {
-            return match (gettype($var)) {
-                'boolean' => $var ? 'true' : 'false',
-                'integer', 'double', 'string' => "$var",
-                'resource' => '{resource}',
-                'NULL' => 'null',
-                'unknown type' => '{unknown}',
-                'array' => static::parseArray($var, $level),
-                'object' => static::parseObject($var, $level, $cache),
-                default => '{unhandled}',
-            };
-        }
-
-        /**
          * Add a dump to the collection
          *
          * @param mixed $data item to dump
@@ -432,38 +351,29 @@ DUMPER_HTML;
          * @return void
          */
         protected function addDump(mixed $data, ?string $label = null, array $options = []): void {
-            $useVarExport = $options['useVarExport'] ?? static::$useVarExport;
+            $code = ($options['useVarExport'] ?? static::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data);
 
             // CHECK CONSOLE
-            if (static::isCli()) {
-                if ($useVarExport) $code = var_export($data, true);
-                else $code = static::parseVariable($data);
+            if (static::isCli()) $output = "{$label}{$code}" . PHP_EOL;
+            else {
+                // HTML
+                $highlight = $options['highlight'] ?? static::$highlight;
+                $highlight->apply();
 
-                static::$dumps[] = "{$label}{$code}" . PHP_EOL;
-                return;
-            }
+                $code = highlight_string("<?php\n" . $code, true);
+                $code = str_replace("&lt;?php<br />", '', $code);
 
-            // HTML
-            $theme = $options['theme'] ?? static::$theme;
-            $theme->apply();
+                $text = trim($code);
+                $text = preg_replace("|^\\<code\\>\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>|", '', $text, 1);  // remove prefix
+                $text = preg_replace("|\\</code\\>\$|", '', $text, 1);  // remove suffix 1
+                $text = trim($text);  // remove line breaks
+                $text = preg_replace("|\\</span\\>\$|", '', $text, 1);  // remove suffix 2
+                $text = trim($text);  // remove line breaks
+                $code = preg_replace("|^(\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>)(&lt;\\?php&nbsp;)(.*?)(\\</span\\>)|", "\$1\$3\$4", $text);  // remove custom added "<?php "
 
-            if ($useVarExport) $code = var_export($data, true);
-            else $code = static::parseVariable($data);
+                $open = ($options['open'] ?? false) ? 'open' : '';
 
-            $code = highlight_string("<?php\n" . $code, true);
-            $code = str_replace("&lt;?php<br />", '', $code);
-
-            $text = trim($code);
-            $text = preg_replace("|^\\<code\\>\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>|", '', $text, 1);  // remove prefix
-            $text = preg_replace("|\\</code\\>\$|", '', $text, 1);  // remove suffix 1
-            $text = trim($text);  // remove line breaks
-            $text = preg_replace("|\\</span\\>\$|", '', $text, 1);  // remove suffix 2
-            $text = trim($text);  // remove line breaks
-            $code = preg_replace("|^(\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>)(&lt;\\?php&nbsp;)(.*?)(\\</span\\>)|", "\$1\$3\$4", $text);  // remove custom added "<?php "
-
-            $open = ($options['open'] ?? false) ? 'open' : '';
-
-            static::$dumps[] = <<<DUMPER_HTML
+                $output = <<<DUMPER_HTML
 <div class="dump">
 <details class="dump-window"{$open}>
 <summary>{$label}</summary>
@@ -473,6 +383,9 @@ DUMPER_HTML;
 </details>
 </div>
 DUMPER_HTML;
+            }
+
+            static::$dumps[] = $output;
         }
 
         /**

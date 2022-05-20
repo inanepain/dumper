@@ -156,7 +156,7 @@ namespace Inane\Dumper {
          * @return bool
          */
         protected static function isCli(): bool {
-            return (str_starts_with(php_sapi_name(), 'cli') || php_sapi_name() === 'cli-server');
+            return (php_sapi_name() === 'cli');
         }
 
         /**

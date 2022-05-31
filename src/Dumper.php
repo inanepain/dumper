@@ -54,7 +54,6 @@ namespace Inane\Dumper {
 
     use Inane\Stdlib\Highlight;
     use Inane\Stdlib\Parser\ObjectParser;
-    use Inane\Type\ArrayObject;
     use ReflectionClass;
 
     use const PHP_EOL;
@@ -62,16 +61,12 @@ namespace Inane\Dumper {
     use const false;
 
     use function array_combine;
-    use function array_keys;
-    use function array_push;
-    use function array_search;
     use function array_shift;
     use function basename;
     use function count;
     use function debug_backtrace;
     use function file_get_contents;
     use function file;
-    use function get_class;
     use function gettype;
     use function highlight_string;
     use function implode;
@@ -79,10 +74,8 @@ namespace Inane\Dumper {
     use function ob_start;
     use function php_sapi_name;
     use function preg_match;
-    use function str_repeat;
     use function str_replace;
     use function str_starts_with;
-    use function strtr;
     use function trim;
     use function var_export;
 
@@ -91,7 +84,7 @@ namespace Inane\Dumper {
      *
      * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
      *
-     * @version 1.7.2
+     * @version 1.7.3
      *
      * @todo: move the two rendering methods into their own classes. allow for custom renderers.
      *
@@ -101,7 +94,7 @@ namespace Inane\Dumper {
         /**
          * Dumper version
          */
-        public const VERSION = '1.7.2';
+        public const VERSION = '1.7.3';
 
         /**
          * Single instance of Dumper
@@ -148,14 +141,6 @@ namespace Inane\Dumper {
         public static bool $useVarExport = false;
 
         /**
-         * Max dump depth
-         *
-         * N.B.: does not effect `var_dump`
-         * @see \Inane\Dumper\Dumper::$useVarExport
-         */
-        public static int $depth = 4;
-
-        /**
          * Colours used for display
          */
         public static Highlight $highlight = Highlight::CURRENT;
@@ -171,7 +156,7 @@ namespace Inane\Dumper {
          * @return bool
          */
         protected static function isCli(): bool {
-            return (str_starts_with(php_sapi_name(), 'cli') || php_sapi_name() === 'cli-server');
+            return (php_sapi_name() === 'cli');
         }
 
         /**
@@ -239,12 +224,10 @@ namespace Inane\Dumper {
             return <<<DUMPER_HTML
 <style id="inane-dumper-style">{$style}</style>
 <div class="dumper">
-<details class="dumper-window">
-<summary class="dumper-title">dumper</summary>
-<div class="dumper-body">
-{$code}
-</div>
-</details>
+    <details class="dumper-window">
+        <summary class="dumper-title">dumper</summary>
+        <div class="dumper-body">{$code}</div>
+    </details>
 </div>
 DUMPER_HTML;
         }
@@ -317,9 +300,9 @@ DUMPER_HTML;
          *
          * @param mixed $v variable to query
          *
-         * @return ArrayObject info
+         * @return array info
          */
-        protected static function analyseVariable($v): ArrayObject {
+        protected static function analyseVariable($v): array {
             $i = -1;
             $trace = debug_backtrace();
             foreach ($trace as $t) {
@@ -338,7 +321,7 @@ DUMPER_HTML;
             $result = array_combine(['variable', 'name'], $match);
             $result['type'] = gettype($v);
 
-            return new ArrayObject($result);
+            return $result;
         }
 
         /**
@@ -351,6 +334,7 @@ DUMPER_HTML;
          * @return void
          */
         protected function addDump(mixed $data, ?string $label = null, array $options = []): void {
+            // Parse the variable to string
             $code = ($options['useVarExport'] ?? static::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data);
 
             // CHECK CONSOLE
@@ -375,12 +359,10 @@ DUMPER_HTML;
 
                 $output = <<<DUMPER_HTML
 <div class="dump">
-<details class="dump-window"{$open}>
-<summary>{$label}</summary>
-<code>
-{$code}
-</code>
-</details>
+    <details class="dump-window"{$open}>
+        <summary>{$label}</summary>
+        <code>{$code}</code>
+    </details>
 </div>
 DUMPER_HTML;
             }
@@ -406,9 +388,9 @@ DUMPER_HTML;
          */
         public static function dump(mixed $data = null, ?string $label = null, array $options = []): static {
             $info = static::analyseVariable($data);
-            if (is_null($label) && $info->variable != '') $label = $info->variable;
+            if (is_null($label) && $info['variable'] != '') $label = $info['variable'];
 
-            $label = static::formatLabel($label, $info->type);
+            $label = static::formatLabel($label, $info['type']);
             if (!is_null($label)) static::dumper()->addDump($data, $label, $options);
 
             return static::dumper();

@@ -84,7 +84,7 @@ namespace Inane\Dumper {
      *
      * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
      *
-     * @version 1.7.3
+     * @version 1.7.4
      *
      * @todo: move the two rendering methods into their own classes. allow for custom renderers.
      *
@@ -94,7 +94,7 @@ namespace Inane\Dumper {
         /**
          * Dumper version
          */
-        public const VERSION = '1.7.3';
+        public const VERSION = '1.7.4';
 
         /**
          * Single instance of Dumper
@@ -139,6 +139,11 @@ namespace Inane\Dumper {
          *
          */
         public static bool $useVarExport = false;
+
+        /**
+         * Buffer dumps until end of process
+         */
+        public static bool $buffer = true;
 
         /**
          * Colours used for display
@@ -367,7 +372,8 @@ DUMPER_HTML;
 DUMPER_HTML;
             }
 
-            static::$dumps[] = $output;
+            if ($this::$buffer) static::$dumps[] = $output;
+            else echo str_replace("\n", "\t\t\n", "\t\t$output");
         }
 
         /**

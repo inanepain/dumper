@@ -143,7 +143,7 @@ namespace Inane\Dumper {
         /**
          * Buffer dumps until end of process
          */
-        public static bool $buffer = true;
+        public static bool $bufferOutput = true;
 
         /**
          * Colours used for display
@@ -342,6 +342,8 @@ DUMPER_HTML;
             // Parse the variable to string
             $code = ($options['useVarExport'] ?? static::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data);
 
+            $bufferMessage = static::$bufferOutput;
+
             // CHECK CONSOLE
             if (static::isCli()) $output = "{$label}{$code}" . PHP_EOL;
             else {
@@ -372,8 +374,11 @@ DUMPER_HTML;
 DUMPER_HTML;
             }
 
-            if ($this::$buffer) static::$dumps[] = $output;
-            else echo str_replace("\n", "\t\t\n", "\t\t$output");
+            if ($bufferMessage) static::$dumps[] = $output;
+            else {
+                $c = (object) static::$colour;
+                echo "\t\t{$c->m}DUMPER{$c->e}:{$output}" . PHP_EOL;
+            }
         }
 
         /**

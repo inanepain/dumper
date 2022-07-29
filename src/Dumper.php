@@ -85,7 +85,7 @@ namespace Inane\Dumper {
      *
      * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
      *
-     * @version 1.7.4
+     * @version 1.8.0
      *
      * @todo: move the two rendering methods into their own classes. allow for custom renderers.
      *
@@ -95,7 +95,7 @@ namespace Inane\Dumper {
         /**
          * Dumper version
          */
-        public const VERSION = '1.7.4';
+        public const VERSION = '1.8.0';
 
         /**
          * Single instance of Dumper
@@ -130,6 +130,13 @@ namespace Inane\Dumper {
          * PS: this effect manual calls to write dumps as well.
          */
         public static bool $enabled = true;
+
+        /**
+         * Render with dumper expander
+         *
+         * @since 1.8.0
+         */
+        public static bool $expanded = false;
 
         /**
          * Use php's var_export to generate dump
@@ -227,10 +234,12 @@ namespace Inane\Dumper {
 
             $style = file_get_contents(__DIR__ . '/../css/dumper.css');
 
+            $open = static::$expanded ? ' open' : '';
+
             return <<<DUMPER_HTML
 <style id="inane-dumper-style">{$style}</style>
 <div class="dumper">
-    <details class="dumper-window">
+    <details class="dumper-window"{$open}>
         <summary class="dumper-title">dumper</summary>
         <div class="dumper-body">{$code}</div>
     </details>

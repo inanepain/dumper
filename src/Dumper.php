@@ -14,7 +14,8 @@
  * @license MIT
  * @license https://inane.co.za/license/MIT
  *
- * @copyright 2015-2022 Philip Michael Raab <philip@inane.co.za>
+ * @version $Id$
+ * $Date$
  */
 
 declare(strict_types=1);
@@ -84,7 +85,7 @@ namespace Inane\Dumper {
      *
      * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
      *
-     * @version 1.7.3
+     * @version 1.8.0
      *
      * @todo: move the two rendering methods into their own classes. allow for custom renderers.
      *
@@ -94,7 +95,7 @@ namespace Inane\Dumper {
         /**
          * Dumper version
          */
-        public const VERSION = '1.7.3';
+        public const VERSION = '1.8.0';
 
         /**
          * Single instance of Dumper
@@ -131,6 +132,13 @@ namespace Inane\Dumper {
         public static bool $enabled = true;
 
         /**
+         * Render with dumper expander
+         *
+         * @since 1.8.0
+         */
+        public static bool $expanded = false;
+
+        /**
          * Use php's var_export to generate dump
          *
          * By default Dumper parses variables itself,
@@ -139,6 +147,11 @@ namespace Inane\Dumper {
          *
          */
         public static bool $useVarExport = false;
+
+        /**
+         * Buffer dumps until end of process
+         */
+        public static bool $bufferOutput = true;
 
         /**
          * Colours used for display
@@ -221,10 +234,12 @@ namespace Inane\Dumper {
 
             $style = file_get_contents(__DIR__ . '/../css/dumper.css');
 
+            $open = static::$expanded ? ' open' : '';
+
             return <<<DUMPER_HTML
 <style id="inane-dumper-style">{$style}</style>
 <div class="dumper">
-    <details class="dumper-window">
+    <details class="dumper-window"{$open}>
         <summary class="dumper-title">dumper</summary>
         <div class="dumper-body">{$code}</div>
     </details>
@@ -337,6 +352,8 @@ DUMPER_HTML;
             // Parse the variable to string
             $code = ($options['useVarExport'] ?? static::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data);
 
+            $bufferMessage = static::$bufferOutput;
+
             // CHECK CONSOLE
             if (static::isCli()) $output = "{$label}{$code}" . PHP_EOL;
             else {
@@ -367,7 +384,11 @@ DUMPER_HTML;
 DUMPER_HTML;
             }
 
-            static::$dumps[] = $output;
+            if ($bufferMessage) static::$dumps[] = $output;
+            else {
+                $c = (object) static::$colour;
+                echo "\t\t{$c->m}DUMPER{$c->e}:{$output}" . PHP_EOL;
+            }
         }
 
         /**

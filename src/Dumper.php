@@ -359,18 +359,7 @@ DUMPER_HTML;
             else {
                 // HTML
                 $highlight = $options['highlight'] ?? static::$highlight;
-                $highlight->apply();
-
-                $code = highlight_string("<?php\n" . $code, true);
-                $code = str_replace("&lt;?php<br />", '', $code);
-
-                $text = trim($code);
-                $text = preg_replace("|^\\<code\\>\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>|", '', $text, 1);  // remove prefix
-                $text = preg_replace("|\\</code\\>\$|", '', $text, 1);  // remove suffix 1
-                $text = trim($text);  // remove line breaks
-                $text = preg_replace("|\\</span\\>\$|", '', $text, 1);  // remove suffix 2
-                $text = trim($text);  // remove line breaks
-                $code = preg_replace("|^(\\<span style\\=\"color\\: #[a-fA-F0-9]{0,6}\"\\>)(&lt;\\?php&nbsp;)(.*?)(\\</span\\>)|", "\$1\$3\$4", $text);  // remove custom added "<?php "
+                $code = $highlight->render($code);
 
                 $open = ($options['open'] ?? false) ? 'open' : '';
 

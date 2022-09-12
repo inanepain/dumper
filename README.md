@@ -2,7 +2,7 @@
 
 > $Id$ ($Date$)
 
-A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsable panel at the bottom of a page.
+A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
 
 ## Install
 

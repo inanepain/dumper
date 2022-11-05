@@ -42,8 +42,11 @@ namespace {
         function dd(mixed $data = null, ?string $label = null, array $options = []): \Inane\Dumper\Dumper {
             return \Inane\Dumper\Dumper::dump($data, $label, $options);
         }
+
+        if (!isset($GLOBALS['dd'])) $GLOBALS['dd'] = \Inane\Dumper\Dumper::dump(...);
     } else {
-        \Inane\Dumper\Dumper::dump('Dumper creates the global `dd` function for you. Just call `Dumper::dumper()` in you entry point.', 'Dumper: NOTICE: function: dd');
+        \Inane\Dumper\Dumper::dump('Dumper creates the global `dd` function for you. Just call `Dumper::dumper()` in you entry point. If this is taken try $dd().', 'Dumper: NOTICE: function: dd');
+        if (!isset($GLOBALS['dd'])) $GLOBALS['dd'] = \Inane\Dumper\Dumper::dump(...);
     }
 }
 
@@ -295,12 +298,12 @@ DUMPER_HTML;
             if (static::isCli()) {
                 $c = (object) static::$colour;
 
-                $title = isset($label) ? "{$c->b} ${label}:{$c->e} " : '';
+                $title = isset($label) ? "{$c->b} {$label}:{$c->e} " : '';
                 $file = "{$c->w}{$_data['file']}{$c->e}::{$c->r}{$_data['line']}{$c->e}";
                 $class = $_data['class'] ? " => {$c->y}{$_data['class']}::{$_data['function']}{$c->e}" : '';
             } else {
                 // HTML
-                $title = isset($label) ? "<strong class=\"dump-label\">${label}</strong> " : '';
+                $title = isset($label) ? "<strong class=\"dump-label\">{$label}</strong> " : '';
                 $file = "{$_data['file']}::<strong>{$_data['line']}</strong>";
                 $class = $_data['class'] ? " => {$_data['class']}::<strong>{$_data['function']}</strong>" : '';
             }

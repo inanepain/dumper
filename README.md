@@ -26,6 +26,13 @@ dd($variable);
 
 ### Silence
 
+### CSS Variables
+
+| Variable              | Default   | Description                       |
+|:----------------------|:----------|:----------------------------------|
+| `--dumper-font-size`  | `smaller` | Font Size                         |
+| `--dumper-max-height` | `80vh`    | Max amount Dumper window can grow |
+
 ## Configuration
 
 There are some static properties you can set to control parts of dumper.

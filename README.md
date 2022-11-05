@@ -2,7 +2,7 @@
 
 > $Id$ ($Date$)
 
-A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsable panel at the bottom of a page.
+A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
 
 ## Install
 
@@ -16,15 +16,36 @@ A little tool to help with debugging by writing a `var_dump` like message unobtr
 
 ### Ease of use
 
+Dumper registers a shortcut function `dd` that works like calling `\Inane\Dumper\Dumper::dump()` if `dd` is available.
+
+```php
+$var = ['Some', 'variable'];
+
+// calling:
+dd($var);
+
+// is the same as calling:
+\Inane\Dumper\Dumper::dump($var);
+```
+
+You can also register your own global variable to use as a shortcut for Dumper by passing the desired variable name to `\Inane\Dumper\Dumper::dumper('showMe')`.
+
 ```php
 // register global alias
-\Inane\Dumper\Dumper::dumper();
+\Inane\Dumper\Dumper::dumper('showMe');
 
-// now you can use dd()
-dd($variable);
+// now you can use $showMe()
+$showMe($var);
 ```
 
 ### Silence
+
+### CSS Variables
+
+| Variable              | Default   | Description                       |
+|:----------------------|:----------|:----------------------------------|
+| `--dumper-font-size`  | `smaller` | Font Size                         |
+| `--dumper-max-height` | `80vh`    | Max amount Dumper window can grow |
 
 ## Configuration
 

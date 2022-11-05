@@ -6,7 +6,9 @@
 
 ### 1.8.x @2022 Xxx Xx
 
- - Added `$dd` as shortcut since Symphony now also use `dd`. `$dd` work just like `dd` did.
+ - update: added shortcut argument to `dumper` to register global variable dump function by that name
+ - update: it is no longer necessary to call `dumper` to register `dd`, composer handles this
+ - README improvements
 
 ### 1.8.0 @2022 Jul 29
 

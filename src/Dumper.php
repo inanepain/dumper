@@ -29,6 +29,7 @@ use function array_shift;
 use function basename;
 use function count;
 use function debug_backtrace;
+use function dirname;
 use function file;
 use function file_get_contents;
 use function gettype;
@@ -38,6 +39,8 @@ use function is_null;
 use function ob_start;
 use function php_sapi_name;
 use function preg_match;
+use function str_ends_with;
+use function str_replace;
 use function var_export;
 use const false;
 use const PHP_EOL;
@@ -53,7 +56,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.8.0
+ * @version 1.9.1
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -63,7 +66,7 @@ final class Dumper {
     /**
      * Dumper version
      */
-    public const VERSION = '1.8.0';
+    public const VERSION = '1.9.1';
 
     /**
      * Single instance of Dumper
@@ -228,6 +231,30 @@ DUMPER_HTML;
     }
 
     /**
+     * Filters `debug_backtrace` for the information relevant to Dumper
+     *
+     * @since 1.9.1
+     *
+     * @return array Dumper required trace data
+     */
+    private static function getTrace(): array {
+        $i = -1;
+        $trace = debug_backtrace();
+
+        foreach ($trace as $t) {
+            $i++;
+            $file = str_replace('\\', '/', $t['file']);
+            $dir = dirname($file);
+            if (!str_ends_with($dir, 'dumper/src') && !in_array(basename($file), ['Dumper.php', 'bootstrap.php'])) break;
+        }
+
+        return [
+            $trace[$i],
+            $trace[$i + 1] ?? null
+        ];
+    }
+
+    /**
      * Create a label for the dump with relevant information
      *
      * @param string|null $label
@@ -235,36 +262,26 @@ DUMPER_HTML;
      * @return string|null If Attribute Silence true return null
      */
     protected static function formatLabel(?string $label = null, string $type = null): ?string {
-        $backtrace = debug_backtrace();
-        // backtracking dump point of origin
-        $i = -1;
-        foreach ($backtrace as $t) {
-            $i++;
-            if (!in_array(basename($t['file']), ['Dumper.php', 'index.php'])) break;
-        }
+        [$src, $obj] = static::getTrace();
 
-        $_data = [];
-        // backtrace to file
-        $bt_file = $backtrace[$i];
-        $_data['file'] = $bt_file['file'] ?? '';
-        $_data['line'] = $bt_file['line'] ?? '';
+        $data = [];
+        $data['file'] = $src['file'] ?? '';
+        $data['line'] = $src['line'] ?? '';
 
-        // backtrace to object
-        if (($i) < @count($backtrace)) {
-            $bt_object = @$backtrace[++$i];
-            $_data['class'] = $bt_object['class'] ?? false;
-            $_data['function'] = $bt_object['function'] ?? '';
-        } else $_data['class'] = false;
+        if (!is_null($obj)) {
+            $data['class'] = $obj['class'] ?? false;
+            $data['function'] = $obj['function'] ?? '';
+        } else $data['class'] = false;
 
         // checking classes/functions for Silence attribute
-        if ($_data['class'] != false) {
-            $r_class = new ReflectionClass($_data['class']);
-            $attributes = $r_class->getAttributes(Silence::class);
+        if ($data['class'] != false) {
+            $class = new ReflectionClass($data['class']);
+            $attributes = $class->getAttributes(Silence::class);
             if (count($attributes) > 0 && ($attributes[0]->newInstance())()) return null;
 
-            if ($_data['function'] != false) {
-                $r_method = $r_class->getMethod($_data['function']);
-                $attribs = $r_method->getAttributes(Silence::class);
+            if ($data['function'] != false) {
+                $method = $class->getMethod($data['function']);
+                $attribs = $method->getAttributes(Silence::class);
                 if (count($attribs) > 0 && ($attribs[0]->newInstance())()) return null;
             }
         }
@@ -276,13 +293,13 @@ DUMPER_HTML;
             $c = (object) static::$colour;
 
             $title = isset($label) ? "{$c->b} {$label}:{$c->e} " : '';
-            $file = "{$c->w}{$_data['file']}{$c->e}::{$c->r}{$_data['line']}{$c->e}";
-            $class = $_data['class'] ? " => {$c->y}{$_data['class']}::{$_data['function']}{$c->e}" : '';
+            $file = "{$c->w}{$data['file']}{$c->e}::{$c->r}{$data['line']}{$c->e}";
+            $class = $data['class'] ? " => {$c->y}{$data['class']}::{$data['function']}{$c->e}" : '';
         } else {
             // HTML
             $title = isset($label) ? "<strong class=\"dump-label\">{$label}</strong> " : '';
-            $file = "{$_data['file']}::<strong>{$_data['line']}</strong>";
-            $class = $_data['class'] ? " => {$_data['class']}::<strong>{$_data['function']}</strong>" : '';
+            $file = "{$data['file']}::<strong>{$data['line']}</strong>";
+            $class = $data['class'] ? " => {$data['class']}::<strong>{$data['function']}</strong>" : '';
         }
 
         return "{$title}{$file}{$class}" . PHP_EOL;
@@ -298,15 +315,9 @@ DUMPER_HTML;
      * @return array info
      */
     protected static function analyseVariable($v): array {
-        $i = -1;
-        $trace = debug_backtrace();
-        foreach ($trace as $t) {
-            $i++;
-            if (!in_array(basename($t['file']), ['Dumper.php'])) break;
-        }
-
-        $file = file($trace[$i]['file']);
-        $id = $trace[$i]['line'] - 1;
+        $trace = static::getTrace()[0];
+        $file = file($trace['file']);
+        $id = $trace['line'] - 1;
         $line = $file[$id];
         preg_match('/(?:\()(\\$(\w+))/', $line, $match);
 

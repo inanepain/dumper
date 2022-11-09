@@ -4,6 +4,11 @@
 
 ## History
 
+### 1.9.1 @2022 Nov 09
+
+ - Internal improvements and optimisations
+ - fix: dump file information showing incorrect data
+
 ### 1.9.0 @2022 Nov 05
 
  - update: added shortcut argument to `dumper` to register global variable dump function by that name

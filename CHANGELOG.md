@@ -4,7 +4,7 @@
 
 ## History
 
-### 1.10.0-dev @2022 Dec 09
+### 1.10.0 @2022 Dec 09
 
  - new: `Dumper::assert` method - first argument true/false expression followed by usual dump arguments
  - new: `da` global function shortcut for `Dumper::assert`

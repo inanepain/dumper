@@ -1,2 +1,10 @@
 Inane\Dumper:
-	- Setup dumper's own package.
+	- Setup dumper's own package. @done(2022-12-09)
+	Assert:
+		An assert method in the vain of javascript's console.assert. First agument bool then followed by dump's arguments.
+		- add method `Dumper::assert(bool, message, label, options)` @method(Dumper) @version(1.10.0) @status(new) @done(2022-12-09)
+		- add function `da` as global shortcut for `assert` @method(global) @status(new) @version(1.10.0) @done(2022-12-09)
+	Silence:
+		Attribute that can toggle dumping on/off by class and method.
+		- new parameter: limit - if > 0, when called limit, state toggles @attribute @method(argument) @status(enhance) @version(1.10.0) @done(2022-12-09)
+			This allows skipping the first few dumps or only showing the first few.

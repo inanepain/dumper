@@ -4,6 +4,14 @@
 
 ## History
 
+### 1.10.0 @2022 Dec 09
+
+ - new: `Dumper::assert` method - first argument true/false expression followed by usual dump arguments
+ - new: `da` global function shortcut for `Dumper::assert`
+ - new: parameter `$limit` for `Silence` => toggles state returned when limit reached
+ - many minor fixes & updates to code & documentation
+ - major performance improvements
+
 ### 1.9.1 @2022 Nov 09
 
  - Internal improvements and optimisations

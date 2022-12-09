@@ -11,8 +11,8 @@ variables:
 .dumper {
     position: fixed;
     z-index: 999999999999999;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     width: 100vw;
     border-top: 1px #c0c0c0 solid;
     font-size: var(--dumper-font-size, smaller);
@@ -25,7 +25,7 @@ variables:
     summary {
         position: -webkit-sticky;
         position: sticky;
-        top: 0px;
+        top: 0;
         padding: .25rem;
 
         &:focus {
@@ -38,12 +38,12 @@ variables:
         max-height: var(--dumper-max-height, 80vh);
         overflow-y: auto;
         overflow-x: hidden;
-        margin: 0px;
-        box-shadow: 0px 0px 0px 0px inherit;
+        margin: 0;
+        box-shadow: 0 0 0 0 inherit;
         transition: box-shadow 1s;
 
         &[open] {
-            box-shadow: 0px 0px 12px -3px #808080;
+            box-shadow: 0 0 12px -3px #808080;
         }
 
         .dumper-title {
@@ -65,7 +65,7 @@ variables:
                         padding-left: 0.5rem;
                         color: #2f4f4f;
                         background: #a9a9a9;
-                        box-shadow: 0px 3px 12px -3px #808080;
+                        box-shadow: 0 3px 12px -3px #808080;
 
                         .dump-label {
                             display: inline-block;

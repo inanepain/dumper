@@ -22,9 +22,11 @@ declare(strict_types=1);
 namespace Inane\Dumper;
 
 use Attribute;
+use Inane\Stdlib\Options;
 
 use function in_array;
 use function is_null;
+use function is_string;
 use const null;
 use const true;
 
@@ -44,7 +46,10 @@ use const true;
  * @property-read bool $off     true if dump written
  * @property-read bool $verbose true if dump written
  *
- * @version 1.1.0
+ * @property-read ?string $label set to write Silence invocation data to page
+ * @property-read string $colour for label
+ *
+ * @version 1.3.0
  *
  * @package Inane\Dumper
  */
@@ -56,6 +61,15 @@ class Silence {
      * @since 1.1.0
      */
     private int $counter = 0;
+
+    /**
+     * Debug & other esoteric options to configure Silence in strange ways
+     *
+     * options:
+     *  - label => debug label when Silence invoked showing counter and state
+     *  - colour => of label
+     */
+    private Options $options;
 
     /**
      * Silence
@@ -76,20 +90,25 @@ class Silence {
          */
         public readonly ?int $limit = null,
         /**
-         * Friendly name
+         * Debug & other esoteric options to configure Silence in strange ways
          */
-        // public readonly string $label = '',
-        /**
-         * Colour for debug text
-         */
-        // public readonly string $colour = 'grey',
+        null|Options|array $config = null,
     ) {
-        // echo __METHOD__;
+        $this->options = new Options([
+            'label' => null,
+            'colour' => 'grey',
+        ]);
+
+        if (!is_null($config)) {
+            $this->options->modify($config);
+            if (!is_string($this->options->colour)) $this->options->colour = 'grey';
+        }
     }
 
     /**
      * get property
      *
+     * These do NOT invoke the object and do NOT increment the counter.
      * valid (silent):
      *  - on
      *  - silence
@@ -98,17 +117,23 @@ class Silence {
      *  - off
      *  - verbose
      *
+     * debug:
+     *  - label
+     *  - colour
+     *
      * @since 1.1.0
      *
      * @param string $name property
      *
-     * @return null|bool state or null for invalid property
+     * @return null|bool|string state, label, colour or null for invalid property
      */
-    public function __get(string $name): ?bool {
+    public function __get(string $name): null|bool|string {
         if (in_array($name, ['on', 'silence', 'quiet']))
             return $this->on;
         else if (in_array($name, ['off', 'verbose']))
             return !$this->on;
+        else if (in_array($name, ['colour', 'label']))
+            return $this->options[$name];
         return null;
     }
 
@@ -116,14 +141,33 @@ class Silence {
      * Silence State
      *
      * @return bool true is silent, false dump
+     *
+     * @throws \Inane\Stdlib\Exception\RuntimeException
+     * @throws \ReflectionException
      */
     public function __invoke(): bool {
         $this->counter++;
-        // echo '<div style="border-bottom: 1px dotted black; width: fit-content; color: ' . $this->colour . '; font-size: small; margin: 3px;"><span style="min-width: 130px; display: inline-block; padding: 3px">', $this->label, '</span>: ', $this->counter, '</div>';
+        $result = $this->on;
 
+        // If a limit has been set and reached the return state is inverted
         if (!is_null($this->limit) && $this->limit > 0 && $this->counter > $this->limit)
-            return !$this->on;
+            $result = !$this->on;
 
-        return $this->on;
+        // If a label value has been set, the Silence check is registered in the dump list
+        if (is_string($this->label)) {
+            $options = new Options([
+                // 'open' => true,
+                // 'open' => !$result,
+                'type' => Type::Silence,
+            ]);
+
+            dd([
+                'silence' => $result,
+                'counter' => $this->counter,
+                'limit' => $this->limit,
+            ], "Silence: <span style=\"color: $this->colour;\">$this->label</span>", $options);
+        }
+
+        return $result;
     }
 }

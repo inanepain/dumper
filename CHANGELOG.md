@@ -4,7 +4,7 @@
 
 ## History
 
-### 1.11.1-dev @2022 Dec 11
+### 1.11.1 @2022 Dec 11
 
  - fix: missing autoloader in composer.json
 

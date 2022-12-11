@@ -4,6 +4,10 @@
 
 ## History
 
+### 1.11.1 @2022 Dec 11
+
+ - fix: missing autoloader in composer.json
+
 ### 1.11.0 @2022 Dec 11
 
  - new: Silence checks can be logged

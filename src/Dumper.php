@@ -57,7 +57,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.10.0
+ * @version 1.11.0-dev
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -67,7 +67,7 @@ final class Dumper {
     /**
      * Dumper version
      */
-    public const VERSION = '1.10.0';
+    public const VERSION = '1.11.0-dev';
 
     /**
      * Single instance of Dumper
@@ -128,6 +128,13 @@ final class Dumper {
      * Buffer dumps until end of process
      */
     public static bool $bufferOutput = true;
+
+    /**
+     * Additional Dump Types allowed
+     *
+     * @var \Inane\Dumper\Type[]
+     */
+    public static array $additionalTypes = [];
 
     /**
      * Colours used for display
@@ -388,13 +395,13 @@ DUMPER_HTML;
     /**
      * Add a dump to the collection
      *
-     * @param mixed $data item to dump
-     * @param null|string $label
-     * @param array $options
+     * @param mixed                       $data    item to dump
+     * @param null|string                 $label
+     * @param array|\Inane\Stdlib\Options $options
      *
      * @return void
      */
-    protected function addDump(mixed $data, ?string $label = null, array $options = []): void {
+    protected function addDump(mixed $data, ?string $label = null, array|Options $options = []): void {
         // Parse the variable to string
         $code = ($options['useVarExport'] ?? Dumper::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data);
 
@@ -427,35 +434,6 @@ DUMPER_HTML;
     }
 
     /**
-     * Add a dump to the collection
-     *
-     * options:
-     *  - (bool=false) open        : true - creates dumps open (main panel not effect)
-     *  - (bool=false) useVarExport: true - uses `var_export` instead of dumper to generate dump string
-     *
-     * Chaining: You only need bracket your arguments for repeated dumps.
-     * Dumper::dump('one')('two', 'Label')
-     *
-     * @param mixed       $data item to dump
-     * @param null|string $label
-     * @param array       $options
-     *
-     * @return \Inane\Dumper\Dumper
-     *
-     * @throws \Inane\Stdlib\Exception\RuntimeException
-     * @throws \ReflectionException
-     */
-    public static function dump(mixed $data = null, ?string $label = null, array $options = []): Dumper {
-        $info = Dumper::analyseVariable($data);
-        if (is_null($label) && $info['variable'] != '') $label = $info['variable'];
-
-        $label = Dumper::formatLabel($label, $info['type']);
-        if (!is_null($label)) Dumper::dumper()->addDump($data, $label, $options);
-
-        return Dumper::dumper();
-    }
-
-    /**
      * Conditionally adds a dump to the collection
      *
      * options:
@@ -467,18 +445,58 @@ DUMPER_HTML;
      *
      * @since 1.10.0
      *
-     * @param bool        $expression true suppress dump, false dump $data
-     * @param mixed       $data       item to dump
-     * @param null|string $label
-     * @param array       $options
+     * @param bool                        $expression true suppress dump, false dump $data
+     * @param mixed                       $data       item to dump
+     * @param null|string                 $label
+     * @param array|\Inane\Stdlib\Options $options
      *
      * @return \Inane\Dumper\Dumper
      *
      * @throws \Inane\Stdlib\Exception\RuntimeException
      * @throws \ReflectionException
      */
-    public static function assert(bool $expression, mixed $data = null, ?string $label = null, array $options = []): Dumper {
+    public static function assert(bool $expression, mixed $data = null, ?string $label = null, array|Options $options = []): Dumper {
         if (!$expression) return Dumper::dump($data, $label, $options);
+
+        return Dumper::dumper();
+    }
+
+    /**
+     * Add a dump to the collection
+     *
+     * options:
+     *  - (bool=false) open        : true - creates dumps open (main panel not effect)
+     *  - (bool=false) useVarExport: true - uses `var_export` instead of dumper to generate dump string
+     *
+     * Chaining: You only need bracket your arguments for repeated dumps.
+     * Dumper::dump('one')('two', 'Label')
+     *
+     * @param mixed                       $data    item to dump
+     * @param null|string                 $label
+     * @param array|\Inane\Stdlib\Options $options
+     *
+     * @return \Inane\Dumper\Dumper
+     *
+     * @throws \Inane\Stdlib\Exception\RuntimeException
+     * @throws \ReflectionException
+     */
+    public static function dump(mixed $data = null, ?string $label = null, array|Options $options = []): Dumper {
+        Dumper::dumper();
+
+        $params = new Options([
+            'open'         => false,
+            'useVarExport' => false,
+            'type'         => Type::Dump,
+        ]);
+        $params->modify($options);
+        $params->lock();
+
+        if ($params->type == Type::Dump || in_array($params->type, Dumper::$additionalTypes)) {
+            $info = Dumper::analyseVariable($data);
+            if (is_null($label) && $info['variable'] != '') $label = $info['variable'];
+            if ($params->type == Type::Dump) $label = Dumper::formatLabel($label, $info['type']);
+            if (!is_null($label)) Dumper::dumper()->addDump($data, $label, $params);
+        }
 
         return Dumper::dumper();
     }

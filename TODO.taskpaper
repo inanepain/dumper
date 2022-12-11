@@ -8,3 +8,6 @@ Inane\Dumper:
 		Attribute that can toggle dumping on/off by class and method.
 		- new parameter: limit - if > 0, when called limit, state toggles @attribute @method(argument) @status(enhance) @version(1.10.0) @done(2022-12-09)
 			This allows skipping the first few dumps or only showing the first few.
+		- new parameter: config (configure special debug options) @done(2022-12-11)
+			- label: log label when ever Silence tested showing; counter value; return state; @done(2022-12-11)
+			- colour: of label @done(2022-12-11)

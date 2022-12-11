@@ -4,6 +4,12 @@
 
 ## History
 
+### 1.11.0-dev @2022 Dec xx
+
+ - new: Silence checks can be logged
+ - update: phpdoc
+ - minor tweaks, fixes and updates
+
 ### 1.10.0 @2022 Dec 09
 
  - new: `Dumper::assert` method - first argument true/false expression followed by usual dump arguments

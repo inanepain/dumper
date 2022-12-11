@@ -19,10 +19,11 @@
     "keywords": [
         "inane",
         "dumper",
-        "debug"
+        "debug",
+        "assert",
+        "silence counter"
     ],
     "autoload": {
-        "files": [ "src/bootstrap.php" ],
         "psr-4": {
             "Inane\\Dumper\\": "src/"
         }
@@ -36,7 +37,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=8.1",
-        "inanepain/stdlib": ">=0.1.6 || dev-master || dev-develop"
+        "inanepain/stdlib": ">=0.3.1 || dev-master || dev-develop"
     },
     "require-dev": {}
 }

@@ -4,7 +4,7 @@
 
 ## History
 
-### 1.11.0-dev @2022 Dec xx
+### 1.11.0 @2022 Dec 11
 
  - new: Silence checks can be logged
  - update: phpdoc

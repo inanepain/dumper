@@ -26,7 +26,10 @@
     "autoload": {
         "psr-4": {
             "Inane\\Dumper\\": "src/"
-        }
+        },
+        "files": [
+            "src/bootstrap.php"
+        ]
     },
     "config": {
         "preferred-install": "dist",

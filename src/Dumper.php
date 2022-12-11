@@ -57,7 +57,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.11.0
+ * @version 1.11.1-dev
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -67,7 +67,7 @@ final class Dumper {
     /**
      * Dumper version
      */
-    public const VERSION = '1.11.0';
+    public const VERSION = '1.11.1-dev';
 
     /**
      * Single instance of Dumper

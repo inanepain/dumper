@@ -4,6 +4,11 @@
 
 ## History
 
+### 1.12.0 @2023 Apr 16
+
+ - new: aliases - you can now also register custom assert aliases
+ - new: aliases - if the **pecl** ext **runkit7** is installed; custom aliases are registered as functions, variable versions also still created
+
 ### 1.11.1 @2022 Dec 11
 
  - fix: missing autoloader in composer.json

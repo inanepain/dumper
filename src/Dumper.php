@@ -32,6 +32,7 @@ use function debug_backtrace;
 use function dirname;
 use function file;
 use function file_get_contents;
+use function function_exists;
 use function gettype;
 use function implode;
 use function in_array;
@@ -179,15 +180,27 @@ final class Dumper {
      * using `what`:
      *  $what($something, 'Dumped using shortcut `what`');
      *
-     * @param null|string $shortcut [optional] register a global variable shortcut function with name $shortcut. Shortcut must also be a valid variable/function name.
+     * @param null|string $dumpAlias 	[optional] register a global variable shortcut function with name $dumpAlias for `dump`. Shortcut must also be a valid variable/function name.
+     * @param null|string $assertAlias	[optional] register a global variable shortcut function with name $assertAlias for `assert`. Shortcut must also be a valid variable/function name.
      *
      * @return \Inane\Dumper\Dumper
      */
-    public static function dumper(?string $shortcut = null): Dumper {
+    public static function dumper(?string $dumpAlias = null, ?string $assertAlias = null): Dumper {
         if (!isset(Dumper::$instance)) Dumper::$instance = new Dumper();
 
-        if (!is_null($shortcut) && !isset($GLOBALS[$shortcut]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $shortcut))
-            $GLOBALS[$shortcut] = Dumper::dump(...);
+		if (function_exists('runkit7_function_add')) {
+			if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))
+				runkit7_function_add($dumpAlias, '$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::dump($data, $label, $options);');
+
+			if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias))
+				runkit7_function_add($assertAlias, '$expression,$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::assert($expression, $data, $label, $options);');
+		}
+
+        if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))
+            $GLOBALS[$dumpAlias] = Dumper::dump(...);
+        
+		if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias))
+            $GLOBALS[$assertAlias] = Dumper::assert(...);
 
         return Dumper::$instance;
     }

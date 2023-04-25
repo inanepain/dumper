@@ -373,23 +373,6 @@ DUMPER_HTML;
             $data->function = $obj['function'] ?? '';
         } else $data->class = false;
 
-		// if ($data->class) {
-        //     if (Dumper::$silences->has($data->class)) {
-        //         $classInstance = Dumper::$silences->get($data->class)->instance;
-        //     } else {
-        //         $class = new ReflectionClass($data->class);
-        //         $attributes = $class->getAttributes(Silence::class);
-        //         $classInstance = count($attributes) > 0 ? $attributes[0]->newInstance() : null;
-
-        //         Dumper::$silences->set($data->class, [
-        //             'object' => $class,
-        //             'instance' => $classInstance,
-        //             'methods' => [],
-        //         ]);
-        //     }
-        //     if (($classInstance && $classInstance()) || Dumper::getMethodSilence($data)) return null;
-        // }
-
         // checking classes/functions for Silence attribute
 		$classInstance = null;
         if (($data->class && Dumper::$silences->has($data->class)) || ($data->class == false && Dumper::$silences->has($data->function)))

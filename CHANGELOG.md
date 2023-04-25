@@ -4,7 +4,7 @@
 
 ## History
 
-### 1.13.0 @2023 Apr xx
+### 1.13.0 @2023 Apr 25
 
  - enhance: Dumper support extended to functions (global / classless [Attribute::TARGET_FUNCTION])
  - enhance: improvements to alias function code

@@ -50,6 +50,8 @@ use const true;
  * 
  * Remove Silence Test Logging
  * `\Inane\Dumper\Dumper::$additionalTypes = [];`
+ * 
+ * @since 1.4.0 Supports `Attribute::TARGET_FUNCTION`
  *
  * @property-read bool $on      true if dump skipped
  * @property-read bool $silent  true if dump skipped
@@ -61,11 +63,11 @@ use const true;
  * @property-read ?string $label set to write Silence invocation data to page
  * @property-read string $colour for label
  *
- * @version 1.3.1
+ * @version 1.4.0
  *
  * @package Inane\Dumper
  */
-#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::TARGET_FUNCTION)]
 class Silence {
     /**
      * Counter increments every time instance is checked

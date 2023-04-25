@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Inane\Dumper;
 
 use ReflectionClass;
+use ReflectionFunction;
 
 use function array_combine;
 use function array_shift;
@@ -58,7 +59,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.11.1
+ * @version 1.13.0
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -68,7 +69,7 @@ final class Dumper {
     /**
      * Dumper version
      */
-    public const VERSION = '1.11.1';
+    public const VERSION = '1.12.0';
 
     /**
      * Single instance of Dumper
@@ -155,6 +156,31 @@ final class Dumper {
     protected static array $dumps = [];
 
     /**
+     * Checks if Dumper can register/create global functions
+     *
+     * A wrapper method that returns true if any method is available.
+     *  Currently, there is only one **Runkit7**, but I will look into adding more if requested.
+	 * 
+	 * @since 1.12.0
+     *
+     * @return bool
+     */
+    public static function canRegisterFunctions(): bool {
+        return static::hasRunkit7();
+    }
+
+    /**
+     * Checks for runkit7 ext
+	 * 
+	 * @since 1.12.0
+     *
+     * @return bool
+     */
+    protected static function hasRunkit7(): bool {
+        return function_exists('runkit7_function_add');
+    }
+
+    /**
      * Running in console
      *
      * @return bool
@@ -179,6 +205,8 @@ final class Dumper {
      *
      * using `what`:
      *  $what($something, 'Dumped using shortcut `what`');
+	 * 
+	 * @since 1.12.0 dump instruction on installing **runkit7** to enable creation of custom alias functions. Shown when custom alias requested and no runkit7.
      *
      * @param null|string $dumpAlias 	[optional] register a global variable shortcut function with name $dumpAlias for `dump`. Shortcut must also be a valid variable/function name.
      * @param null|string $assertAlias	[optional] register a global variable shortcut function with name $assertAlias for `assert`. Shortcut must also be a valid variable/function name.
@@ -188,13 +216,13 @@ final class Dumper {
     public static function dumper(?string $dumpAlias = null, ?string $assertAlias = null): Dumper {
         if (!isset(Dumper::$instance)) Dumper::$instance = new Dumper();
 
-		if (function_exists('runkit7_function_add')) {
+		if (static::canRegisterFunctions()) {
 			if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))
 				runkit7_function_add($dumpAlias, '$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::dump($data, $label, $options);');
 
 			if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias))
 				runkit7_function_add($assertAlias, '$expression,$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::assert($expression, $data, $label, $options);');
-		}
+		} else Dumper::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
 
         if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))
             $GLOBALS[$dumpAlias] = Dumper::dump(...);
@@ -322,6 +350,8 @@ DUMPER_HTML;
 
     /**
      * Create a label for the dump with relevant information
+	 * 
+	 * @since 1.13.0 Supports `Attribute::TARGET_FUNCTION`
      *
      * @param string|null $label
      * @param string|null $type
@@ -344,22 +374,25 @@ DUMPER_HTML;
         } else $data->class = false;
 
         // checking classes/functions for Silence attribute
-        if ($data->class) {
-            if (Dumper::$silences->has($data->class)) {
-                $classInstance = Dumper::$silences->get($data->class)->instance;
-            } else {
-                $class = new ReflectionClass($data->class);
-                $attributes = $class->getAttributes(Silence::class);
-                $classInstance = count($attributes) > 0 ? $attributes[0]->newInstance() : null;
+		$classInstance = null;
+        if (($data->class && Dumper::$silences->has($data->class)) || ($data->class == false && Dumper::$silences->has($data->function)))
+			$classInstance = Dumper::$silences->get($data->class === false ? $data->function : $data->class)->instance;
+		else if ($data->class || ($data->class === false && function_exists($data->function))) {
+			if ($data->class === false) $class = new ReflectionFunction($data->function);
+			else $class = new ReflectionClass($data->class);
 
-                Dumper::$silences->set($data->class, [
-                    'object' => $class,
-                    'instance' => $classInstance,
-                    'methods' => [],
-                ]);
-            }
-            if (($classInstance && $classInstance()) || Dumper::getMethodSilence($data)) return null;
-        }
+			$attributes = $class->getAttributes(Silence::class);
+			$classInstance = count($attributes) > 0 ? $attributes[0]->newInstance() : null;
+
+			Dumper::$silences->set($data->class === false ? $data->function : $data->class, [
+				'object' => $class,
+				'instance' => $classInstance,
+				'methods' => [],
+			]);
+		}
+
+		// Check Silence Attribute value and return of silence is on
+		if (($classInstance && $classInstance()) || ($data->class && Dumper::getMethodSilence($data))) return null;
 
         $label = isset($label) ? "$label [$type]" : $type;
 

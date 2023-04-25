@@ -4,10 +4,16 @@
 
 ## History
 
+### 1.13.0 @2023 Apr 25
+
+ - enhance: Dumper support extended to functions (global / classless [Attribute::TARGET_FUNCTION])
+ - enhance: improvements to alias function code
+ - doc: some work on the README.md
+
 ### 1.12.0 @2023 Apr 16
 
  - new: aliases - you can now also register custom assert aliases
- - new: aliases - if the **pecl** ext **runkit7** is installed; custom aliases are registered as functions, variable versions also still created
+ - new: aliases - if the **pecl** **runkit7** extension is installed; custom aliases are registered as functions, variable versions also still created
 
 ### 1.11.1 @2022 Dec 11
 

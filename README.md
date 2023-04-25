@@ -110,7 +110,76 @@ $data = [
 da($data['error'] == false, $data['error'], 'Error found in data');
 ```
 
-### Silence
+### Silence Attribute
+
+You can use the `\Inane\Dumper\Silence` attribute to silence dumps, silence a specified number of dumps, only show a specified number of dumps then go silent, per **class**, **method** or **function**.
+
+#### Using Silence
+
+Simply add the attribute to your desired target.
+
+```php
+use Inane\Dumper\Silence as DumperSilence;
+
+#[DumperSilence(false, 1)]
+function doSomething(): void {
+	echo 'hello', PHP_EOL;
+
+	dd('doSomething', 'function');
+	dd('func', 'doSomething');
+}
+
+class Person {
+	public function __construct(?array $properties = null) {
+	}
+	
+	/**
+	 * getStrength
+	 *
+	 * @return string
+	 */
+	#[DumperSilence(true)]
+	public function getName(): string {
+		// This dump will never write, thanks to silence attribute
+		dd('name', 'Person Properties name');
+	    return 'Bob';
+	}
+
+	/**
+	 * getStrength
+	 *
+	 * @return int
+	 */
+	public function getStrength(): int {
+	    return 10;
+	}
+
+	#[DumperSilence(true, 1)]
+	public function speak(string $message): string {
+		// this is skipped by silence the first time method is called
+		dd($message, 'message');
+
+		$line = $this->getName() . ' ' . match($this->getStrength()) {
+			6, 7 => 'wheezes',
+			8, 9, 10 => 'rasps',
+			15, 16, 17 => 'booms',
+			18 => 'bellows',
+			default => 'says',
+		} . ': ' . $message;
+
+		// this is always dumped
+		dd($line, 'Spoken message');
+
+		return $line;
+	}
+}
+
+doSomething();
+
+$p = new Person();
+$p->speak('Hello');
+$p->speak('bye');
+```
 
 ### CSS Variables
 
@@ -123,6 +192,30 @@ da($data['error'] == false, $data['error'], 'Error found in data');
 
 There are some static properties you can set to control parts of dumper.
 
+### enabled
+
+Completely turn Dumper output off.
+
+default: `true`
+
+```php
+\Inane\Dumper\Dumper::$enabled = false;
+```
+
+### bufferOutput
+
+Write dumps last. Just before php terminates. Set to `false` to have dumps inserted as the occur at runtime.
+This is mostly useful when running console code.
+
+default: `true`
+
+```php
+// Somewhere before using Dumper, or even after for a section of code and then turn buffer on again.
+\Inane\Dumper\Dumper::$bufferOutput = false;
+// some code loop probably
+\Inane\Dumper\Dumper::$bufferOutput = true;
+```
+
 ### expanded
 
 > @since 1.8.0
@@ -130,3 +223,8 @@ There are some static properties you can set to control parts of dumper.
 Controls the initial state of the Dumper window.
 
 default: `false`
+
+```php
+// Create the Dumper panel expanded
+\Inane\Dumper\Dumper::$expanded = true;
+```

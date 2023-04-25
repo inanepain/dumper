@@ -4,6 +4,10 @@
 
 ## History
 
+### 1.13.1 @2023 Apr 25
+
+ - fix: added check function is not null when checking for `Silence`
+
 ### 1.13.0 @2023 Apr 25
 
  - enhance: Dumper support extended to functions (global / classless [Attribute::TARGET_FUNCTION])

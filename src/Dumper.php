@@ -38,6 +38,7 @@ use function gettype;
 use function implode;
 use function in_array;
 use function is_null;
+use function is_string;
 use function ob_start;
 use function php_sapi_name;
 use function preg_match;
@@ -59,7 +60,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.13.0
+ * @version 1.13.1
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -377,7 +378,7 @@ DUMPER_HTML;
 		$classInstance = null;
         if (($data->class && Dumper::$silences->has($data->class)) || ($data->class == false && Dumper::$silences->has($data->function)))
 			$classInstance = Dumper::$silences->get($data->class === false ? $data->function : $data->class)->instance;
-		else if ($data->class || ($data->class === false && function_exists($data->function))) {
+		else if ($data->class || ($data->class === false && is_string($data->function) && function_exists($data->function))) {
 			if ($data->class === false) $class = new ReflectionFunction($data->function);
 			else $class = new ReflectionClass($data->class);
 

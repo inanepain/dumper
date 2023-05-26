@@ -21,7 +21,45 @@ A little tool to help with debugging by writing a `var_dump` like message unobtr
 $ composer require inanepain/dumper
 ----
 
-include::./doc/basic.adoc[leveloffset=+1]
+:leveloffset: +1
+
+= Basic Usage
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Dumper works right out the box. Once installed via *composer* you can use it straight away to dump your objects using either method; `dump` or `assert` on the `\Inane\Dumper\Dumper` object.
+
+The `dump` method is the default method and logs what it is given. Where as the `assert` has a test for its first parameter and only logs if the test *fails* (_falsy_).
+
+.basic usage
+[source,php]
+----
+\Inane\Dumper\Dumper::dump($data, 'After marge process');
+\Inane\Dumper\Dumper::assert(!$data->error, $data, 'After marge process'); // <1>
+----
+<1> Logs if error is *true*
+
+== Ease of use
+
+Dumper registers the shortcut functions `dd` and `da` that work just like calling `\Inane\Dumper\Dumper::dump()` or `\Inane\Dumper\Dumper::assert()`.
+
+WARNING: Dumper does not overwrite existing functions. So if either `dd` or `da` are already taken, Dumper will skip them. See *Dumper: Aliases* <<Dumper: Aliases>> on creating your own custom alias functions.
+
+.basic shortcut usage
+[source,php]
+----
+dd($data, 'After marge process');
+da(!$data->error, $data, 'After marge process'); // <1>
+----
+<1> Logs if error is *true*
+
+:leveloffset!:
 
 == Getting more out of Dumper
 :sectnums:
@@ -38,16 +76,354 @@ Some more or less helpful hints and tips regarding to usage of `Dumper`.
 
 ***
 
-include::./doc/aliases.adoc[leveloffset=+2]
+:leveloffset: +2
+
+= Dumper: Aliases
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Creating a custom global function as an alias to `\Inane\Dumper\Dumper::dump` method.
+
+TIP: *ext-runkit7* required to register global functions. Without it the function is stored in a variable instead.
+
+.Creating a custom alias for Dumper
+[source,php]
+----
+\Inane\Dumper\Dumper::dumper('kickIt', 'shErr');
+
+// you can now use your `kickIt` function the same as the `dump` method.
+kickIt($data, 'Data after...'); // <1>
+// what about `shErr`?
+shErr(!$data->error, $data, 'Data after...'); // <2>
+
+// without *ext-runkit7*. Note the $kickIt is a variable.
+$kickIt($data, 'Data after...');
+$shErr(!$data->error, $data, 'Data after...'); // <2>
+----
+<1> The first parameter of the dumper method creates `dump` aliases akin to the `dd` function.
+<2> The second parameter sets the alias for `assert` akin to `da`.
+
+That's how easy it is to create a custom global shortcut function for Dumper.
+
+:leveloffset!:
 
 ***
 
-include::./doc/configuration.adoc[leveloffset=+2]
+:leveloffset: +2
+
+= Dumper: Configuration
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Dumper has a few static public properties you can use to change some of the default behaviours.
+
+== enabled
+
+Dumper starts enabled but should you wish all Dumpers related content gone. Disable it here.
+
+default: `true`
+
+.config: turn off Dumper's output
+[source,php]
+----
+\Inane\Dumper\Dumper::$enabled = false;
+----
+
+== bufferOutput
+
+Write dumps last. Just before php terminates. Set to `false` to have dumps inserted as the occur at runtime.
+
+TIP: This is mostly useful when running console code.
+
+default: `true`
+
+.config: turn off buffered output to print dumps inline
+[source,php]
+----
+// Somewhere before using Dumper, or even after for a section of code and then turn buffer on again.
+\Inane\Dumper\Dumper::$bufferOutput = false;
+// some code loop probably
+\Inane\Dumper\Dumper::$bufferOutput = true;
+----
+
+== useVarExport
+
+By default Dumper uses its own variable parser to generate the output. Here you can tell Dumper to use `var_export` instead.
+
+default: `false`
+
+.config: set dumper to use var_export
+[source,php]
+----
+// set value to true
+\Inane\Dumper\Dumper::$useVarExport = true;
+----
+
+// tag::configHighlight[]
+== highlight
+
+Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
+
+default: `\Inane\Stdlib\Highlight::CURRENT`
+
+. Available colours in `\Inane\Stdlib\Highlight`
+* CURRENT
+* DEFAULT
+* PHP2
+* HTML
+
+.config: set dumper colours
+[source,php]
+----
+// set colour theme
+\Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
+----
+// end::configHighlight[]
+// tag::configExpanded[]
+== expanded
+
+NOTE: *Since*: 1.8.0
+
+Controls the initial expanded state of the Dumper panel.
+
+default: `false`
+
+.config: dumper log panel initial state
+[source,php]
+----
+// Create the Dumper panel expanded
+\Inane\Dumper\Dumper::$expanded = true;
+----
+// end::configExpanded[]
+
+:leveloffset!:
 
 ***
 
-include::./doc/ui.adoc[leveloffset=+2]
+:leveloffset: +2
+
+= Dumper: UI
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Customising Dumpers look and feel.
+
+== Panel
+
+This is done by setting the values of the following *css variables* and a few php *class properties*.
+
+=== font size
+
+Adjust the font size used by the Dumper panel.
+
+* variable: `--dumper-font-size`
+* default: `smaller`
+
+=== max height
+
+Adjust the maximum height allowed of the Dumper panel when opened.
+
+* variable: `--dumper-max-height`
+* default: `80vh`
+
+:leveloffset: +1
+
+== expanded
+
+NOTE: *Since*: 1.8.0
+
+Controls the initial expanded state of the Dumper panel.
+
+default: `false`
+
+.config: dumper log panel initial state
+[source,php]
+----
+// Create the Dumper panel expanded
+\Inane\Dumper\Dumper::$expanded = true;
+----
+
+:leveloffset: 2
+
+== Theme
+
+Switching Dumpers theme is done in the php by changing a static property on the Dumper object.
+
+:leveloffset: +1
+
+== highlight
+
+Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
+
+default: `\Inane\Stdlib\Highlight::CURRENT`
+
+. Available colours in `\Inane\Stdlib\Highlight`
+* CURRENT
+* DEFAULT
+* PHP2
+* HTML
+
+.config: set dumper colours
+[source,php]
+----
+// set colour theme
+\Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
+----
+
+:leveloffset: 2
+
+:leveloffset!:
 
 ***
 
-include::./doc/silence.adoc[leveloffset=+2]
+:leveloffset: +2
+
+= Dumper: Silence
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+You can use the `\Inane\Dumper\Silence` attribute to silence dumps, silence a specified number of dumps, only show a specified number of dumps then go silent, per *class*, *method* or *function*. The Silence attribute also allows you to set Silence's initial state and then set a counter after which the state will toggle.
+
+NOTE: If a class is silenced all functions are silenced regardless of their individual settings.
+
+.Basic Silence Usage
+[source,php]
+----
+use Inane\Dumper\Silence as DumperSilence;
+
+#[DumperSilence()]
+function doFirst(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+
+#[DumperSilence(false)]
+function doSecond(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+doFirst(); // <1>
+// hello
+
+doSecond(); // <2>
+// hello
+// doSecond, one
+// doSecond, two
+----
+<1> This only outputs the `echo`. The `dd`'s are ignored.
+<2> Here the `echo` and `dd` output is displayed.
+
+== Toggling State
+
+This feature of Silence lets you either enable or disable dumping after a specified number of dump requests have been made. This lets you log only a few items when iterating over a large collection.
+
+If you specify a limit, Silence's second parameter, the Silence instance will toggle its value after it has received that many check requests. i.e. Silent becomes verbose and vice versa.
+
+NOTE: The toggle only happens once. *NOT* every time the limit is reached.
+
+TIP: The is an issue logged to pass an array in place of an limit that sets when to toggle and how long the toggle should remain active.
+
+.Toggle Silence Usage
+[source,php]
+----
+use Inane\Dumper\Silence as DumperSilence;
+
+#[DumperSilence(false, 1)]
+function doFirst(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+
+#[DumperSilence(true, 1)]
+function doSecond(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+doFirst(); // <1>
+// hello
+// doFirst, two
+
+doSecond(); // <2>
+// hello
+// doSecond, one
+----
+<1> Now we have the `echo` and the value from the first `dd` request. Silence toggled *false* to *true* after *1* request so the second `dd` request was ignored.
+<2> This is the reverse of the first. Here only the first `dd` request is shown.
+
+== Advanced: Logging Silence checks
+
+Actually geeky stuff would be a better way to describe this section. By default Silence checks are not shown in the Dumper panel but this can be enabled if you want to figure out why your toggles are not doing what you expect them to do.
+
+To enable this this is one simple step, add `Type::Silence` to the `Dumper::$additionalTypes` array.
+
+.Logging Silence Requests
+[source,php]
+----
+Dumper::$additionalTypes[] = Type::Silence; // <1>
+// code
+Dumper::$additionalTypes = []; // <2>
+----
+<1> future Silence checks will be shown in the Dumper panel.
+<2> and Silence checks after this will no longer show in the Dumper panel.
+
+=== Customising Silence checks
+
+You can customise the Silence check logs per Silence instance to make them stand out from the rest by giving it a custom *label* and *colour*.
+
+.Customising Silence Logs
+[source,php]
+----
+#[Silence(on: true, config: [
+	'label' => 'Do Test This', // <1>
+	'colour' => 'purple', // <2>
+])]
+function doThis(): void {
+	dd(null, 'Dump nothing important'); // <3>
+}
+
+doThis(); // <4>
+doThis(); // <4>
+doThis(); // <4>
+----
+<1> set custom label to appear in Dumper panel.
+<2> set custom colour for log entry in Dumper panel.
+<3> this will not be show due to Silence
+<4> a purple entry labelled *Do Test This* will be added every time this function is called
+
+:leveloffset!:

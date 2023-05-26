@@ -47,9 +47,13 @@ doSecond(); // <2>
 
 == Toggling State
 
-This feature of Silence lets you either enable or disable dumping after a specified number of dump requests have been made. When your dump is in a loop that iterates over an extremely large number of items this will prevent every iteration from entry in the Dumper panel.
+This feature of Silence lets you either enable or disable dumping after a specified number of dump requests have been made. This lets you log only a few items when iterating over a large collection.
 
-The way to set the toggle value is to set the Silence's second parameter, *limit*.
+If you specify a limit, Silence's second parameter, the Silence instance will toggle its value after it has received that many check requests. i.e. Silent becomes verbose and vice versa.
+
+NOTE: The toggle only happens once. *NOT* every time the limit is reached.
+
+TIP: The is an issue logged to pass an array in place of an limit that sets when to toggle and how long the toggle should remain active.
 
 .Toggle Silence Usage
 [source,php]
@@ -83,3 +87,43 @@ doSecond(); // <2>
 ----
 <1> Now we have the `echo` and the value from the first `dd` request. Silence toggled *false* to *true* after *1* request so the second `dd` request was ignored.
 <2> This is the reverse of the first. Here only the first `dd` request is shown.
+
+== Advanced: Logging Silence checks
+
+Actually geeky stuff would be a better way to describe this section. By default Silence checks are not shown in the Dumper panel but this can be enabled if you want to figure out why your toggles are not doing what you expect them to do.
+
+To enable this this is one simple step, add `Type::Silence` to the `Dumper::$additionalTypes` array.
+
+.Logging Silence Requests
+[source,php]
+----
+Dumper::$additionalTypes[] = Type::Silence; // <1>
+// code
+Dumper::$additionalTypes = []; // <2>
+----
+<1> future Silence checks will be shown in the Dumper panel. 
+<2> and Silence checks after this will no longer show in the Dumper panel.
+
+=== Customising Silence checks
+
+You can customise the Silence check logs per Silence instance to make them stand out from the rest by giving it a custom *label* and *colour*.
+
+.Customising Silence Logs
+[source,php]
+----
+#[Silence(on: true, config: [
+	'label' => 'Do Test This', // <1>
+	'colour' => 'purple', // <2>
+])]
+function doThis(): void {
+	dd(null, 'Dump nothing important'); // <3>
+}
+
+doThis(); // <4>
+doThis(); // <4>
+doThis(); // <4>
+----
+<1> set custom label to appear in Dumper panel.
+<2> set custom colour for log entry in Dumper panel.
+<3> this will not be show due to Silence
+<4> a purple entry labelled *Do Test This* will be added every time this function is called

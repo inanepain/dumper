@@ -3,7 +3,7 @@
     "description": "A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.",
     "type": "library",
     "license": "UNLICENSE",
-    "homepage": "http://vaieen.local:3000/inane/dumper",
+    "homepage": "https://vaieen.local:3000/inane/dumper",
     "readme": "README.adoc",
     "authors": [
         {
@@ -14,7 +14,7 @@
     ],
     "support": {
         "email": "peep@inane.co.za",
-        "issues": "http://vaieen.local:3000/iane"
+        "issues": "https://vaieen.local:3000/inane/dumper/issues"
     },
     "keywords": [
         "inane",

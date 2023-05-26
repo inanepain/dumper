@@ -1,0 +1,32 @@
+= Dumper: Aliases
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Creating a custom global function as an alias to `\Inane\Dumper\Dumper::dump` method.
+
+TIP: *ext-runkit7* required to register global functions. Without it the function is stored in a variable instead.
+
+.Creating a custom alias for Dumper
+[source,php]
+----
+\Inane\Dumper\Dumper::dumper('kickIt', 'shErr');
+
+// you can now use your `kickIt` function the same as the `dump` method.
+kickIt($data, 'Data after...'); // <1>
+// what about `shErr`?
+shErr(!$data->error, $data, 'Data after...'); // <2>
+
+// without *ext-runkit7*. Note the $kickIt is a variable.
+$kickIt($data, 'Data after...');
+$shErr(!$data->error, $data, 'Data after...'); // <2>
+----
+<1> The first parameter of the dumper method creates `dump` aliases akin to the `dd` function.
+<2> The second parameter sets the alias for `assert` akin to `da`.
+
+That's how easy it is to create a custom global shortcut function for Dumper.

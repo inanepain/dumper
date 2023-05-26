@@ -1,0 +1,85 @@
+= Dumper: Silence
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+You can use the `\Inane\Dumper\Silence` attribute to silence dumps, silence a specified number of dumps, only show a specified number of dumps then go silent, per *class*, *method* or *function*. The Silence attribute also allows you to set Silence's initial state and then set a counter after which the state will toggle.
+
+NOTE: If a class is silenced all functions are silenced regardless of their individual settings.
+
+.Basic Silence Usage
+[source,php]
+----
+use Inane\Dumper\Silence as DumperSilence;
+
+#[DumperSilence()]
+function doFirst(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+
+#[DumperSilence(false)]
+function doSecond(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+doFirst(); // <1>
+// hello
+
+doSecond(); // <2>
+// hello
+// doSecond, one
+// doSecond, two
+----
+<1> This only outputs the `echo`. The `dd`'s are ignored.
+<2> Here the `echo` and `dd` output is displayed.
+
+== Toggling State
+
+This feature of Silence lets you either enable or disable dumping after a specified number of dump requests have been made. When your dump is in a loop that iterates over an extremely large number of items this will prevent every iteration from entry in the Dumper panel.
+
+The way to set the toggle value is to set the Silence's second parameter, *limit*.
+
+.Toggle Silence Usage
+[source,php]
+----
+use Inane\Dumper\Silence as DumperSilence;
+
+#[DumperSilence(false, 1)]
+function doFirst(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+
+#[DumperSilence(true, 1)]
+function doSecond(): void {
+	echo 'hello', PHP_EOL;
+
+	dd(__FUNCTION__, 'one');
+	dd(__FUNCTION__, 'two');
+}
+
+doFirst(); // <1>
+// hello
+// doFirst, two
+
+doSecond(); // <2>
+// hello
+// doSecond, one
+----
+<1> Now we have the `echo` and the value from the first `dd` request. Silence toggled *false* to *true* after *1* request so the second `dd` request was ignored.
+<2> This is the reverse of the first. Here only the first `dd` request is shown.

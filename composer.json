@@ -4,7 +4,7 @@
     "type": "library",
     "license": "UNLICENSE",
     "homepage": "http://vaieen.local:3000/inane/dumper",
-    "readme": "README.md",
+    "readme": "README.adoc",
     "authors": [
         {
             "name": "Philip Michael Raab",
@@ -42,5 +42,8 @@
         "php": ">=8.1",
         "inanepain/stdlib": ">=0.3.1 || dev-master || dev-develop"
     },
-    "require-dev": {}
+    "require-dev": {},
+    "suggest": {
+        "ext-runkit7": "Allows creating custom aliases for dump method"
+    }
 }

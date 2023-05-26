@@ -1,0 +1,53 @@
+= Dumper
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums: |,all|
+:toc: auto
+
+== Overview
+
+A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+
+
+== Install
+
+[source,shell]
+----
+$ composer require inanepain/dumper
+----
+
+include::./doc/basic.adoc[leveloffset=+1]
+
+== Getting more out of Dumper
+:sectnums:
+:view-mode: project
+
+Some more or less helpful hints and tips regarding to usage of `Dumper`.
+
+***
+
+* link:doc/aliases.adoc[custom aliases]
+* link:doc/configuration.adoc[configuration]
+* link:doc/ui.adoc[ui]
+* link:doc/silence.adoc[silence]
+
+***
+
+include::./doc/aliases.adoc[leveloffset=+2]
+
+***
+
+include::./doc/configuration.adoc[leveloffset=+2]
+
+***
+
+include::./doc/ui.adoc[leveloffset=+2]
+
+***
+
+include::./doc/silence.adoc[leveloffset=+2]

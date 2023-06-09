@@ -4,7 +4,7 @@
 
 ## History
 
-### current: 1.14.0-dev @2023 Jun 09
+### 1.14.0 @2023 Jun 09
 
  - New: `Dumper::setConsoleColours` Ability to set custom colours for console
  - New: `Dumper::getConsoleColours` Get current console colours

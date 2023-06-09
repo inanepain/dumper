@@ -1,0 +1,37 @@
+= Dumper: UI
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Customising Dumpers look and feel.
+
+== Panel
+
+This is done by setting the values of the following *css variables* and a few php *class properties*.
+
+=== font size
+
+Adjust the font size used by the Dumper panel.
+
+* variable: `--dumper-font-size`
+* default: `smaller`
+
+=== max height
+
+Adjust the maximum height allowed of the Dumper panel when opened.
+
+* variable: `--dumper-max-height`
+* default: `80vh`
+
+include::configuration.adoc[tag=configExpanded,leveloffset=+1]
+
+== Theme
+
+Switching Dumpers theme is done in the php by changing a static property on the Dumper object.
+
+include::configuration.adoc[tag=configHighlight,leveloffset=+1]

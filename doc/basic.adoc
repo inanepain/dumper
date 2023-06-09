@@ -1,0 +1,35 @@
+= Basic Usage
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-05-26
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Dumper works right out the box. Once installed via *composer* you can use it straight away to dump your objects using either method; `dump` or `assert` on the `\Inane\Dumper\Dumper` object.
+
+The `dump` method is the default method and logs what it is given. Where as the `assert` has a test for its first parameter and only logs if the test *fails* (_falsy_).
+
+.basic usage
+[source,php]
+----
+\Inane\Dumper\Dumper::dump($data, 'After marge process');
+\Inane\Dumper\Dumper::assert(!$data->error, $data, 'After marge process'); // <1>
+----
+<1> Logs if error is *true*
+
+== Ease of use
+
+Dumper registers the shortcut functions `dd` and `da` that work just like calling `\Inane\Dumper\Dumper::dump()` or `\Inane\Dumper\Dumper::assert()`.
+
+WARNING: Dumper does not overwrite existing functions. So if either `dd` or `da` are already taken, Dumper will skip them. See *Dumper: Aliases* <<Dumper: Aliases>> on creating your own custom alias functions.
+
+.basic shortcut usage
+[source,php]
+----
+dd($data, 'After marge process');
+da(!$data->error, $data, 'After marge process'); // <1>
+----
+<1> Logs if error is *true*

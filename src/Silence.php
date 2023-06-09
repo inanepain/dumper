@@ -103,6 +103,8 @@ class Silence {
 		 * null|<=0 are equal, all disable limit.
          *
          * @since 1.1.0
+		 * 
+		 * @todo: change to null|int|int[offset, count] - offset = toggle value, count = toggle back to initial value.
          */
         public readonly ?int $limit = null,
         /**

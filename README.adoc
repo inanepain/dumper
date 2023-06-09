@@ -13,7 +13,6 @@
 
 A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
 
-
 == Install
 
 [source,shell]
@@ -207,6 +206,47 @@ default: `false`
 \Inane\Dumper\Dumper::$expanded = true;
 ----
 // end::configExpanded[]
+// tag::configSetColours[]
+== setColours
+
+NOTE: *Since*: 1.14.0
+
+Allows setting custom cli colours or disabling cli colours completely.
+
+.default:
+[source,php]
+----
+[
+	'reset' => "\033[0m",		# console default
+	'dumper' => "\033[35m",		# magenta
+	'label' => "\033[34m",		# blue
+	'file' => "\033[97m",		# while
+	'line' => "\033[31m",		# red
+	'divider' => "\033[33m",	# yellow
+];
+----
+
+.config: setting cli colours
+[source,php]
+----
+// Remove cli colouring
+\Inane\Dumper\Dumper::setConsoleColours(false);
+
+// Setting default colours
+\Inane\Dumper\Dumper::setConsoleColours([]);
+
+// Remove cli colouring
+\Inane\Dumper\Dumper::setConsoleColours(false);
+// creating a colour using Pencil from `inanepain/cli`
+$label = new \Inane\Cli\Pencil(colour: \Inane\Cli\Pencil\Colour::Green, background: \Inane\Cli\Pencil\Colour::Red, style: \Inane\Cli\Pencil\Style::SlowBlink);
+// Then set colours for **file**, **label** and **reset**
+\Inane\Dumper\Dumper::setConsoleColours([
+	'file' => "\033[36m",
+	'label' => "$label",
+	'reset' => "\033[0m",
+]);
+----
+// end::configSetColours[]
 
 :leveloffset!:
 

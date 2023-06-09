@@ -4,6 +4,13 @@
 
 ## History
 
+### current: 1.14.0-dev @2023 Jun 09
+
+ - New: `Dumper::setConsoleColours` Ability to set custom colours for console
+ - New: `Dumper::getConsoleColours` Get current console colours
+ - Fix: error when using Dumper in interactive shell
+ - Minor tweaks
+
 ### 1.13.1 @2023 Apr 25
 
  - fix: added check function is not null when checking for `Silence`

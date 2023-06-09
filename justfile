@@ -17,10 +17,28 @@ _default:
     @echo "{{project}}:"
     @just --list --list-heading ''
 
+# generate php doc (v2) (all, cache, html)
+php-doc clear="all":
+	#!/usr/bin/env zsh
+	if [ -d .phpdoc ] && [[ "{{clear}}" = "all" || "{{clear}}" = "cache" ]]; then
+		echo "\tCleaning: cache..."
+		rm -fr .phpdoc
+	fi
+	if [ -d doc/code ] && [[ "{{clear}}" = "all" || "{{clear}}" = "html" ]]; then
+		echo "\tCleaning: html..."
+		rm -fr doc/code
+	fi
+
+	mkdir -p doc/code
+	phpdoc -d src -t doc/code --title="{{project}}" --defaultpackagename="Inane"
+
+#*********************************************
+#### DOCUMENTATION: README
+##############################################
 # build: 1 - reduced adoc file
 @_readme-reduce:
 	echo "\tbuild: reduced"
-	asciidoctor-reducer -o README.adoc doc/README.adoc
+	asciidoctor-reducer -o README.adoc doc/index.adoc
 
 # build: 2 - pandoc xml file
 @_readme-pandoc:
@@ -45,7 +63,7 @@ readme target="markdown":
 
 	if [[ "{{target}}" = "clean" ]]; then just _readme-clean
 	elif [[ "{{target}}" = "reduce"* ]]; then
-		if [[ -f doc/README.adoc ]]; then just _readme-reduce; else echo "\tbuild: warn: missing: doc/README.adoc (reduce)"; fi
+		if [[ -f doc/index.adoc ]]; then just _readme-reduce; else echo "\tbuild: warn: missing: doc/index.adoc (reduce)"; fi
 	elif [[ "{{target}}" = "pandoc"* ]]; then
 		if [[ ! -f README.adoc ]]; then
 			# echo "\tbuild: warn: missing: README.adoc (pandoc)"
@@ -64,7 +82,4 @@ readme target="markdown":
 
 	[[ ! "{{target}}" = *"-v" ]] && echo "build: done: {{target}}" || printf ""
 
-# generate php doc
-@doc:
-	mkdir -p doc/code
-	phpdoc -d src -t doc/code --title="{{project}}" --defaultpackagename="Inane"
+#*********************************************

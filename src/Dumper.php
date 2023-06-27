@@ -60,7 +60,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.14.0
+ * @version 1.14.1
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -70,7 +70,7 @@ final class Dumper {
 	/**
 	 * Dumper version
 	 */
-	public const VERSION = '1.14.0';
+	public const VERSION = '1.14.1';
 
 	/**
 	 * Single instance of Dumper
@@ -497,7 +497,7 @@ DUMPER_HTML;
 
 			$title = isset($label) ? "$c->label $label:$c->reset " : '';
 			$file = "$c->file$data->file$c->reset::$c->line$data->line$c->reset";
-			$class = $data->class ? " => $c->divide$data->class::$data->function$c->reset" : '';
+			$class = $data->class ? " => $c->divider$data->class::$data->function$c->reset" : '';
 		} else {
 			// HTML
 			$title = isset($label) ? "<strong class=\"dump-label\">$label</strong> " : '';

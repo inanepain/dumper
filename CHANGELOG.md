@@ -4,6 +4,10 @@
 
 ## History
 
+### 1.14.1 @2023 Jun 27
+
+ - Fix: Dumper console colours for divider line
+
 ### 1.14.0 @2023 Jun 09
 
  - New: `Dumper::setConsoleColours` Ability to set custom colours for console

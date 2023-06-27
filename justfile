@@ -17,6 +17,9 @@ _default:
     @echo "{{project}}:"
     @just --list --list-heading ''
 
+#*********************************************
+#### PHP
+##############################################
 # generate php doc (v2) (all, cache, html)
 php-doc clear="all":
 	#!/usr/bin/env zsh
@@ -24,13 +27,13 @@ php-doc clear="all":
 		echo "\tCleaning: cache..."
 		rm -fr .phpdoc
 	fi
-	if [ -d doc/code ] && [[ "{{clear}}" = "all" || "{{clear}}" = "html" ]]; then
+	if [ -d doc/api ] && [[ "{{clear}}" = "all" || "{{clear}}" = "html" ]]; then
 		echo "\tCleaning: html..."
-		rm -fr doc/code
+		rm -fr doc/api
 	fi
 
-	mkdir -p doc/code
-	phpdoc -d src -t doc/code --title="{{project}}" --defaultpackagename="Inane"
+	mkdir -p doc/api
+	phpdoc -d src -t doc/api --title="{{project}}" --defaultpackagename="Inane"
 
 #*********************************************
 #### DOCUMENTATION: README
@@ -38,7 +41,7 @@ php-doc clear="all":
 # build: 1 - reduced adoc file
 @_readme-reduce:
 	echo "\tbuild: reduced"
-	asciidoctor-reducer -o README.adoc doc/index.adoc
+	asciidoctor-reducer -o README.adoc doc/readme/index.adoc
 
 # build: 2 - pandoc xml file
 @_readme-pandoc:
@@ -56,14 +59,14 @@ php-doc clear="all":
 	rm -vf README.{adoc,xml,md}
 	echo "\tbuild: clean: done"
 
-# build README files from doc/README.adoc (targets build required files if missing): clean, reduce, pandoc, markdown*
+# build README files from doc/readme/index.adoc (targets build required files if missing): clean, reduce, pandoc, markdown*
 readme target="markdown":
 	#!/usr/bin/env zsh
 	[[ ! "{{target}}" = *"-v" ]] && echo "building: readme: {{target}}"
 
 	if [[ "{{target}}" = "clean" ]]; then just _readme-clean
 	elif [[ "{{target}}" = "reduce"* ]]; then
-		if [[ -f doc/index.adoc ]]; then just _readme-reduce; else echo "\tbuild: warn: missing: doc/index.adoc (reduce)"; fi
+		if [[ -f doc/readme/index.adoc ]]; then just _readme-reduce; else echo "\tbuild: warn: missing: doc/readme/index.adoc (reduce)"; fi
 	elif [[ "{{target}}" = "pandoc"* ]]; then
 		if [[ ! -f README.adoc ]]; then
 			# echo "\tbuild: warn: missing: README.adoc (pandoc)"

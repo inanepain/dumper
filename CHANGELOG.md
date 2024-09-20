@@ -4,6 +4,10 @@
 
 ## History
 
+### 1.14.2 @2024 Sep 20
+
+ - Fix: Infinit loop if `Runkit7` not installed
+
 ### 1.14.1 @2023 Jun 27
 
  - Fix: Dumper console colours for divider line

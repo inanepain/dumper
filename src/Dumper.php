@@ -60,7 +60,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.14.1
+ * @version 1.14.2
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -70,7 +70,7 @@ final class Dumper {
 	/**
 	 * Dumper version
 	 */
-	public const VERSION = '1.14.1';
+	public const VERSION = '1.14.2';
 
 	/**
 	 * Single instance of Dumper
@@ -210,13 +210,18 @@ final class Dumper {
 	public static function dumper(?string $dumpAlias = null, ?string $assertAlias = null): Dumper {
 		if (!isset(Dumper::$instance)) Dumper::$instance = new Dumper();
 
-		if (static::canRegisterFunctions()) {
-			if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))
-				runkit7_function_add($dumpAlias, '$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::dump($data, $label, $options);');
+		static $checked = false;
 
-			if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias))
-				runkit7_function_add($assertAlias, '$expression,$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::assert($expression, $data, $label, $options);');
-		} else Dumper::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
+		if (!$checked) {
+			$checked = true;
+			if (static::canRegisterFunctions()) {
+				if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))
+					runkit7_function_add($dumpAlias, '$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::dump($data, $label, $options);');
+
+				if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias))
+					runkit7_function_add($assertAlias, '$expression,$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::assert($expression, $data, $label, $options);');
+			} else Dumper::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
+		}
 
 		if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))
 			$GLOBALS[$dumpAlias] = Dumper::dump(...);

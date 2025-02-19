@@ -1,8 +1,8 @@
 = Dumper
 :author: Philip Michael Raab
 :email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
+:revnumber: 1.15.0
+:revdate: 2025-02-18
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
@@ -34,6 +34,7 @@ Some more or less helpful hints and tips regarding to usage of `Dumper`.
 * link:doc/configuration.adoc[configuration]
 * link:doc/ui.adoc[ui]
 * link:doc/silence.adoc[silence]
+* link:doc/other.adoc[other]
 
 ***
 
@@ -50,3 +51,7 @@ include::./ui.adoc[leveloffset=+2]
 ***
 
 include::./silence.adoc[leveloffset=+2]
+
+***
+
+include::./other.adoc[leveloffset=+2]

@@ -4,6 +4,10 @@
 
 ## History
 
+### 1.15.0 @2025 Feb 18
+
+ - New: `Dumper::setExceptionHandler` Register Dumper as the exception handler
+
 ### 1.14.2 @2024 Sep 20
 
  - Fix: Infinit loop if `Runkit7` not installed
@@ -51,6 +55,7 @@
  - new: parameter `$limit` for `Silence` => toggles state returned when limit reached
  - many minor fixes & updates to code & documentation
  - major performance improvements
+
 
 ### 1.9.1 @2022 Nov 09
 

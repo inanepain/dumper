@@ -1,8 +1,8 @@
 = Dumper
 :author: Philip Michael Raab
 :email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
+:revnumber: 1.15.0
+:revdate: 2025-02-18
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
@@ -72,6 +72,7 @@ Some more or less helpful hints and tips regarding to usage of `Dumper`.
 * link:doc/configuration.adoc[configuration]
 * link:doc/ui.adoc[ui]
 * link:doc/silence.adoc[silence]
+* link:doc/other.adoc[other]
 
 ***
 
@@ -465,5 +466,37 @@ doThis(); // <4>
 <2> set custom colour for log entry in Dumper panel.
 <3> this will not be show due to Silence
 <4> a purple entry labelled *Do Test This* will be added every time this function is called
+
+:leveloffset!:
+
+***
+
+:leveloffset: +2
+
+= Other Useful Information
+:author: Philip Michael Raab
+:email: <peep@inane.co.za>
+:revnumber: 1.15.0
+:revdate: 2025-02-18
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Dumper has a few more tricks up its sleve. Here are some of the more useful ones.
+
+== Exception Handling
+
+You can set Dumper as the Exception Handler. This will catch any uncaught exceptions and dump them. This is useful for debugging in production environments.
+The method provided is a simple ease of use function since the same effect can be achived quiet simple in php.
+
+.setting Dumper as the exception handler
+[source,php]
+----
+\Inane\Dumper\Dumper::setExceptionHandler();
+
+// The same thing can be done usding
+set_exception_handler(['Inane\Dumper\Dumper', 'dump']);
+----
 
 :leveloffset!:

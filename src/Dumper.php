@@ -26,13 +26,14 @@ use ReflectionClass;
 use ReflectionFunction;
 
 use function array_combine;
+use function array_key_exists;
 use function array_shift;
 use function basename;
 use function count;
 use function debug_backtrace;
 use function dirname;
-use function file;
 use function file_get_contents;
+use function file;
 use function function_exists;
 use function gettype;
 use function implode;
@@ -60,7 +61,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.14.2
+ * @version 1.15.0
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -70,7 +71,7 @@ final class Dumper {
 	/**
 	 * Dumper version
 	 */
-	public const VERSION = '1.14.2';
+	public const VERSION = '1.15.0';
 
 	/**
 	 * Single instance of Dumper
@@ -79,9 +80,9 @@ final class Dumper {
 
 	/**
 	 * Colour codes for console
-	 * 
+	 *
 	 * @since 1.14.0
-	 * 
+	 *
 	 * @var array<string, string>
 	 */
 	private static array $consoleColours = [
@@ -154,7 +155,7 @@ final class Dumper {
 	 *
 	 * A wrapper method that returns true if any method is available.
 	 *  Currently, there is only one **Runkit7**, but I will look into adding more if requested.
-	 * 
+	 *
 	 * @since 1.12.0
 	 *
 	 * @return bool
@@ -165,7 +166,7 @@ final class Dumper {
 
 	/**
 	 * Checks for runkit7 ext
-	 * 
+	 *
 	 * @since 1.12.0
 	 *
 	 * @return bool
@@ -184,6 +185,17 @@ final class Dumper {
 	}
 
 	/**
+	 * Register Dumper as the exception handler
+	 *
+	 * @since 1.15.0
+	 *
+	 * @return void
+	 */
+	public static function setExceptionHandler(): void {
+		@set_exception_handler([__CLASS__, 'dump']);
+	}
+
+	/**
 	 * Private Dumper constructor
 	 */
 	private function __construct() {
@@ -199,7 +211,7 @@ final class Dumper {
 	 *
 	 * using `what`:
 	 *  $what($something, 'Dumped using shortcut `what`');
-	 * 
+	 *
 	 * @since 1.12.0 dump instruction on installing **runkit7** to enable creation of custom alias functions. Shown when custom alias requested and no runkit7.
 	 *
 	 * @param null|string $dumpAlias 	[optional] register a global variable shortcut function with name $dumpAlias for `dump`. Shortcut must also be a valid variable/function name.
@@ -262,7 +274,7 @@ final class Dumper {
 
 	/**
 	 * Gets the currently set console colours
-	 * 
+	 *
 	 * options (and defaults with description):
 	 *  - line		=> "\033[0m",	# console default
 	 *  - divider	=> "\033[35m",	# magenta
@@ -270,9 +282,9 @@ final class Dumper {
 	 *  - dumper	=> "\033[97m",	# while
 	 *  - file		=> "\033[31m",	# red
 	 *  - reset		=> "\033[33m",	# yellow
-	 * 
+	 *
 	 * @since 1.14.0
-	 * 
+	 *
 	 * @return array console colours
 	 */
 	public static function getConsoleColours(): array {
@@ -281,9 +293,9 @@ final class Dumper {
 
 	/**
 	 * Set or disable custom colours for console output
-	 * 
+	 *
 	 * There are a few elements that can be set using console colour escape codes.
-	 * 
+	 *
 	 * options (and defaults with description):
 	 *  - line		=> "\033[0m",	# console default
 	 *  - divider	=> "\033[35m",	# magenta
@@ -291,15 +303,15 @@ final class Dumper {
 	 *  - dumper	=> "\033[97m",	# while
 	 *  - file		=> "\033[31m",	# red
 	 *  - reset		=> "\033[33m",	# yellow
-	 * 
+	 *
 	 * @since 1.14.0
-	 * 
+	 *
 	 * @param false|array $colours `false` to disable, `[]` (empty array) for default, or set the colours using array keys provided.
-	 * 
+	 *
 	 * @return \Inane\Dumper\Dumper Dumper instance
-	 * 
-	 * @throws \Inane\Stdlib\Exception\RuntimeException 
-	 * @throws \ReflectionException 
+	 *
+	 * @throws \Inane\Stdlib\Exception\RuntimeException
+	 * @throws \ReflectionException
 	 */
 	public static function setConsoleColours(false|array $colours = []): Dumper {
 		if ($colours === false) static::$consoleColours = [
@@ -342,11 +354,11 @@ final class Dumper {
 
 	/**
 	 * Set Colors
-	 * 
+	 *
 	 * @since 1.14.0
-	 * 
+	 *
 	 * @see Dumper::setConsoleColours()	alias
-	 * 
+	 *
 	 * @param false|array{
 	 * 		'line'		: "\033[0m",
 	 * 		'divider'	: "\033[35m",
@@ -355,8 +367,8 @@ final class Dumper {
 	 * 		'file'		: "\033[31m",
 	 * 		'reset'		: "\033[33m",
 	 * } $colours
-	 * 
-	 * @return static 
+	 *
+	 * @return static
 	 */
 	public static function setConsoleColors(false|array $colors = []): Dumper {
 		return static::setConsoleColours($colors);
@@ -408,7 +420,7 @@ DUMPER_HTML;
 
 		foreach ($trace as $t) {
 			$i++;
-			$file = str_replace('\\', '/', $t['file']);
+			$file = array_key_exists('file', $t) ? str_replace('\\', '/', $t['file']) : 'none';
 			$dir = dirname($file);
 			if (!str_ends_with($dir, 'dumper/src') && !in_array(basename($file), ['Dumper.php', 'bootstrap.php'])) break;
 		}
@@ -450,7 +462,7 @@ DUMPER_HTML;
 
 	/**
 	 * Create a label for the dump with relevant information
-	 * 
+	 *
 	 * @since 1.13.0 Supports `Attribute::TARGET_FUNCTION`
 	 *
 	 * @param string|null $label
@@ -461,7 +473,7 @@ DUMPER_HTML;
 	 * @throws \Inane\Stdlib\Exception\RuntimeException
 	 * @throws \ReflectionException
 	 */
-	protected static function formatLabel(?string $label = null, string $type = null): ?string {
+	protected static function formatLabel(?string $label = null, ?string $type = null): ?string {
 		[$src, $obj] = Dumper::getTrace();
 
 		$data = new Options();
@@ -525,7 +537,7 @@ DUMPER_HTML;
 	protected static function analyseVariable(mixed $v): array {
 		$trace = Dumper::getTrace()[0];
 
-		if ($file = @file($trace['file'])) {
+		if (array_key_exists('file', $trace) && $file = @file($trace['file'])) {
 			$id = $trace['line'] - 1;
 			$line = $file[$id];
 			preg_match('/\((\\$(\w+))/', $line, $match);

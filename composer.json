@@ -4,7 +4,7 @@
     "type": "library",
     "license": "UNLICENSE",
     "homepage": "https://vaieen.local:3000/inane/dumper",
-    "readme": "README.adoc",
+    "readme": "README.md",
     "authors": [
         {
             "name": "Philip Michael Raab",
@@ -46,5 +46,11 @@
     "suggest": {
         "ext-runkit7": "Allows creating custom aliases for dump method",
         "inanepain/cli": "Using the Pencil class makes setting console colours easy"
+    },
+    "scripts": {
+        "build-adoc": "asciidoctor-reducer -o README.adoc doc/readme/index.adoc",
+        "build-xml": "asciidoctor -b docbook README.adoc",
+        "build-md": "pandoc -f docbook -t markdown_strict README.xml -o README.md",
+        "clean": "del README.xml"
     }
 }

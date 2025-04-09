@@ -1,6 +1,6 @@
 = Dumper
 :author: Philip Michael Raab
-:email: <peep@inane.co.za>
+:email: <philip@cathedral.co.za>
 :revnumber: 1.15.0
 :revdate: 2025-02-18
 :experimental:

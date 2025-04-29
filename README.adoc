@@ -1,6 +1,6 @@
 = Dumper
 :author: Philip Michael Raab
-:email: <peep@inane.co.za>
+:email: <philip@cathedral.co.za>
 :revnumber: 1.15.0
 :revdate: 2025-02-18
 :experimental:
@@ -119,9 +119,9 @@ That's how easy it is to create a custom global shortcut function for Dumper.
 
 = Dumper: Configuration
 :author: Philip Michael Raab
-:email: <peep@inane.co.za>
+:email: <philip@cathedral.co.za>
 :revnumber: 1.13.1
-:revdate: 2023-05-26
+:revdate: 2025-04-29
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
@@ -248,6 +248,26 @@ $label = new \Inane\Cli\Pencil(colour: \Inane\Cli\Pencil\Colour::Green, backgrou
 ]);
 ----
 // end::configSetColours[]
+// tag::hideRunkit7Message[]
+== Hide runkit7 support message
+
+NOTE: *Since*: 1.16.0
+
+Option to hide the support message to install *runkit7* if not found. +
+There are two methods to disable this message: via class static property or via a global constant.
+
+.class property
+[source,php]
+----
+\Inane\Dumper\Dumper::$showRunkit7SupportMessage = false;
+----
+
+.global constant
+[source,php]
+----
+define('INANE_DUMPER_HIDE_RUNKIT7', true);
+----
+// end::hideRunkit7Message[]
 
 :leveloffset!:
 

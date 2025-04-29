@@ -17,7 +17,7 @@ The `dump` method is the default method and logs what it is given. Where
 as the `assert` has a test for its first parameter and only logs if the
 test **fails** (*falsy*).
 
-basic usage
+**basic usage**
 
     \Inane\Dumper\Dumper::dump($data, 'After marge process');
     \Inane\Dumper\Dumper::assert(!$data->error, $data, 'After marge process'); 
@@ -35,7 +35,7 @@ are already taken, Dumper will skip them. See **Dumper: Aliases**
 [Dumper: Aliases](#_dumper_aliases) on creating your own custom alias
 functions.
 
-basic shortcut usage
+**basic shortcut usage**
 
     dd($data, 'After marge process');
     da(!$data->error, $data, 'After marge process'); 
@@ -64,7 +64,7 @@ Creating a custom global function as an alias to
 **ext-runkit7** required to register global functions. Without it the
 function is stored in a variable instead.
 
-Creating a custom alias for Dumper
+**Creating a custom alias for Dumper**
 
     \Inane\Dumper\Dumper::dumper('kickIt', 'shErr');
 
@@ -97,7 +97,7 @@ gone. Disable it here.
 
 default: `true`
 
-config: turn off Dumper’s output
+**config: turn off Dumper’s output**
 
     \Inane\Dumper\Dumper::$enabled = false;
 
@@ -110,7 +110,7 @@ This is mostly useful when running console code.
 
 default: `true`
 
-config: turn off buffered output to print dumps inline
+**config: turn off buffered output to print dumps inline**
 
     // Somewhere before using Dumper, or even after for a section of code and then turn buffer on again.
     \Inane\Dumper\Dumper::$bufferOutput = false;
@@ -124,7 +124,7 @@ Here you can tell Dumper to use `var_export` instead.
 
 default: `false`
 
-config: set dumper to use var\_export
+**config: set dumper to use var\_export**
 
     // set value to true
     \Inane\Dumper\Dumper::$useVarExport = true;
@@ -146,7 +146,7 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 
     -   HTML
 
-config: set dumper colours
+**config: set dumper colours**
 
     // set colour theme
     \Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
@@ -159,7 +159,7 @@ Controls the initial expanded state of the Dumper panel.
 
 default: `false`
 
-config: dumper log panel initial state
+**config: dumper log panel initial state**
 
     // Create the Dumper panel expanded
     \Inane\Dumper\Dumper::$expanded = true;
@@ -170,7 +170,7 @@ config: dumper log panel initial state
 
 Allows setting custom cli colours or disabling cli colours completely.
 
-default:
+**default:**
 
     [
         'reset' => "\033[0m",        # console default
@@ -181,7 +181,7 @@ default:
         'divider' => "\033[33m", # yellow
     ];
 
-config: setting cli colours
+**config: setting cli colours**
 
     // Remove cli colouring
     \Inane\Dumper\Dumper::setConsoleColours(false);
@@ -199,6 +199,23 @@ config: setting cli colours
         'label' => "$label",
         'reset' => "\033[0m",
     ]);
+
+### Hide runkit7 support message
+
+**Since**: 1.16.0
+
+Option to hide the support message to install **runkit7** if not
+found.  
+There are two methods to disable this message: via class static property
+or via a global constant.
+
+**class property**
+
+    \Inane\Dumper\Dumper::$showRunkit7SupportMessage = false;
+
+**global constant**
+
+    define('INANE_DUMPER_HIDE_RUNKIT7', true);
 
 ## Dumper: UI
 
@@ -233,7 +250,7 @@ Controls the initial expanded state of the Dumper panel.
 
 default: `false`
 
-config: dumper log panel initial state
+**config: dumper log panel initial state**
 
     // Create the Dumper panel expanded
     \Inane\Dumper\Dumper::$expanded = true;
@@ -260,7 +277,7 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 
     -   HTML
 
-config: set dumper colours
+**config: set dumper colours**
 
     // set colour theme
     \Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
@@ -276,7 +293,7 @@ then set a counter after which the state will toggle.
 If a class is silenced all functions are silenced regardless of their
 individual settings.
 
-Basic Silence Usage
+**Basic Silence Usage**
 
     use Inane\Dumper\Silence as DumperSilence;
 
@@ -324,7 +341,7 @@ The toggle only happens once. **NOT** every time the limit is reached.
 The is an issue logged to pass an array in place of an limit that sets
 when to toggle and how long the toggle should remain active.
 
-Toggle Silence Usage
+**Toggle Silence Usage**
 
     use Inane\Dumper\Silence as DumperSilence;
 
@@ -370,7 +387,7 @@ you expect them to do.
 To enable this this is one simple step, add `Type::Silence` to the
 `Dumper::$additionalTypes` array.
 
-Logging Silence Requests
+**Logging Silence Requests**
 
     Dumper::$additionalTypes[] = Type::Silence; 
     // code
@@ -387,7 +404,7 @@ You can customise the Silence check logs per Silence instance to make
 them stand out from the rest by giving it a custom **label** and
 **colour**.
 
-Customising Silence Logs
+**Customising Silence Logs**
 
     #[Silence(on: true, config: [
         'label' => 'Do Test This', 
@@ -422,7 +439,7 @@ uncaught exceptions and dump them. This is useful for debugging in
 production environments. The method provided is a simple ease of use
 function since the same effect can be achived quiet simple in php.
 
-setting Dumper as the exception handler
+**setting Dumper as the exception handler**
 
     \Inane\Dumper\Dumper::setExceptionHandler();
 

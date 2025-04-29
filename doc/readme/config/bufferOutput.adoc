@@ -1,0 +1,24 @@
+= bufferOutput
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Write dumps last. Just before php terminates. Set to `false` to have dumps inserted as the occur at runtime.
+
+TIP: This is mostly useful when running console code.
+
+default: `true`
+
+.config: turn off buffered output to print dumps inline
+[source,php]
+----
+// Somewhere before using Dumper, or even after for a section of code and then turn buffer on again.
+\Inane\Dumper\Dumper::$bufferOutput = false;
+// some code loop probably
+\Inane\Dumper\Dumper::$bufferOutput = true;
+----

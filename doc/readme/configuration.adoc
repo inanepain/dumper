@@ -1,131 +1,21 @@
 = Dumper: Configuration
 :author: Philip Michael Raab
-:email: <peep@inane.co.za>
+:email: <philip@cathedral.co.za>
 :revnumber: 1.13.1
-:revdate: 2023-05-26
+:revdate: 2025-04-29
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
 :toc: auto
+:sectnums: |,all|
+:sectanchors:
 
 Dumper has a few static public properties you can use to change some of the default behaviours.
 
-== enabled
-
-Dumper starts enabled but should you wish all Dumpers related content gone. Disable it here.
-
-default: `true`
-
-.config: turn off Dumper's output
-[source,php]
-----
-\Inane\Dumper\Dumper::$enabled = false;
-----
-
-== bufferOutput
-
-Write dumps last. Just before php terminates. Set to `false` to have dumps inserted as the occur at runtime.
-
-TIP: This is mostly useful when running console code.
-
-default: `true`
-
-.config: turn off buffered output to print dumps inline
-[source,php]
-----
-// Somewhere before using Dumper, or even after for a section of code and then turn buffer on again.
-\Inane\Dumper\Dumper::$bufferOutput = false;
-// some code loop probably
-\Inane\Dumper\Dumper::$bufferOutput = true;
-----
-
-== useVarExport
-
-By default Dumper uses its own variable parser to generate the output. Here you can tell Dumper to use `var_export` instead.
-
-default: `false`
-
-.config: set dumper to use var_export
-[source,php]
-----
-// set value to true
-\Inane\Dumper\Dumper::$useVarExport = true;
-----
-
-// tag::configHighlight[]
-== highlight
-
-Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
-
-default: `\Inane\Stdlib\Highlight::CURRENT`
-
-. Available colours in `\Inane\Stdlib\Highlight`
-* CURRENT
-* DEFAULT
-* PHP2
-* HTML
-
-.config: set dumper colours
-[source,php]
-----
-// set colour theme
-\Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
-----
-// end::configHighlight[]
-// tag::configExpanded[]
-== expanded
-
-NOTE: *Since*: 1.8.0
-
-Controls the initial expanded state of the Dumper panel.
-
-default: `false`
-
-.config: dumper log panel initial state
-[source,php]
-----
-// Create the Dumper panel expanded
-\Inane\Dumper\Dumper::$expanded = true;
-----
-// end::configExpanded[]
-// tag::configSetColours[]
-== setColours
-
-NOTE: *Since*: 1.14.0
-
-Allows setting custom cli colours or disabling cli colours completely.
-
-.default:
-[source,php]
-----
-[
-	'reset' => "\033[0m",		# console default
-	'dumper' => "\033[35m",		# magenta
-	'label' => "\033[34m",		# blue
-	'file' => "\033[97m",		# while
-	'line' => "\033[31m",		# red
-	'divider' => "\033[33m",	# yellow
-];
-----
-
-.config: setting cli colours
-[source,php]
-----
-// Remove cli colouring
-\Inane\Dumper\Dumper::setConsoleColours(false);
-
-// Setting default colours
-\Inane\Dumper\Dumper::setConsoleColours([]);
-
-// Remove cli colouring
-\Inane\Dumper\Dumper::setConsoleColours(false);
-// creating a colour using Pencil from `inanepain/cli`
-$label = new \Inane\Cli\Pencil(colour: \Inane\Cli\Pencil\Colour::Green, background: \Inane\Cli\Pencil\Colour::Red, style: \Inane\Cli\Pencil\Style::SlowBlink);
-// Then set colours for **file**, **label** and **reset**
-\Inane\Dumper\Dumper::setConsoleColours([
-	'file' => "\033[36m",
-	'label' => "$label",
-	'reset' => "\033[0m",
-]);
-----
-// end::configSetColours[]
+include::./config/enabled.adoc[leveloffset=+1]
+include::./config/bufferOutput.adoc[leveloffset=+1]
+include::./config/useVarExport.adoc[leveloffset=+1]
+include::./config/configHighlight.adoc[leveloffset=+1]
+include::./config/expanded.adoc[leveloffset=+1]
+include::./config/setColours.adoc[leveloffset=+1]
+include::./config/runkit7.adoc[leveloffset=+1]

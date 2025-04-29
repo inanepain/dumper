@@ -61,7 +61,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.15.0
+ * @version 1.16.0
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -71,7 +71,7 @@ final class Dumper {
 	/**
 	 * Dumper version
 	 */
-	public const VERSION = '1.15.0';
+	public const string VERSION = '1.16.0';
 
 	/**
 	 * Single instance of Dumper
@@ -120,6 +120,11 @@ final class Dumper {
 	 *
 	 */
 	public static bool $useVarExport = false;
+
+	/**
+	 * Show a message to install runkit7 if not found.
+	 */
+	public static bool $showRunkit7SupportMessage = true;
 
 	/**
 	 * Buffer dumps until end of process
@@ -232,7 +237,16 @@ final class Dumper {
 
 				if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias))
 					runkit7_function_add($assertAlias, '$expression,$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::assert($expression, $data, $label, $options);');
-			} else Dumper::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
+			} else {
+				$hide = !static::$showRunkit7SupportMessage;
+
+				if (!$hide) {
+					$hide = \defined('INANE_DUMPER_HIDE_RUNKIT7');
+					if ($hide) $hide = \INANE_DUMPER_HIDE_RUNKIT7;
+				}
+
+				if (!$hide) Dumper::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
+			}
 		}
 
 		if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias))

@@ -1,0 +1,28 @@
+= Hide runkit7 support message
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+// tag::hideRunkit7Message[]
+NOTE: *Since*: 1.16.0
+
+Option to hide the support message to install *runkit7* if not found. +
+There are two methods to disable this message: via class static property or via a global constant.
+
+.class property
+[source,php]
+----
+\Inane\Dumper\Dumper::$showRunkit7SupportMessage = false;
+----
+
+.global constant
+[source,php]
+----
+define('INANE_DUMPER_HIDE_RUNKIT7', true);
+----
+// end::hideRunkit7Message[]

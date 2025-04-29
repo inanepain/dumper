@@ -8,7 +8,6 @@
 :source-highlighter: highlight.js
 :toc: auto
 
-// tag::configExpanded[]
 NOTE: *Since*: 1.8.0
 
 Controls the initial expanded state of the Dumper panel.
@@ -21,4 +20,3 @@ default: `false`
 // Create the Dumper panel expanded
 \Inane\Dumper\Dumper::$expanded = true;
 ----
-// end::configExpanded[]

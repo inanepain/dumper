@@ -8,7 +8,6 @@
 :source-highlighter: highlight.js
 :toc: auto
 
-// tag::configSetColours[]
 NOTE: *Since*: 1.14.0
 
 Allows setting custom cli colours or disabling cli colours completely.
@@ -46,4 +45,3 @@ $label = new \Inane\Cli\Pencil(colour: \Inane\Cli\Pencil\Colour::Green, backgrou
 	'reset' => "\033[0m",
 ]);
 ----
-// end::configSetColours[]

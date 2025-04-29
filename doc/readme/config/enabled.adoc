@@ -1,0 +1,19 @@
+= enabled
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Dumper starts enabled but should you wish all Dumpers related content gone. Disable it here.
+
+default: `true`
+
+.config: turn off Dumper's output
+[source,php]
+----
+\Inane\Dumper\Dumper::$enabled = false;
+----

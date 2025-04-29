@@ -1,0 +1,26 @@
+= highlight
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
+
+default: `\Inane\Stdlib\Highlight::CURRENT`
+
+. Available colours in `\Inane\Stdlib\Highlight`
+* CURRENT
+* DEFAULT
+* PHP2
+* HTML
+
+.config: set dumper colours
+[source,php]
+----
+// set colour theme
+\Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
+----

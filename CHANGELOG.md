@@ -4,6 +4,11 @@
 
 ## History
 
+### 1.16.0 @2025 Apr 29
+
+- new: Global Constant *INANE_DUMPER_HIDE_RUNKIT7* to disable runkit7 support message if it is not installed
+- new: `Dumper::showRunkit7SupportMessage` does the same as above, either one can be set
+
 ### 1.15.0 @2025 Feb 18
 
  - New: `Dumper::setExceptionHandler` Register Dumper as the exception handler

@@ -1,0 +1,22 @@
+= expanded
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
+
+NOTE: *Since*: 1.8.0
+
+Controls the initial expanded state of the Dumper panel.
+
+default: `false`
+
+.config: dumper log panel initial state
+[source,php]
+----
+// Create the Dumper panel expanded
+\Inane\Dumper\Dumper::$expanded = true;
+----

@@ -8,7 +8,6 @@
 :source-highlighter: highlight.js
 :toc: auto
 
-// tag::configHighlight[]
 Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
 
 default: `\Inane\Stdlib\Highlight::CURRENT`
@@ -25,4 +24,3 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 // set colour theme
 \Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
 ----
-// end::configHighlight[]

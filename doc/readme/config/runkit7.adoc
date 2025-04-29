@@ -8,7 +8,6 @@
 :source-highlighter: highlight.js
 :toc: auto
 
-// tag::hideRunkit7Message[]
 NOTE: *Since*: 1.16.0
 
 Option to hide the support message to install *runkit7* if not found. +
@@ -25,4 +24,3 @@ There are two methods to disable this message: via class static property or via 
 ----
 define('INANE_DUMPER_HIDE_RUNKIT7', true);
 ----
-// end::hideRunkit7Message[]

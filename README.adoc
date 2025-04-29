@@ -1,13 +1,15 @@
 = Dumper
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
-:revnumber: 1.15.0
-:revdate: 2025-02-18
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:copyright: Unlicense
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
 :sectnums: |,all|
 :toc: auto
+:sectanchors:
 
 == Overview
 
@@ -126,10 +128,22 @@ That's how easy it is to create a custom global shortcut function for Dumper.
 :icons: font
 :source-highlighter: highlight.js
 :toc: auto
+:sectnums: |,all|
+:sectanchors:
 
 Dumper has a few static public properties you can use to change some of the default behaviours.
 
-== enabled
+:leveloffset: +1
+
+= enabled
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 Dumper starts enabled but should you wish all Dumpers related content gone. Disable it here.
 
@@ -141,7 +155,18 @@ default: `true`
 \Inane\Dumper\Dumper::$enabled = false;
 ----
 
-== bufferOutput
+:leveloffset: 2
+:leveloffset: +1
+
+= bufferOutput
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 Write dumps last. Just before php terminates. Set to `false` to have dumps inserted as the occur at runtime.
 
@@ -158,7 +183,18 @@ default: `true`
 \Inane\Dumper\Dumper::$bufferOutput = true;
 ----
 
-== useVarExport
+:leveloffset: 2
+:leveloffset: +1
+
+= useVarExport
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 By default Dumper uses its own variable parser to generate the output. Here you can tell Dumper to use `var_export` instead.
 
@@ -171,8 +207,19 @@ default: `false`
 \Inane\Dumper\Dumper::$useVarExport = true;
 ----
 
+:leveloffset: 2
 // tag::configHighlight[]
-== highlight
+:leveloffset: +1
+
+= highlight
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
 
@@ -190,9 +237,21 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 // set colour theme
 \Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
 ----
+
+:leveloffset: 2
 // end::configHighlight[]
 // tag::configExpanded[]
-== expanded
+:leveloffset: +1
+
+= expanded
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 NOTE: *Since*: 1.8.0
 
@@ -206,9 +265,21 @@ default: `false`
 // Create the Dumper panel expanded
 \Inane\Dumper\Dumper::$expanded = true;
 ----
+
+:leveloffset: 2
 // end::configExpanded[]
 // tag::configSetColours[]
-== setColours
+:leveloffset: +1
+
+= setColours
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 NOTE: *Since*: 1.14.0
 
@@ -247,9 +318,21 @@ $label = new \Inane\Cli\Pencil(colour: \Inane\Cli\Pencil\Colour::Green, backgrou
 	'reset' => "\033[0m",
 ]);
 ----
+
+:leveloffset: 2
 // end::configSetColours[]
 // tag::hideRunkit7Message[]
-== Hide runkit7 support message
+:leveloffset: +1
+
+= Hide runkit7 support message
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 NOTE: *Since*: 1.16.0
 
@@ -267,6 +350,8 @@ There are two methods to disable this message: via class static property or via 
 ----
 define('INANE_DUMPER_HIDE_RUNKIT7', true);
 ----
+
+:leveloffset: 2
 // end::hideRunkit7Message[]
 
 :leveloffset!:
@@ -307,7 +392,17 @@ Adjust the maximum height allowed of the Dumper panel when opened.
 
 :leveloffset: +1
 
-== expanded
+:leveloffset: +1
+
+= expanded
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 NOTE: *Since*: 1.8.0
 
@@ -322,6 +417,8 @@ default: `false`
 \Inane\Dumper\Dumper::$expanded = true;
 ----
 
+:leveloffset: 3
+
 :leveloffset: 2
 
 == Theme
@@ -330,7 +427,17 @@ Switching Dumpers theme is done in the php by changing a static property on the 
 
 :leveloffset: +1
 
-== highlight
+:leveloffset: +1
+
+= highlight
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:toc: auto
 
 Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
 
@@ -348,6 +455,8 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 // set colour theme
 \Inane\Dumper\Dumper::$highlight = \Inane\Stdlib\Highlight::PHP2;
 ----
+
+:leveloffset: 3
 
 :leveloffset: 2
 

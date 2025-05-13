@@ -33,3 +33,19 @@ dd($data, 'After marge process');
 da(!$data->error, $data, 'After marge process'); // <1>
 ----
 <1> Logs if error is *true*
+
+== Dumper::Todo
+
+@since 1.17.0
+
+This is an alias for `Dumper::dump` that is pre-configured to use `Type::Todo`. +
+Esencially it's a normal dmup but with some styling to make it standout more and can be used to add todo items to your code. +
+Todos do not show by default and need to be added to `Dumper::$additionalTypes` to be seen. This is so that they do not show up while debugging and distract you.
+
+[source,php]
+----
+// enable todo output
+Dumper::$additionalTypes[] = Type::Todo;
+
+Dumper::todo($callback, 'Add error handling');
+----

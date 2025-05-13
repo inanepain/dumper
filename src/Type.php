@@ -27,13 +27,12 @@ namespace Inane\Dumper;
  * Dumper: Dump Type
  *
  * This is mostly for Dumper debugging or some other self amusing task.
- * Dumps are typed in Dumper with the normal dump being Type::Dump, which is always allowed / written to output.
+ * Dumps are typed in Dumper with the normal dump being `Type::Dump`, which is always allowed / written to output.
  *
- * The Science Attribute logs its progress using Dumper but typing the dumps as Type::Silence. These are not allowed by default, not written to output.
- * To see the Silence log in Dumper you can add the Type::Silence to Dumper::$additionalTypes array. e.g.: Dumper::$additionalTypes[] = Type::Silence;
+ * The Silence Attribute logs its progress using Dumper with dumps typed as `Type::Silence`. These are not allowed by default, not written to output.
+ * To enable logging of a non-default type add it to `Dumper::$additionalTypes`. E.g.: `Dumper::$additionalTypes[] = Type::Silence;`
+ * This enables the `Type::Silence` dumping which adds silence tests to the dump log.
  * To reset the allowed types simple set it to a blank array. e.g.: Dumper::$additionalTypes = [];
- *
- * While Silence type allowed, you will see any Silence checks in the Dumper log.
  *
  * @version 0.16.0
  *
@@ -48,4 +47,8 @@ enum Type {
      * Triggered by a Silence Attribute check
      */
     case Silence;
+    /**
+     * TODO dump not shown by default
+     */
+    case Todo;
 }

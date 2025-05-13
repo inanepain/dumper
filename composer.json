@@ -55,6 +55,7 @@
             "echo hello @no_additional_args",
             "echo @additional_args && echo @no_additional_args"
         ],
+        "css": "sass --no-source-map -s compressed ./css/dumper.scss ./css/dumper.css",
         "build": [
             "@build-adoc",
             "@build-xml",

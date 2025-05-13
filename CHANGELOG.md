@@ -2,6 +2,26 @@ Version: $Id$ ($Date$)
 
 # History
 
+## 1.17.0-dev @2025 May xx
+
+-   **update**: Console output divider line now stretches across the
+    console width
+
+-   **new** : `Type::Todo` new type, when enabled addes todo entries to
+    dump log
+
+-   **new** : `Dumper::todo` alias for `Dumper::dump` that is configured
+    for `Type::Todo`
+
+-   **new** : `Dumper::isWindows` new method to check if running on
+    Windows, need for column width
+
+-   **new** : `Dumper::columns` new method to get console width
+
+-   **update**: Tweaked the UI for dumps a little
+
+-   fix some minor wording and spelling errors
+
 ## 1.16.0 @2025 Apr 29
 
 -   **new**: Global Constant **INANE\_DUMPER\_HIDE\_RUNKIT7** to disable

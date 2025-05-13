@@ -15,6 +15,7 @@ Version: $Id$ ($Date$)
 
 == History
 
+include::./release/0.0.0.adoc[leveloffset=+2]
 include::./release/1.16.0.adoc[leveloffset=+2]
 include::./release/1.15.0.adoc[leveloffset=+2]
 include::./release/1.14.2.adoc[leveloffset=+2]

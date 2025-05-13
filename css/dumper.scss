@@ -71,7 +71,11 @@ variables:
                             display: inline-block;
                             min-width: 150px;
                             color: inherit;
-                            transition: color .5s;
+                            font-weight: inherit;
+                            transition:
+                                color .5s,
+                                font-weight .5s
+                            ;
 
                             &::after {
                                 content: ' :';
@@ -79,17 +83,30 @@ variables:
                                 color: #2f4f4f;
                             }
                         }
+
+                        .type {
+                            &-todo {
+                                color: #FF8559;
+                            }
+                        }
                     }
 
                     code {
                         display: block;
-                        padding: .5rem;
+                        padding-left: .5rem;
                         word-wrap: break-word;
                     }
 
                     &[open] {
                         .dump-label {
                             color: #ffffff;
+                        }
+
+                        .type {
+                            &-todo {
+                                // color: darkorange;
+                                font-weight: bold;
+                            }
                         }
                     }
                 }

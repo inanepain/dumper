@@ -42,6 +42,23 @@ basic shortcut usage
 
 - Logs if error is **true**
 
+## Dumper::Todo
+
+@since 1.17.0
+
+This is an alias for `Dumper::dump` that is pre-configured to use
+`Type::Todo`.  
+Esencially it’s a normal dmup but with some styling to make it standout
+more and can be used to add todo items to your code.  
+Todos do not show by default and need to be added to
+`Dumper::$additionalTypes` to be seen. This is so that they do not show
+up while debugging and distract you.
+
+    // enable todo output
+    Dumper::$additionalTypes[] = Type::Todo;
+
+    Dumper::todo($callback, 'Add error handling');
+
 # Getting more out of Dumper
 
 Some more or less helpful hints and tips regarding to usage of `Dumper`.

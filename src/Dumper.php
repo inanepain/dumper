@@ -5,6 +5,9 @@
  *
  * A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
  *
+ * $Id$<br/>
+ * $Date$
+ *
  * PHP version 8.1
  *
  * @author Philip Michael Raab <peep@inane.co.za>
@@ -12,12 +15,9 @@
  * @category debug
  *
  * @license UNLICENSE
- * @license https://github.com/inanepain/dumper/raw/develop/UNLICENSE UNLICENSE
+ * @license https://unlicense.org/UNLICENSE UNLICENSE UNLICENSE
  *
  * @version 0.16.0
- *
- * $Id$
- * $Date$
  */
 
 declare(strict_types=1);
@@ -554,15 +554,16 @@ DUMPER_HTML;
 	 *
 	 * @since 1.13.0 Supports `Attribute::TARGET_FUNCTION`
 	 *
-	 * @param string|null $label
-	 * @param string|null $type
+	 * @param string|null $label    label text
+	 * @param string|null $type     variable type
+	 * @param Type		  $dumpType dump type, default: `Type::Dump`
 	 *
 	 * @return string|null If Attribute Silence true return null
 	 *
 	 * @throws \Inane\Stdlib\Exception\RuntimeException
 	 * @throws \ReflectionException
 	 */
-	protected static function formatLabel(?string $label = null, ?string $type = null): ?string {
+	protected static function formatLabel(?string $label = null, ?string $type = null, Type $dumpType = Type::Dump): ?string {
 		[$src, $obj] = Dumper::getTrace();
 
 		$data = new Options();
@@ -597,8 +598,10 @@ DUMPER_HTML;
 
 		$label = isset($label) ? "$label [$type]" : $type;
 
+
 		// CHECK CONSOLE
 		if (Dumper::isCli()) {
+			if ($dumpType == Type::Todo) $label = "TODO: $label";
 			$c = (object) Dumper::$consoleColours;
 
 			$title = isset($label) ? "$c->label $label:$c->reset " : '';
@@ -606,6 +609,7 @@ DUMPER_HTML;
 			$class = $data->class ? " => $c->divider$data->class::$data->function$c->reset" : '';
 		} else {
 			// HTML
+			if ($dumpType == Type::Todo) $label = "<span class=\"type-todo\">TODO:</span> $label";
 			$title = isset($label) ? "<strong class=\"dump-label\">$label</strong> " : '';
 			$file = "$data->file::<strong>$data->line</strong>";
 			$class = $data->class ? " => $data->class::<strong>$data->function</strong>" : '';
@@ -654,8 +658,6 @@ DUMPER_HTML;
 		// Parse the variable to string
 		$code = ($options['useVarExport'] ?? Dumper::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data);
 
-		$bufferMessage = Dumper::$bufferOutput;
-
 		// CHECK CONSOLE
 		if (Dumper::isCli()) $output = "$label$code" . PHP_EOL;
 		else {
@@ -669,13 +671,13 @@ DUMPER_HTML;
 <div class="dump">
 <details class="dump-window"$open>
     <summary>$label</summary>
-    <code>$code</code>
+    $code
 </details>
 </div>
 DUMPER_HTML;
 		}
 
-		if ($bufferMessage) Dumper::$dumps[] = $output;
+		if (Dumper::$bufferOutput) Dumper::$dumps[] = $output;
 		else {
 			$c = (object) Dumper::$consoleColours;
 			echo "\t\t{$c->dumper}DUMPER$c->reset:$output" . PHP_EOL;
@@ -716,13 +718,14 @@ DUMPER_HTML;
 	 * options:
 	 *  - (bool=false) open        : true - creates dumps open (main panel not effect)
 	 *  - (bool=false) useVarExport: true - uses `var_export` instead of dumper to generate dump string
+	 *  - (Type=Dump) type         : Dump - set a custom type for the dump
 	 *
 	 * Chaining: You only need bracket your arguments for repeated dumps.
 	 * Dumper::dump('one')('two', 'Label')
 	 *
 	 * @param mixed                       $data    item to dump
-	 * @param null|string                 $label
-	 * @param array|\Inane\Stdlib\Options $options
+	 * @param null|string                 $label   text table for the dump
+	 * @param array|\Inane\Stdlib\Options $options customised options for the dump
 	 *
 	 * @return \Inane\Dumper\Dumper
 	 *
@@ -740,13 +743,32 @@ DUMPER_HTML;
 		$params->modify($options);
 		$params->lock();
 
-		if ($params->type == Type::Dump || in_array($params->type, Dumper::$additionalTypes)) {
+		if (in_array($params->type, [Type::Dump, Type::Todo]) || in_array($params->type, Dumper::$additionalTypes)) {
 			$info = Dumper::analyseVariable($data);
 			if (is_null($label) && $info['variable'] != '') $label = $info['variable'];
-			if ($params->type == Type::Dump) $label = Dumper::formatLabel($label, $info['type']);
+			if (in_array($params->type, [Type::Dump, Type::Todo])) $label = Dumper::formatLabel($label, $info['type'], $params->type);
 			if (!is_null($label)) Dumper::dumper()->addDump($data, $label, $params);
 		}
 
 		return Dumper::dumper();
+	}
+
+
+	/**
+	 * Adds a `Type::Todo` dump to the collection
+	 *
+	 * Alias for dump set to add a todo dump.
+	 *
+	 * @see \Inane\Dumper\Dumper::dump
+	 *
+	 * @param mixed         $data    The data to be dumped. Defaults to null.
+	 * @param string|null   $label   An optional label to describe the data. Defaults to null.
+	 * @param array|Options $options Additional options or configuration for the dumper. Defaults to an empty array.
+	 *
+	 * @return Dumper Returns an instance of the Dumper class.
+	 */
+	public static function todo(mixed $data = null, ?string $label = null, array|Options $options = []): Dumper {
+		$options = new Options(['type' => Type::Todo])->complete($options);
+		return static::dump($data, $label, $options);
 	}
 }

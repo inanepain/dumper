@@ -17,6 +17,30 @@ Version: $Id$ ($Date$)
 
 :leveloffset: +2
 
+= 1.17.0-dev @2025 May xx
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.17.0
+:revdate: 2025-05-01
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* *update*: Console output divider line now stretches across the console width
+* *new*   : `Type::Todo` new type, when enabled addes todo entries to dump log
+* *new*   : `Dumper::todo` alias for `Dumper::dump` that is configured for `Type::Todo`
+* *new*   : `Dumper::isWindows` new method to check if running on Windows, need for column width
+* *new*   : `Dumper::columns` new method to get console width
+* *update*: Tweaked the UI for dumps a little
+* fix some minor wording and spelling errors
+
+:leveloffset!:
+:leveloffset: +2
+
 = 1.16.0 @2025 Apr 29
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>

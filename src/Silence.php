@@ -16,7 +16,7 @@
  *
  * @copyright 2015-2021 Philip Michael Raab <philip@inane.co.za>
  *
- * @version $version
+ * @version 0.16.0
  */
 
 declare(strict_types=1);
@@ -65,7 +65,7 @@ use const true;
  * @property-read ?string $label set to write Silence invocation data to page
  * @property-read string $colour for label
  *
- * @version $version-3
+ * @version 0.16.0-3
  *
  * @package Inane\Dumper
  */

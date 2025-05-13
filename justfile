@@ -18,24 +18,6 @@ _default:
     @just --list --list-heading ''
 
 #*********************************************
-#### PHP
-##############################################
-# generate php doc (v2) (all, cache, html)
-php-doc clear="all":
-	#!/usr/bin/env zsh
-	if [ -d .phpdoc ] && [[ "{{clear}}" = "all" || "{{clear}}" = "cache" ]]; then
-		echo "\tCleaning: cache..."
-		rm -fr .phpdoc
-	fi
-	if [ -d doc/api ] && [[ "{{clear}}" = "all" || "{{clear}}" = "html" ]]; then
-		echo "\tCleaning: html..."
-		rm -fr doc/api
-	fi
-
-	mkdir -p doc/api
-	phpdoc -d src -t doc/api --title="{{project}}" --defaultpackagename="Inane"
-
-#*********************************************
 #### DOCUMENTATION: README
 ##############################################
 # build: 1 - reduced adoc file

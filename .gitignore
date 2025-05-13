@@ -1,3 +1,5 @@
 vendor
 doc/code
 doc/api
+doc/cache/
+CHANGELOG.xml

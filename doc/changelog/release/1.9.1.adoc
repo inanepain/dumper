@@ -1,0 +1,15 @@
+= 1.9.1 @2022 Nov 09
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.9.1
+:revdate: 2025-11-09
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* Internal improvements and optimisations
+* fix: dump file information showing incorrect data

@@ -1,0 +1,15 @@
+= 1.12.0 @2023 Apr 16
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.12.0
+:revdate: 2023-04-16
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: aliases - you can now also register custom assert aliases
+* new: aliases - if the **pecl** **runkit7** extension is installed; custom aliases are registered as functions, variable versions also still created

@@ -1,0 +1,285 @@
+= Changelog: Dumper
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.17.0
+:revdate: 2025-05-01
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+Version: $Id$ ($Date$)
+
+== History
+
+:leveloffset: +2
+
+= 1.16.0 @2025 Apr 29
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* *new*: Global Constant *INANE_DUMPER_HIDE_RUNKIT7* to disable runkit7 support message if it is not installed
+* *new*: `Dumper::showRunkit7SupportMessage` does the same as above, either one can be set
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.15.0 @2025 Feb 18
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.15.0
+:revdate: 2025-02-18
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: `Dumper::setExceptionHandler` Register Dumper as the exception handler
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.14.2 @2024 Sep 20
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.15.0
+:revdate: 2024-09-20
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* fix: Infinit loop if `Runkit7` not installed
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.14.1 @2023 Jun 27
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.14.1
+:revdate: 2023-06-27
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* fix: Dumper console colours for divider line
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.14.0 @2023 Jun 09
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.14.0
+:revdate: 2023-06-09
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: `Dumper::setConsoleColours` Ability to set custom colours for console
+* new: `Dumper::getConsoleColours` Get current console colours
+* fix: error when using Dumper in interactive shell
+* Minor tweaks
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.13.1 @2023 Apr 25
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.13.1
+:revdate: 2023-04-25
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* fix: added check function is not null when checking for `Silence`
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.13.0 @2023 Apr 25
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.13.0
+:revdate: 2023-04-25
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* enhance: Dumper support extended to functions (global / classless [Attribute::TARGET_FUNCTION])
+* enhance: improvements to alias function code
+* doc: some work on the README.md
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.12.0 @2023 Apr 16
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.12.0
+:revdate: 2023-04-16
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: aliases - you can now also register custom assert aliases
+* new: aliases - if the **pecl** **runkit7** extension is installed; custom aliases are registered as functions, variable versions also still created
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.11.1 @2022 Dec 11
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.11.1
+:revdate: 2022-12-11
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* fix: missing autoloader in composer.json
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.11.0 @2022 Dec 11
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.11.0
+:revdate: 2022-12-11
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: Silence checks can be logged
+* update: phpdoc
+* minor tweaks, fixes and updates
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.10.0 @2022 Dec 09
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.10.0
+:revdate: 2022-12-09
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: `Dumper::assert` method - first argument true/false expression followed by usual dump arguments
+* new: `da` global function shortcut for `Dumper::assert`
+* new: parameter `$limit` for `Silence` => toggles state returned when limit reached
+* many minor fixes & updates to code & documentation
+* major performance improvements
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.9.1 @2022 Nov 09
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.9.1
+:revdate: 2025-11-09
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* Internal improvements and optimisations
+* fix: dump file information showing incorrect data
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.9.0 @2022 Nov 05
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.9.0
+:revdate: 2022-11-05
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* update: added shortcut argument to `dumper` to register global variable dump function by that name
+* update: it is no longer necessary to call `dumper` to register `dd`, composer handles this
+* README improvements
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.8.0 @2022 Jul 29
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.8.0
+:revdate: 2022-07-29
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* Added static expanded option to control initial state of Dumper window
+
+:leveloffset!:

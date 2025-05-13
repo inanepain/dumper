@@ -1,0 +1,15 @@
+= 1.16.0 @2025 Apr 29
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.16.0
+:revdate: 2025-04-29
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* *new*: Global Constant *INANE_DUMPER_HIDE_RUNKIT7* to disable runkit7 support message if it is not installed
+* *new*: `Dumper::showRunkit7SupportMessage` does the same as above, either one can be set

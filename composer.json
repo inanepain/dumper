@@ -48,6 +48,19 @@
         "inanepain/cli": "Using the Pencil class makes setting console colours easy"
     },
     "scripts": {
+        "speak": [
+            "echo @arg"
+        ],
+        "run-commands": [
+            "echo hello @no_additional_args",
+            "echo @additional_args && echo @no_additional_args"
+        ],
+        "build": [
+            "@build-adoc",
+            "@build-xml",
+            "@build-md",
+            "@clean"
+        ],
         "build-adoc": "asciidoctor-reducer -o README.adoc doc/readme/index.adoc",
         "build-xml": "asciidoctor -b docbook README.adoc",
         "build-md": "pandoc -f docbook -t markdown_strict README.xml -o README.md",

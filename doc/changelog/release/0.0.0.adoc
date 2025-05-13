@@ -1,0 +1,16 @@
+= 1.17.0-dev @2025 May xx
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.17.0
+:revdate: 2025-05-01
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* *update*: Console output divider line now stretches across the console width
+* *new*: `Dumper::isWindows` new method to check if running on Windows, need for column width
+* *new*: `Dumper::columns` new method to get console width

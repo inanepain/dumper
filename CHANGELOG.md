@@ -1,78 +1,103 @@
-# Changelog: Dumper
+Version: $Id$ ($Date$)
 
-> $Id$ ($Date$)
+# History
 
-## History
+## 1.16.0 @2025 Apr 29
 
-### 1.16.0 @2025 Apr 29
+-   **new**: Global Constant **INANE\_DUMPER\_HIDE\_RUNKIT7** to disable
+    runkit7 support message if it is not installed
 
-- new: Global Constant *INANE_DUMPER_HIDE_RUNKIT7* to disable runkit7 support message if it is not installed
-- new: `Dumper::showRunkit7SupportMessage` does the same as above, either one can be set
+-   **new**: `Dumper::showRunkit7SupportMessage` does the same as above,
+    either one can be set
 
-### 1.15.0 @2025 Feb 18
+## 1.15.0 @2025 Feb 18
 
- - New: `Dumper::setExceptionHandler` Register Dumper as the exception handler
+-   new: `Dumper::setExceptionHandler` Register Dumper as the exception
+    handler
 
-### 1.14.2 @2024 Sep 20
+## 1.14.2 @2024 Sep 20
 
- - Fix: Infinit loop if `Runkit7` not installed
+-   fix: Infinit loop if `Runkit7` not installed
 
-### 1.14.1 @2023 Jun 27
+## 1.14.1 @2023 Jun 27
 
- - Fix: Dumper console colours for divider line
+-   fix: Dumper console colours for divider line
 
-### 1.14.0 @2023 Jun 09
+## 1.14.0 @2023 Jun 09
 
- - New: `Dumper::setConsoleColours` Ability to set custom colours for console
- - New: `Dumper::getConsoleColours` Get current console colours
- - Fix: error when using Dumper in interactive shell
- - Minor tweaks
+-   new: `Dumper::setConsoleColours` Ability to set custom colours for
+    console
 
-### 1.13.1 @2023 Apr 25
+-   new: `Dumper::getConsoleColours` Get current console colours
 
- - fix: added check function is not null when checking for `Silence`
+-   fix: error when using Dumper in interactive shell
 
-### 1.13.0 @2023 Apr 25
+-   Minor tweaks
 
- - enhance: Dumper support extended to functions (global / classless [Attribute::TARGET_FUNCTION])
- - enhance: improvements to alias function code
- - doc: some work on the README.md
+## 1.13.1 @2023 Apr 25
 
-### 1.12.0 @2023 Apr 16
+-   fix: added check function is not null when checking for `Silence`
 
- - new: aliases - you can now also register custom assert aliases
- - new: aliases - if the **pecl** **runkit7** extension is installed; custom aliases are registered as functions, variable versions also still created
+## 1.13.0 @2023 Apr 25
 
-### 1.11.1 @2022 Dec 11
+-   enhance: Dumper support extended to functions (global / classless
+    \[Attribute::TARGET\_FUNCTION\])
 
- - fix: missing autoloader in composer.json
+-   enhance: improvements to alias function code
 
-### 1.11.0 @2022 Dec 11
+-   doc: some work on the README.md
 
- - new: Silence checks can be logged
- - update: phpdoc
- - minor tweaks, fixes and updates
+## 1.12.0 @2023 Apr 16
 
-### 1.10.0 @2022 Dec 09
+-   new: aliases - you can now also register custom assert aliases
 
- - new: `Dumper::assert` method - first argument true/false expression followed by usual dump arguments
- - new: `da` global function shortcut for `Dumper::assert`
- - new: parameter `$limit` for `Silence` => toggles state returned when limit reached
- - many minor fixes & updates to code & documentation
- - major performance improvements
+-   new: aliases - if the **pecl** **runkit7** extension is installed;
+    custom aliases are registered as functions, variable versions also
+    still created
 
+## 1.11.1 @2022 Dec 11
 
-### 1.9.1 @2022 Nov 09
+-   fix: missing autoloader in composer.json
 
- - Internal improvements and optimisations
- - fix: dump file information showing incorrect data
+## 1.11.0 @2022 Dec 11
 
-### 1.9.0 @2022 Nov 05
+-   new: Silence checks can be logged
 
- - update: added shortcut argument to `dumper` to register global variable dump function by that name
- - update: it is no longer necessary to call `dumper` to register `dd`, composer handles this
- - README improvements
+-   update: phpdoc
 
-### 1.8.0 @2022 Jul 29
+-   minor tweaks, fixes and updates
 
- - Added static expanded option to control initial state of Dumper window
+## 1.10.0 @2022 Dec 09
+
+-   new: `Dumper::assert` method - first argument true/false expression
+    followed by usual dump arguments
+
+-   new: `da` global function shortcut for `Dumper::assert`
+
+-   new: parameter `$limit` for `Silence` ⇒ toggles state returned when
+    limit reached
+
+-   many minor fixes & updates to code & documentation
+
+-   major performance improvements
+
+## 1.9.1 @2022 Nov 09
+
+-   Internal improvements and optimisations
+
+-   fix: dump file information showing incorrect data
+
+## 1.9.0 @2022 Nov 05
+
+-   update: added shortcut argument to `dumper` to register global
+    variable dump function by that name
+
+-   update: it is no longer necessary to call `dumper` to register `dd`,
+    composer handles this
+
+-   README improvements
+
+## 1.8.0 @2022 Jul 29
+
+-   Added static expanded option to control initial state of Dumper
+    window

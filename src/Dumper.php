@@ -14,7 +14,7 @@
  * @license UNLICENSE
  * @license https://github.com/inanepain/dumper/raw/develop/UNLICENSE UNLICENSE
  *
- * @version $Id$
+ * @version $version
  * $Date$
  */
 
@@ -32,9 +32,11 @@ use function basename;
 use function count;
 use function debug_backtrace;
 use function dirname;
+use function exec;
 use function file_get_contents;
 use function file;
 use function function_exists;
+use function getenv;
 use function gettype;
 use function implode;
 use function in_array;
@@ -45,9 +47,13 @@ use function php_sapi_name;
 use function preg_match;
 use function str_ends_with;
 use function str_replace;
+use function strtoupper;
+use function substr;
 use function var_export;
+
 use const false;
 use const PHP_EOL;
+use const PHP_OS;
 use const true;
 
 use Inane\Stdlib\{
@@ -61,7 +67,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version 1.16.0
+ * @version $version
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *
@@ -181,12 +187,76 @@ final class Dumper {
 	}
 
 	/**
+	 * Determines if the current operating system is Windows.
+	 *
+	 * @since 1.17.0
+	 *
+	 * @return bool Returns true if the operating system is Windows, false otherwise.
+	 */
+	private static function isWindows(): bool {
+		return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+	}
+
+	/**
 	 * Running in console
 	 *
 	 * @return bool
 	 */
 	protected static function isCli(): bool {
 		return (php_sapi_name() === 'cli');
+	}
+
+	/**
+	 * Retrieves the number of columns available in the current environment.
+	 *
+	 * This method is typically used to determine the width of the output
+	 * for formatting purposes.
+	 *
+	 * @since 1.17.0
+	 *
+	 * @return int The number of columns available.
+	 */
+	protected static function columns(): int {
+		static $columns;
+
+		if (getenv('PHP_CLI_TOOLS_TEST_SHELL_COLUMNS_RESET'))
+			$columns = null;
+
+		if (null === $columns) {
+			if (function_exists('exec')) {
+				if (self::isWindows()) {
+					// Cater for shells such as Cygwin and Git bash where `mode CON` returns an incorrect value for columns.
+					if (($shell = getenv('SHELL')) && preg_match('/(?:bash|zsh)(?:\.exe)?$/', $shell) && getenv('TERM'))
+						$columns = (int) exec('tput cols');
+
+					if (!$columns) {
+						$return_var = -1;
+						$output = [];
+						exec('mode CON', $output, $return_var);
+						if (0 === $return_var && $output) {
+							// Look for second line ending in ": <number>" (searching for "Columns:" will fail on non-English locales).
+							if (preg_match('/:\s*[0-9]+\n[^:]+:\s*([0-9]+)\n/', implode("\n", $output), $matches))
+								$columns = (int) $matches[1];
+						}
+					}
+				} else {
+					if (!($columns = (int) getenv('COLUMNS'))) {
+						$size = exec('/usr/bin/env stty size 2>/dev/null');
+						if ('' !== $size && preg_match('/[0-9]+ ([0-9]+)/', $size, $matches))
+							$columns = (int) $matches[1];
+						if (!$columns) {
+							if (getenv('TERM'))
+								$columns = (int) exec('/usr/bin/env tput cols 2>/dev/null');
+						}
+					}
+				}
+			}
+
+			if (!$columns)
+				$columns = 80; // default width of cmd window on Windows OS
+		}
+
+		return $columns;
 	}
 
 	/**
@@ -391,6 +461,8 @@ final class Dumper {
 	/**
 	 * Prepare the string for writing to page
 	 *
+	 * @since 1.17.0 console divider line streches to the end of the page
+	 *
 	 * @return string
 	 */
 	protected function render(): string {
@@ -398,7 +470,8 @@ final class Dumper {
 		if (Dumper::isCli()) {
 			$c = (object) Dumper::$consoleColours;
 
-			$code = implode("$c->divider===========================================================================$c->reset " . PHP_EOL, Dumper::$dumps);
+			$divider = str_repeat('=', static::columns());
+			$code = implode("$c->divider$divider$c->reset " . PHP_EOL, Dumper::$dumps);
 			Dumper::$dumps = [];
 			return "{$c->dumper}DUMPER$c->reset" . PHP_EOL . "$code";
 		}

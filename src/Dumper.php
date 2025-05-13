@@ -14,7 +14,9 @@
  * @license UNLICENSE
  * @license https://github.com/inanepain/dumper/raw/develop/UNLICENSE UNLICENSE
  *
- * @version $version
+ * @version 0.16.0
+ *
+ * $Id$
  * $Date$
  */
 
@@ -67,7 +69,7 @@ use Inane\Stdlib\{
  *
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
- * @version $version
+ * @version 0.16.0
  *
  * @todo: move the two rendering methods into their own classes. allow for custom renderers.
  *

@@ -14,7 +14,9 @@
  * @license UNLICENSE
  * @license https://github.com/inanepain/dumper/raw/develop/UNLICENSE UNLICENSE
  *
- * @version $Id$
+ * @version 0.16.0
+ *
+ * $Id$
  * $Date$
  */
 

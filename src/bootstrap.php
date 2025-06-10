@@ -30,7 +30,7 @@ if (!function_exists('dd')) {
      * Add a dump to the collection
      *
      * options:
-     *  - (bool=false) open        : true - creates dumps open (main panel not effect)
+     *  - (bool=false) open        : true - creates dumps open (main panel not affect)
      *  - (bool=false) useVarExport: true - uses `var_export` instead of dumper to generate dump string
      *
      * Chaining: You only need bracket your arguments for repeated dumps.
@@ -55,7 +55,7 @@ if (!function_exists('da')) {
      * Conditionally adds a dump to the collection
      *
      * options:
-     *  - (bool=false) open        : true - creates dumps open (main panel not effect)
+     *  - (bool=false) open        : true - creates dumps open (main panel not affect)
      *  - (bool=false) useVarExport: true - uses `var_export` instead of dumper to generate dump string
      *
      * Chaining: You only need bracket your arguments for repeated dumps.

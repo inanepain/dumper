@@ -787,7 +787,7 @@ DUMPER_HTML;
 			$params->modify($options);
 			$params->lock();
 
-			if (in_array($params->type, [Type::Dump, Type::Todo]) || in_array($params->type, Dumper::$additionalTypes)) {
+			if (in_array($params->type, [Type::Dump]) || in_array($params->type, Dumper::$additionalTypes)) {
 				$info = Dumper::analyseVariable($data);
 				if (is_null($label) && $info['variable'] != '') {
 					$label = $info['variable'];

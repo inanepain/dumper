@@ -58,8 +58,8 @@
         "css": "sass --no-source-map -s compressed ./css/dumper.scss ./css/dumper.css",
         "mk-doc-dir": [
             "mkdir -p doc/{changelog,readme}",
-            "mkdir doc/changelog/release",
-            "mkdir doc/readme/part",
+            "mkdir -p doc/changelog/release",
+            "mkdir -p doc/readme/part",
             "touch doc/{changelog,readme}/index.adoc",
             "touch doc/changelog/release/0.0.0.adoc",
             "touch doc/readme/part/install.adoc"

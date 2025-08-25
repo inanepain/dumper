@@ -3,20 +3,21 @@
 /**
  * Inane: Dumper
  *
- * A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+ * A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
  *
- * PHP version 8.1
+ * $Id$
+ * $Date$
  *
- * @author Philip Michael Raab <peep@inane.co.za>
- * @package Inane\Dumper
- * @category debug
+ * PHP version 8.4
+ *
+ * @author Philip Michael Raab<philip@cathedral.co.za>
+ * @package inanepain\dumper
+ * @category dumper
  *
  * @license UNLICENSE
- * @license https://github.com/inanepain/dumper/raw/develop/UNLICENSE UNLICENSE
+ * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @copyright 2015-2021 Philip Michael Raab <philip@inane.co.za>
- *
- * @version 0.16.0
+ * _version_ $version
  */
 
 declare(strict_types=1);
@@ -35,8 +36,6 @@ namespace Inane\Dumper;
  * To reset the allowed types simple set it to a blank array. e.g.: Dumper::$additionalTypes = [];
  *
  * @version 0.16.0
- *
- * @package Inane\Dumper
  */
 enum Type {
     /**

@@ -3,21 +3,21 @@
 /**
  * Inane: Dumper
  *
- * A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+ * A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
  *
- * $Id$<br/>
+ * $Id$
  * $Date$
  *
- * PHP version 8.1
+ * PHP version 8.4
  *
- * @author   Philip Michael Raab <peep@inane.co.za>
- * @package  Inane\Dumper
- * @category debug
+ * @author Philip Michael Raab<philip@cathedral.co.za>
+ * @package inanepain\dumper
+ * @category dumper
  *
- * @license  UNLICENSE
- * @license  https://unlicense.org/UNLICENSE UNLICENSE UNLICENSE
+ * @license UNLICENSE
+ * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @version  0.16.0
+ * _version_ $version
  */
 
 declare(strict_types=1);
@@ -67,8 +67,6 @@ use const true;
  * @todo    : move the two rendering methods into their own classes. allow for custom renderers.
  *
  * @version 0.16.0
- *
- * @package Inane\Dumper
  */
 final class Dumper {
 

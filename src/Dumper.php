@@ -65,6 +65,7 @@ use const true;
  * A simple dump tool that neatly stacks its collapsed dumps on the bottom of the page.
  *
  * @todo    : move the two rendering methods into their own classes. allow for custom renderers.
+ * TODO: version bump
  *
  * @version 0.16.0
  */
@@ -123,6 +124,23 @@ final class Dumper {
 	 *
 	 */
 	public static bool $useVarExport = false;
+
+	/**
+	 * The maximum depth to parse when dumping data structures.
+	 * 
+	 * Provided as a convenience method.
+	 * @see \Inane\Stdlib\Parser\ObjectParser::$depth
+	 * 
+	 * @since version bump
+	 *
+	 * @var int
+	 */
+	public int $parseDepth {
+		get => isset($this->parseDepth) ? $this->parseDepth : \Inane\Stdlib\Parser\ObjectParser::$depth;
+		set(int $value) {
+			$this->parseDepth = $value;
+		}
+	}
 
 	/**
 	 * Show a message to install runkit7 if not found.
@@ -694,7 +712,7 @@ final class Dumper {
 	 */
 	protected function addDump(mixed $data, ?string $label = null, array|Options $options = []): void {
 		// Parse the variable to string
-		$code = ($options['useVarExport'] ?? Dumper::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data);
+		$code = ($options['useVarExport'] ?? Dumper::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data, $this->parseDepth);
 
 		// CHECK CONSOLE
 		if (Dumper::isCli()) {
@@ -761,6 +779,7 @@ DUMPER_HTML;
 	 *  - (bool=false) open        : true - creates dumps open (main panel not effect)
 	 *  - (bool=false) useVarExport: true - uses `var_export` instead of dumper to generate dump string
 	 *  - (Type=Dump) type         : Dump - set a custom type for the dump
+	 *  - (int=ref) parseDepth     : set the depth to which an object is parsed
 	 *
 	 * Chaining: You only need bracket your arguments for repeated dumps.
 	 * Dumper::dump('one')('two', 'Label')
@@ -781,9 +800,12 @@ DUMPER_HTML;
 				'open'         => false,
 				'useVarExport' => false,
 				'type'         => Type::Dump,
+				'parseDepth'   => Dumper::dumper()->parseDepth,
 			]);
 			$params->modify($options);
 			$params->lock();
+
+			Dumper::dumper()->parseDepth = $params->parseDepth;
 
 			if (in_array($params->type, [Type::Dump]) || in_array($params->type, Dumper::$additionalTypes)) {
 				$info = Dumper::analyseVariable($data);

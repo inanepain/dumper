@@ -1,29 +1,30 @@
-Version: $Id$ ($Date$)
-
 # History
 
 ## 1.17.0-dev @2025 May xx
 
 - **update**: Console output divider line now stretches across the
-  console width
+  console width.
+
+- **update**: `Dumper::dump` methods now accept `OptionsInterface`
+  objects.
 
 - **new** : `Type::Todo` new type, when enabled adds todo entries to
-  dump log
+  dump log.
 
 - **new** : `Dumper::todo` alias for `Dumper::dump` that is configured
-  for `Type::Todo`
+  for `Type::Todo`.
 
 - **new** : `Dumper::isWindows` new method to check if running on
-  Windows, need for column width
+  Windows, need for column width.
 
-- **new** : `Dumper::columns` new method to get console width
+- **new** : `Dumper::columns` new method to get console width.
 
 - **new** : `Dumper::parseDepth` new instance property and `dump`
-  `option` for custom parsing depth
+  `option` for custom parsing depth.
 
-- **update**: Tweaked the UI for dumps a little
+- **update**: Tweaked the UI for dumps a little.
 
-- fix some minor wording and spelling errors
+- **global**: fix some minor grammar and spelling errors.
 
 ## 1.16.0 @2025 Apr 29
 

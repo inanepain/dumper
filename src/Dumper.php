@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace Inane\Dumper;
 
 use Inane\Stdlib\{Highlight, Options, Parser\ObjectParser};
+use Inane\Stdlib\Array\OptionsInterface;
 use ReflectionClass;
 use ReflectionFunction;
 
@@ -784,15 +785,15 @@ DUMPER_HTML;
 	 * Chaining: You only need bracket your arguments for repeated dumps.
 	 * Dumper::dump('one')('two', 'Label')
 	 *
-	 * @param   mixed                        $data     item to dump
-	 * @param   null|string                  $label    text table for the dump
-	 * @param   array|\Inane\Stdlib\Options  $options  customised options for the dump
+	 * @param   mixed                          $data     item to dump
+	 * @param   null|string                    $label    text table for the dump
+	 * @param   array|Options|OptionsInterface $options  customised options for the dump
 	 *
 	 * @return \Inane\Dumper\Dumper
 	 *
 	 *
 	 */
-	public static function dump(mixed $data = null, ?string $label = null, array|Options $options = []): Dumper {
+	public static function dump(mixed $data = null, ?string $label = null, array|Options|OptionsInterface $options = []): Dumper {
 		try {
 			Dumper::dumper();
 
@@ -834,16 +835,22 @@ DUMPER_HTML;
 	 * Adds a `Type::Todo` dump to the collection
 	 *
 	 * Alias for dump set to add a todo dump.
+	 * 
+	 * options:
+	 *  - (bool=false) open        : true - creates dumps open (main panel not effect)
+	 *  - (bool=false) useVarExport: true - uses `var_export` instead of dumper to generate dump string
+	 *  - (Type=Dump) type         : Dump - set a custom type for the dump
+	 *  - (int=ref) parseDepth     : set the depth to which an object is parsed
 	 *
-	 * @param   mixed          $data     The data to be dumped. Defaults to null.
-	 * @param   string|null    $label    An optional label to describe the data. Defaults to null.
-	 * @param   array|Options  $options  Additional options or configuration for the dumper. Defaults to an empty array.
+	 * @param   mixed                          $data     The data to be dumped. Defaults to null.
+	 * @param   string|null                    $label    An optional label to describe the data. Defaults to null.
+	 * @param   array|Options|OptionsInterface $options  Additional options or configuration for the dumper. Defaults to an empty array.
 	 *
 	 * @return Dumper Returns an instance of the Dumper class.
 	 * @see \Inane\Dumper\Dumper::dump
 	 *
 	 */
-	public static function todo(mixed $data = null, ?string $label = null, array|Options $options = []): Dumper {
+	public static function todo(mixed $data = null, ?string $label = null, array|Options|OptionsInterface $options = []): Dumper {
 		$options = new Options(['type' => Type::Todo])->complete($options);
 
 		return static::dump($data, $label, $options);

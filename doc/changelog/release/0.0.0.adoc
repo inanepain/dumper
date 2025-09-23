@@ -11,11 +11,12 @@
 :toc: auto
 :sectanchors:
 
-* *update*: Console output divider line now stretches across the console width
-* *new*   : `Type::Todo` new type, when enabled adds todo entries to dump log
-* *new*   : `Dumper::todo` alias for `Dumper::dump` that is configured for `Type::Todo`
-* *new*   : `Dumper::isWindows` new method to check if running on Windows, need for column width
-* *new*   : `Dumper::columns` new method to get console width
-* *new*   : `Dumper::parseDepth` new instance property and `dump` `option` for custom parsing depth
-* *update*: Tweaked the UI for dumps a little
-* fix some minor wording and spelling errors
+* *update*: Console output divider line now stretches across the console width.
+* *update*: `Dumper::dump` methods now accept `OptionsInterface` objects.
+* *new*   : `Type::Todo` new type, when enabled adds todo entries to dump log.
+* *new*   : `Dumper::todo` alias for `Dumper::dump` that is configured for `Type::Todo`.
+* *new*   : `Dumper::isWindows` new method to check if running on Windows, need for column width.
+* *new*   : `Dumper::columns` new method to get console width.
+* *new*   : `Dumper::parseDepth` new instance property and `dump` `option` for custom parsing depth.
+* *update*: Tweaked the UI for dumps a little.
+* *global*: fix some minor grammar and spelling errors.

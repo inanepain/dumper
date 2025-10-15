@@ -19,4 +19,6 @@
 * *new*   : `Dumper::columns` new method to get console width.
 * *new*   : `Dumper::parseDepth` new instance property and `dump` `option` for custom parsing depth.
 * *update*: Tweaked the UI for dumps a little.
+* *update*: Cli colours: label = cyan.
 * *global*: fix some minor grammar and spelling errors.
+* *fix*.  : fixed output when buffering disabled.

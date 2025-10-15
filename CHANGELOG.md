@@ -24,7 +24,11 @@
 
 - **update**: Tweaked the UI for dumps a little.
 
+- **update**: Cli colours: label = cyan.
+
 - **global**: fix some minor grammar and spelling errors.
+
+- **fix**. : fixed output when buffering disabled.
 
 ## 1.16.0 @2025 Apr 29
 

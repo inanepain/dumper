@@ -24,12 +24,19 @@ declare(strict_types=1);
 
 namespace Inane\Dumper;
 
-use Inane\Stdlib\{Highlight, Options, Parser\ObjectParser};
-use Inane\Stdlib\Array\OptionsInterface;
 use ReflectionClass;
 use ReflectionFunction;
+use Inane\Stdlib\{
+	Array\OptionsInterface,
+	Exception\ReflectionException,
+	Exception\RuntimeException,
+	Parser\ObjectParser,
+	Highlight,
+	Options
+};
 
 use function array_combine;
+use function array_filter;
 use function array_key_exists;
 use function array_shift;
 use function basename;
@@ -46,6 +53,7 @@ use function implode;
 use function in_array;
 use function is_null;
 use function is_string;
+use function ob_flush;
 use function ob_start;
 use function php_sapi_name;
 use function preg_match;
@@ -58,6 +66,7 @@ use function var_export;
 use const false;
 use const PHP_EOL;
 use const PHP_OS;
+use const STDOUT;
 use const true;
 
 /**
@@ -91,11 +100,11 @@ final class Dumper {
 	 */
 	private static array $consoleColours
 		= [
-			'reset'   => "\033[0m",        # console default
-			'dumper'  => "\033[35m",        # magenta
-			'label'   => "\033[34m",        # blue
-			'file'    => "\033[97m",        # while
-			'line'    => "\033[31m",        # red
+			'reset'   => "\033[0m",     # console default
+			'dumper'  => "\033[35m",    # magenta
+			'label'   => "\033[36m",    # cyan
+			'file'    => "\033[97m",    # while
+			'line'    => "\033[31m",    # red
 			'divider' => "\033[33m",    # yellow
 		];
 
@@ -156,7 +165,7 @@ final class Dumper {
 	/**
 	 * Additional Dump Types allowed
 	 *
-	 * @var \Inane\Dumper\Type[]
+	 * @var Type[]
 	 */
 	public static array $additionalTypes = [];
 
@@ -314,13 +323,13 @@ final class Dumper {
 	 * @param   null|string  $dumpAlias    [optional] register a global variable shortcut function with name $dumpAlias for `dump`. Shortcut must also be a valid variable/function name.
 	 * @param   null|string  $assertAlias  [optional] register a global variable shortcut function with name $assertAlias for `assert`. Shortcut must also be a valid variable/function name.
 	 *
-	 * @return \Inane\Dumper\Dumper
+	 * @return Dumper
 	 * @since 1.12.0 dump instruction on installing **runkit7** to enable creation of custom alias functions. Shown when custom alias requested and no runkit7.
 	 *
 	 */
-	public static function dumper(?string $dumpAlias = null, ?string $assertAlias = null): Dumper {
-		if (!isset(Dumper::$instance)) {
-			Dumper::$instance = new Dumper();
+	public static function dumper(?string $dumpAlias = null, ?string $assertAlias = null): static {
+		if (!isset(static::$instance)) {
+			static::$instance = new static();
 		}
 
 		static $checked = false;
@@ -346,29 +355,30 @@ final class Dumper {
 				}
 
 				if (!$hide) {
-					Dumper::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
+					static::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
 				}
 			}
 		}
 
 		if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias)) {
-			$GLOBALS[$dumpAlias] = Dumper::dump(...);
+			$GLOBALS[$dumpAlias] = static::dump(...);
 		}
 
 		if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias)) {
-			$GLOBALS[$assertAlias] = Dumper::assert(...);
+			$GLOBALS[$assertAlias] = static::assert(...);
 		}
 
-		return Dumper::$instance;
+		return static::$instance;
 	}
 
 	/**
 	 * When destroyed the dumps get written to page
 	 */
 	public function __destruct() {
-		if (Dumper::$enabled && count(Dumper::$dumps) > 0) {
+		if (static::$enabled && count(static::$dumps) > 0) {
 			ob_start();
 			echo $this->render();
+			ob_flush();
 		}
 	}
 
@@ -381,25 +391,25 @@ final class Dumper {
 	 * @param   null|string  $label
 	 * @param   array        $options
 	 *
-	 * @return \Inane\Dumper\Dumper
+	 * @return Dumper
 	 *
-	 * @throws \Inane\Stdlib\Exception\RuntimeException
-	 * @throws \ReflectionException
+	 * @throws RuntimeException
+	 * @throws ReflectionException
 	 */
-	public function __invoke(mixed $data = null, ?string $label = null, array $options = []): Dumper {
-		return Dumper::dump($data, $label, $options);
+	public function __invoke(mixed $data = null, ?string $label = null, array $options = []): static {
+		return static::dump($data, $label, $options);
 	}
 
 	/**
 	 * Gets the currently set console colours
 	 *
 	 * options (and defaults with description):
-	 *  - line        => "\033[0m",    # console default
+	 *  - line       => "\033[0m",     # console default
 	 *  - divider    => "\033[35m",    # magenta
-	 *  - label        => "\033[34m",    # blue
-	 *  - dumper    => "\033[97m",    # while
-	 *  - file        => "\033[31m",    # red
-	 *  - reset        => "\033[33m",    # yellow
+	 *  - label      => "\033[36m",    # cyan
+	 *  - dumper     => "\033[97m",    # while
+	 *  - file       => "\033[31m",    # red
+	 *  - reset      => "\033[33m",    # yellow
 	 *
 	 * @return array console colours
 	 * @since 1.14.0
@@ -415,23 +425,23 @@ final class Dumper {
 	 * There are a few elements that can be set using console colour escape codes.
 	 *
 	 * options (and defaults with description):
-	 *  - line        => "\033[0m",    # console default
+	 *  - line       => "\033[0m",     # console default
 	 *  - divider    => "\033[35m",    # magenta
-	 *  - label        => "\033[34m",    # blue
-	 *  - dumper    => "\033[97m",    # while
-	 *  - file        => "\033[31m",    # red
-	 *  - reset        => "\033[33m",    # yellow
+	 *  - label      => "\033[36m",    # cyan
+	 *  - dumper     => "\033[97m",    # while
+	 *  - file       => "\033[31m",    # red
+	 *  - reset      => "\033[33m",    # yellow
 	 *
 	 * @param   false|array  $colours  `false` to disable, `[]` (empty array) for default, or set the colours using array keys provided.
 	 *
-	 * @return \Inane\Dumper\Dumper Dumper instance
+	 * @return Dumper Dumper instance
 	 *
-	 * @throws \Inane\Stdlib\Exception\RuntimeException
-	 * @throws \ReflectionException
+	 * @throws RuntimeException
+	 * @throws ReflectionException
 	 * @since 1.14.0
 	 *
 	 */
-	public static function setConsoleColours(false|array $colours = []): Dumper {
+	public static function setConsoleColours(false|array $colours = []): static {
 		if ($colours === false) {
 			static::$consoleColours = [
 				'reset'   => '',
@@ -445,13 +455,13 @@ final class Dumper {
 			static::$consoleColours = [
 				'reset'   => "\033[0m",    # console default
 				'dumper'  => "\033[35m",    # magenta
-				'label'   => "\033[34m",    # blue
+				'label'   => "\033[36m",    # cyan
 				'file'    => "\033[97m",    # while
 				'line'    => "\033[31m",    # red
 				'divider' => "\033[33m",    # yellow
 			];
 		} else {
-			static::$consoleColours = \array_filter($colours, fn($k) => in_array($k, \array_keys(static::$consoleColours)), \ARRAY_FILTER_USE_KEY) + static::$consoleColours;
+			static::$consoleColours = array_filter($colours, fn($k) => in_array($k, \array_keys(static::$consoleColours)), \ARRAY_FILTER_USE_KEY) + static::$consoleColours;
 		}
 
 		return static::dumper();
@@ -468,7 +478,7 @@ final class Dumper {
 			: $colours + [
 				'reset'   => "\033[0m",    # console default
 				'dumper'  => "\033[35m",    # magenta
-				'label'   => "\033[34m",    # blue
+				'label'   => "\033[36m",    # cyan
 				'file'    => "\033[97m",    # while
 				'line'    => "\033[31m",    # red
 				'divider' => "\033[33m",    # yellow
@@ -481,12 +491,12 @@ final class Dumper {
 	 * Set Colors
 	 *
 	 * @param   false|array{
-	 *        'line'        : "\033[0m",
+	 *        'line'       : "\033[0m",
 	 *        'divider'    : "\033[35m",
-	 *        'label'        : "\033[34m",
-	 *        'dumper'    : "\033[97m",
-	 *        'file'        : "\033[31m",
-	 *        'reset'        : "\033[33m",
+	 *        'label'      : "\033[36m",
+	 *        'dumper'     : "\033[97m",
+	 *        'file'       : "\033[31m",
+	 *        'reset'      : "\033[33m",
 	 * }  $colours
 	 *
 	 * @return static
@@ -503,27 +513,27 @@ final class Dumper {
 	 * Prepare the string for writing to page
 	 *
 	 * @return string
-	 * @since 1.17.0 console divider line streches to the end of the page
+	 * @since 1.17.0 console divider line stretches to the end of the page
 	 *
 	 */
 	protected function render(): string {
 		// Check for command line
-		if (Dumper::isCli()) {
-			$c = (object) Dumper::$consoleColours;
+		if (static::isCli()) {
+			$c = (object) static::$consoleColours;
 
 			$divider       = str_repeat('=', static::columns());
-			$code          = implode("$c->divider$divider$c->reset " . PHP_EOL, Dumper::$dumps);
-			Dumper::$dumps = [];
+			$code          = implode("$c->divider$divider$c->reset " . PHP_EOL, static::$dumps);
+			static::$dumps = [];
 
 			return "{$c->dumper}DUMPER$c->reset" . PHP_EOL . "$code";
 		}
 
-		$code          = implode(PHP_EOL, Dumper::$dumps);
-		Dumper::$dumps = [];
+		$code          = implode(PHP_EOL, static::$dumps);
+		static::$dumps = [];
 
 		$style = file_get_contents(__DIR__ . '/../css/dumper.css');
 
-		$open = Dumper::$expanded ? ' open' : '';
+		$open = static::$expanded ? ' open' : '';
 
 		return <<<DUMPER_HTML
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <style id="inane-dumper-style">$style</style>
@@ -569,7 +579,7 @@ final class Dumper {
 	 *
 	 * @return bool silence state
 	 *
-	 * @throws \Inane\Stdlib\Exception\RuntimeException
+	 * @throws RuntimeException
 	 * @since 1.10.0
 	 *
 	 */
@@ -600,8 +610,8 @@ final class Dumper {
 	 *
 	 * @return string|null If Attribute Silence true return null
 	 *
-	 * @throws \Inane\Stdlib\Exception\RuntimeException
-	 * @throws \ReflectionException
+	 * @throws RuntimeException
+	 * @throws ReflectionException
 	 * @since 1.13.0 Supports `Attribute::TARGET_FUNCTION`
 	 *
 	 */
@@ -704,6 +714,8 @@ final class Dumper {
 
 	/**
 	 * Add a dump to the collection
+	 * 
+	 * @since version bump fixed output when buffering disabled.
 	 *
 	 * @param   mixed                        $data  item to dump
 	 * @param   null|string                  $label
@@ -713,14 +725,14 @@ final class Dumper {
 	 */
 	protected function addDump(mixed $data, ?string $label = null, array|Options $options = []): void {
 		// Parse the variable to string
-		$code = ($options['useVarExport'] ?? Dumper::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data, $this->parseDepth);
+		$code = ($options['useVarExport'] ?? static::$useVarExport) ? var_export($data, true) : ObjectParser::parse($data, $this->parseDepth);
 
 		// CHECK CONSOLE
-		if (Dumper::isCli()) {
+		if (static::isCli()) {
 			$output = "$label$code" . PHP_EOL;
 		} else {
 			// HTML
-			$highlight = $options['highlight'] ?? Dumper::$highlight;
+			$highlight = $options['highlight'] ?? static::$highlight;
 			$code      = $highlight->render($code);
 
 			$open = ($options['open'] ?? false) ? 'open' : '';
@@ -735,11 +747,11 @@ final class Dumper {
 DUMPER_HTML;
 		}
 
-		if (Dumper::$bufferOutput) {
-			Dumper::$dumps[] = $output;
+		if (static::$bufferOutput) {
+			static::$dumps[] = $output;
 		} else {
-			$c = (object) Dumper::$consoleColours;
-			echo "\t\t{$c->dumper}DUMPER$c->reset:$output" . PHP_EOL;
+			$c = (object) static::$consoleColours;
+			fwrite(STDOUT, "{$c->dumper}DUMPER$c->reset:$output" . PHP_EOL);
 		}
 	}
 
@@ -756,12 +768,12 @@ DUMPER_HTML;
 	 * @param   bool                         $expression  true suppress dump, false dump $data
 	 * @param   mixed                        $data        item to dump
 	 * @param   null|string                  $label
-	 * @param   array|\Inane\Stdlib\Options  $options
+	 * @param   array|Options  $options
 	 *
-	 * @return \Inane\Dumper\Dumper
+	 * @return Dumper
 	 *
-	 * @throws \Inane\Stdlib\Exception\RuntimeException
-	 * @throws \ReflectionException
+	 * @throws RuntimeException
+	 * @throws ReflectionException
 	 * @since 1.10.0
 	 *
 	 */
@@ -795,36 +807,36 @@ DUMPER_HTML;
 	 */
 	public static function dump(mixed $data = null, ?string $label = null, array|Options|OptionsInterface $options = []): Dumper {
 		try {
-			Dumper::dumper();
+			static::dumper();
 
 			$params = new Options([
 				'open'         => false,
 				'useVarExport' => false,
 				'type'         => Type::Dump,
-				'parseDepth'   => Dumper::dumper()->parseDepth,
+				'parseDepth'   => static::dumper()->parseDepth,
 			]);
 			$params->modify($options);
 			$params->lock();
 
-			Dumper::dumper()->parseDepth = $params->parseDepth;
+			static::dumper()->parseDepth = $params->parseDepth;
 
-			if (in_array($params->type, [Type::Dump]) || in_array($params->type, Dumper::$additionalTypes)) {
-				$info = Dumper::analyseVariable($data);
+			if (in_array($params->type, [Type::Dump]) || in_array($params->type, static::$additionalTypes)) {
+				$info = static::analyseVariable($data);
 				if (is_null($label) && $info['variable'] != '') {
 					$label = $info['variable'];
 				}
 				if (in_array($params->type, [Type::Dump, Type::Todo])) {
-					$label = Dumper::formatLabel($label, $info['type'], $params->type);
+					$label = static::formatLabel($label, $info['type'], $params->type);
 				}
 				if (!is_null($label)) {
-					Dumper::dumper()->addDump($data, $label, $params);
+					static::dumper()->addDump($data, $label, $params);
 				}
 			}
 
-			$response = Dumper::dumper();
-		} catch (\Inane\Stdlib\Exception\RuntimeException $e) {
+			$response = static::dumper();
+		} catch (RuntimeException $e) {
 			var_dump($e);
-		} catch (\ReflectionException $e) {
+		} catch (ReflectionException $e) {
 			var_dump($e);
 		}
 

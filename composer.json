@@ -4,7 +4,7 @@
     "type": "library",
     "license": "Unlicense",
     "homepage": "https://git.cathedral.co.za:3000/inanepain/dumper",
-    "readme": "README.md",
+    "readme": "README.adoc",
     "authors": [
         {
             "name": "Philip Michael Raab",
@@ -71,8 +71,6 @@
             "rm -f CHANGELOG.adoc",
             "asciidoctor-reducer -o CHANGELOG.adoc doc/changelog/index.adoc",
             "asciidoctor -b docbook CHANGELOG.adoc",
-            "rm -f CHANGELOG.md",
-            "pandoc -f docbook -t markdown_strict CHANGELOG.xml -o CHANGELOG.md",
             "rm -f CHANGELOG.xml"
         ],
         "build-readme": [
@@ -80,8 +78,6 @@
             "rm -f README.adoc",
             "asciidoctor-reducer -o README.adoc doc/readme/index.adoc",
             "asciidoctor -b docbook README.adoc",
-            "rm -f README.md",
-            "pandoc -f docbook -t markdown_strict README.xml -o README.md",
             "rm -f README.xml"
         ]
     }

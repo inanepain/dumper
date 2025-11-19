@@ -82,15 +82,15 @@ Dumper::todo($callback, 'Add error handling');
 :sectnums:
 :view-mode: project
 
-Some more or less helpful hints and tips regarding to usage of `Dumper`.
+Some more or less helpful hints and tips regarding usage of `Dumper`.
 
 ***
 
-* link:doc/aliases.adoc[custom aliases]
-* link:doc/configuration.adoc[configuration]
-* link:doc/ui.adoc[ui]
-* link:doc/silence.adoc[silence]
-* link:doc/other.adoc[other]
+* link:aliases.adoc[custom aliases]
+* link:configuration.adoc[configuration]
+* link:ui.adoc[ui]
+* link:silence.adoc[silence]
+* link:other.adoc[other]
 
 ***
 

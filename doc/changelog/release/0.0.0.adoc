@@ -1,15 +1,6 @@
-= 1.17.0-dev @2025 May xx
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.17.0
-:revdate: 2025-05-01
-:copyright: Unlicense
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:sectnums!:
-:toc: auto
-:sectanchors:
+= 1.17.0-dev @2025 Nov xx
+:revnumber: 1.17.x
+:revdate: 2025-11-01
 
 * *update*: Console output divider line now stretches across the console width.
 * *update*: `Dumper::dump` methods now accept `OptionsInterface` objects.
@@ -22,3 +13,4 @@
 * *update*: Cli colours: label = cyan.
 * *global*: fix some minor grammar and spelling errors.
 * *fix*.  : fixed output when buffering disabled.
+* *update*: `dd/da` PHPDoc.

@@ -7,13 +7,17 @@
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
-:sectnums: |,all|
 :toc: auto
 :sectanchors:
+:pkg-vendor: inanepain
+:pkg-name: dumper
+:pkg-id: {pkg-vendor}/{pkg-name}
 
-== Overview
+== Overview image:./icon.png[title={pkg-id},25] {pkg-id}
 
 A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+
+:sectnums: |,all|
 
 == Install
 

@@ -3,8 +3,8 @@
     "description": "A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.",
     "type": "library",
     "license": "Unlicense",
-    "homepage": "https://github.com/inanepain/dumper",
-    "readme": "README.md",
+    "homepage": "https://git.cathedral.co.za:3000/inanepain/dumper",
+    "readme": "README.adoc",
     "authors": [
         {
             "name": "Philip Michael Raab",
@@ -14,14 +14,21 @@
     ],
     "support": {
         "email": "philip@cathedral.co.za",
-        "issues": "https://github.com/inanepain/dumper/issues"
+        "issues": "https://git.cathedral.co.za:3000/inanepain/dumper/issues",
+        "wiki": "https://git.cathedral.co.za:3000/inanepain/dumper/wiki"
     },
     "keywords": [
-        "inane",
+        "inanepain",
+        "library",
+        "composer",
+        "php",
         "dumper",
         "debug",
         "assert",
-        "silence counter"
+        "silence-counter",
+        "exception",
+        "log",
+        "logging"
     ],
     "autoload": {
         "psr-4": {
@@ -39,8 +46,8 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.1",
-        "inanepain/stdlib": ">=0.3.1 || dev-master || dev-develop"
+        "php": ">=8.4",
+        "inanepain/stdlib": ">=0.7.1 || dev-master || dev-develop"
     },
     "require-dev": {},
     "suggest": {
@@ -48,9 +55,46 @@
         "inanepain/cli": "Using the Pencil class makes setting console colours easy"
     },
     "scripts": {
-        "build-adoc": "asciidoctor-reducer -o README.adoc doc/readme/index.adoc",
-        "build-xml": "asciidoctor -b docbook README.adoc",
-        "build-md": "pandoc -f docbook -t markdown_strict README.xml -o README.md",
-        "clean": "del README.xml"
+        "css": "sass --no-source-map -s compressed ./css/dumper.scss ./css/dumper.css",
+        "mk-doc-dir": [
+            "mkdir -p doc/{changelog,readme}",
+            "mkdir -p doc/changelog/release",
+            "mkdir -p doc/readme/part",
+            "touch doc/{changelog,readme}/index.adoc",
+            "touch doc/changelog/release/0.0.0.adoc",
+            "touch doc/readme/part/install.adoc"
+        ],
+        "build": [
+            "@build-changelog",
+            "@build-readme"
+        ],
+        "build-win": [
+            "@build-changelog-win",
+            "@build-readme-win"
+        ],
+        "build-changelog": [
+            "rm -f CHANGELOG.adoc",
+            "asciidoctor-reducer -o CHANGELOG.adoc doc/changelog/index.adoc",
+            "asciidoctor -b docbook CHANGELOG.adoc",
+            "rm -f CHANGELOG.xml"
+        ],
+        "build-changelog-win": [
+            "del CHANGELOG.adoc",
+            "asciidoctor-reducer -o CHANGELOG.adoc doc/changelog/index.adoc",
+            "asciidoctor -b docbook CHANGELOG.adoc",
+            "del CHANGELOG.xml"
+        ],
+        "build-readme": [
+            "rm -f README.adoc",
+            "asciidoctor-reducer -o README.adoc doc/readme/index.adoc",
+            "asciidoctor -b docbook README.adoc",
+            "rm -f README.xml"
+        ],
+        "build-readme-win": [
+            "del README.adoc",
+            "asciidoctor-reducer -o README.adoc doc/readme/index.adoc",
+            "asciidoctor -b docbook README.adoc",
+            "del README.xml"
+        ]
     }
 }

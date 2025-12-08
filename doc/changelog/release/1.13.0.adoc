@@ -1,0 +1,16 @@
+= 1.13.0 @2023 Apr 25
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.13.0
+:revdate: 2023-04-25
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* enhance: Dumper support extended to functions (global / classless [Attribute::TARGET_FUNCTION])
+* enhance: improvements to alias function code
+* doc: some work on the README.md

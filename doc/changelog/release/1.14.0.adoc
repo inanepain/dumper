@@ -1,0 +1,17 @@
+= 1.14.0 @2023 Jun 09
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.14.0
+:revdate: 2023-06-09
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: `Dumper::setConsoleColours` Ability to set custom colours for console
+* new: `Dumper::getConsoleColours` Get current console colours
+* fix: error when using Dumper in interactive shell
+* Minor tweaks

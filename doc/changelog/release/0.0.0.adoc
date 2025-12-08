@@ -1,0 +1,4 @@
+= 1.18.0-dev @2025 Xxx xx
+:revnumber: 1.18.0
+:revdate: 2025-11-01
+:revremark: -dev

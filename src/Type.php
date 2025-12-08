@@ -3,18 +3,21 @@
 /**
  * Inane: Dumper
  *
- * A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+ * A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
  *
- * PHP version 8.1
+ * $Id$
+ * $Date$
  *
- * @author Philip Michael Raab <peep@inane.co.za>
- * @package Inane\Dumper
- * @category debug
+ * PHP version 8.4
+ *
+ * @author Philip Michael Raab<philip@cathedral.co.za>
+ * @package inanepain\dumper
+ * @category dumper
  *
  * @license UNLICENSE
- * @license https://github.com/inanepain/dumper/raw/develop/UNLICENSE UNLICENSE
+ * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @copyright 2015-2021 Philip Michael Raab <philip@inane.co.za>
+ * _version_ $version
  */
 
 declare(strict_types=1);
@@ -23,19 +26,16 @@ namespace Inane\Dumper;
 
 /**
  * Dumper: Dump Type
- * 
+ *
  * This is mostly for Dumper debugging or some other self amusing task.
- * Dumps are typed in Dumper with the normal dump being Type::Dump, which is always allowed / written to output.
- * 
- * The Science Attribute logs its progress using Dumper but typing the dumps as Type::Silence. These are not allowed by default, not written to output.
- * To see the Silence log in Dumper you can add the Type::Silence to Dumper::$additionalTypes array. e.g.: Dumper::$additionalTypes[] = Type::Silence;
+ * Dumps are typed in Dumper with the normal dump being `Type::Dump`, which is always allowed / written to output.
+ *
+ * The Silence Attribute logs its progress using Dumper with dumps typed as `Type::Silence`. These are not allowed by default, not written to output.
+ * To enable logging of a non-default type add it to `Dumper::$additionalTypes`. E.g.: `Dumper::$additionalTypes[] = Type::Silence;`
+ * This enables the `Type::Silence` dumping which adds silence tests to the dump log.
  * To reset the allowed types simple set it to a blank array. e.g.: Dumper::$additionalTypes = [];
- * 
- * While Silence type allowed, you will see any Silence checks in the Dumper log.
  *
- * @version 0.1.0
- *
- * @package Inane\Dumper
+ * @version 0.16.0
  */
 enum Type {
     /**
@@ -46,4 +46,8 @@ enum Type {
      * Triggered by a Silence Attribute check
      */
     case Silence;
+    /**
+     * TODO dump not shown by default
+     */
+    case Todo;
 }

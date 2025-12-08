@@ -1,0 +1,14 @@
+= 1.15.0 @2025 Feb 18
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.15.0
+:revdate: 2025-02-18
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: `Dumper::setExceptionHandler` Register Dumper as the exception handler

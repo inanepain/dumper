@@ -1,0 +1,16 @@
+= 1.11.0 @2022 Dec 11
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.11.0
+:revdate: 2022-12-11
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: Silence checks can be logged
+* update: phpdoc
+* minor tweaks, fixes and updates

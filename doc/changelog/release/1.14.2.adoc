@@ -1,0 +1,14 @@
+= 1.14.2 @2024 Sep 20
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.15.0
+:revdate: 2024-09-20
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* fix: Infinit loop if `Runkit7` not installed

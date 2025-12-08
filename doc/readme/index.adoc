@@ -1,19 +1,25 @@
-= Dumper
+= README: Dumper
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
+:keywords: inanepain,library,composer,php,dumper,debug,assert,silence-counter,exception,log,logging
+:description: A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
+:revnumber: 1.17.0
+:revdate: 2025-12-08
 :copyright: Unlicense
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
-:sectnums: |,all|
 :toc: auto
 :sectanchors:
+:pkg-vendor: inanepain
+:pkg-name: dumper
+:pkg-id: {pkg-vendor}/{pkg-name}
 
-== Overview
+== Overview image:./icon.png[title={pkg-id},25] {pkg-id}
 
-A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+{description}
+
+:sectnums: |,all|
 
 == Install
 
@@ -28,15 +34,15 @@ include::./basic.adoc[leveloffset=+1]
 :sectnums:
 :view-mode: project
 
-Some more or less helpful hints and tips regarding to usage of `Dumper`.
+Some more or less helpful hints and tips regarding usage of `Dumper`.
 
 ***
 
-* link:doc/aliases.adoc[custom aliases]
-* link:doc/configuration.adoc[configuration]
-* link:doc/ui.adoc[ui]
-* link:doc/silence.adoc[silence]
-* link:doc/other.adoc[other]
+* link:aliases.adoc[custom aliases]
+* link:configuration.adoc[configuration]
+* link:ui.adoc[ui]
+* link:silence.adoc[silence]
+* link:other.adoc[other]
 
 ***
 

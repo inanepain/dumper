@@ -1,0 +1,16 @@
+= 1.9.0 @2022 Nov 05
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.9.0
+:revdate: 2022-11-05
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* update: added shortcut argument to `dumper` to register global variable dump function by that name
+* update: it is no longer necessary to call `dumper` to register `dd`, composer handles this
+* README improvements

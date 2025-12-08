@@ -3,18 +3,21 @@
 /**
  * Inane: Dumper
  *
- * A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+ * A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
  *
- * PHP version 8.1
+ * $Id$
+ * $Date$
  *
- * @author Philip Michael Raab <peep@inane.co.za>
- * @package Inane\Dumper
- * @category debug
+ * PHP version 8.4
+ *
+ * @author Philip Michael Raab<philip@cathedral.co.za>
+ * @package inanepain\dumper
+ * @category dumper
  *
  * @license UNLICENSE
- * @license https://github.com/inanepain/dumper/raw/develop/UNLICENSE UNLICENSE
+ * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @copyright 2015-2021 Philip Michael Raab <philip@inane.co.za>
+ * _version_ $version
  */
 
 declare(strict_types=1);
@@ -39,33 +42,31 @@ use const true;
  * - Dumper enabled
  * - Class Silence => false / No Silence Attribute
  * - Method Silence
- * 
+ *
  * See Silence Tests:
  * To have dumper log each time it does a Silence test you need to enable dumping of the Silence Type.
  * Silence tests stand out from your normal dumps but they can quickly add up.
  * They are only useful in understanding limit values in more complicated situations.
  * If you do need them, add just before and remove just after code you are checking.
- * 
+ *
  * `\Inane\Dumper\Dumper::$additionalTypes[] = \Inane\Dumper\Type::Silence;`
- * 
+ *
  * Remove Silence Test Logging
  * `\Inane\Dumper\Dumper::$additionalTypes = [];`
- * 
+ *
  * @since 1.4.0 Supports `Attribute::TARGET_FUNCTION`
  *
  * @property-read bool $on      true if dump skipped
  * @property-read bool $silent  true if dump skipped
  * @property-read bool $quiet   true if dump skipped
- * 
+ *
  * @property-read bool $off     true if dump written
  * @property-read bool $verbose true if dump written
  *
  * @property-read ?string $label set to write Silence invocation data to page
  * @property-read string $colour for label
  *
- * @version 1.4.0
- *
- * @package Inane\Dumper
+ * @version 0.16.0-3
  */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::TARGET_FUNCTION)]
 class Silence {
@@ -99,11 +100,11 @@ class Silence {
         public readonly bool $on = true,
         /**
          * Toggle state after $limit is reached
-		 * 
+		 *
 		 * null|<=0 are equal, all disable limit.
          *
          * @since 1.1.0
-		 * 
+		 *
 		 * @todo: change to null|int|int[offset, count] - offset = toggle value, count = toggle back to initial value.
          */
         public readonly ?int $limit = null,

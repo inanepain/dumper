@@ -1,0 +1,18 @@
+= 1.10.0 @2022 Dec 09
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.10.0
+:revdate: 2022-12-09
+:copyright: Unlicense
+:experimental:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* new: `Dumper::assert` method - first argument true/false expression followed by usual dump arguments
+* new: `da` global function shortcut for `Dumper::assert`
+* new: parameter `$limit` for `Silence` => toggles state returned when limit reached
+* many minor fixes & updates to code & documentation
+* major performance improvements

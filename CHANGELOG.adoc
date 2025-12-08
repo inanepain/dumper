@@ -17,6 +17,14 @@
 
 :leveloffset: +2
 
+= 1.18.0-dev @2025 Xxx xx
+:revnumber: 1.18.0
+:revdate: 2025-11-01
+:revremark: -dev
+
+:leveloffset!:
+:leveloffset: +2
+
 = 1.17.0 @2025 Dec 08
 :revnumber: 1.17.0
 :revdate: 2025-12-08

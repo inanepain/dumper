@@ -36,30 +36,22 @@ include::./basic.adoc[leveloffset=+1]
 
 Some more or less helpful hints and tips regarding usage of `Dumper`.
 
-***
-
-* link:aliases.adoc[custom aliases]
-* link:configuration.adoc[configuration]
-* link:ui.adoc[ui]
-* link:silence.adoc[silence]
-* link:other.adoc[other]
-
-***
+'''
 
 include::./aliases.adoc[leveloffset=+2]
 
-***
+'''
 
 include::./configuration.adoc[leveloffset=+2]
 
-***
+'''
 
 include::./ui.adoc[leveloffset=+2]
 
-***
+'''
 
 include::./silence.adoc[leveloffset=+2]
 
-***
+'''
 
 include::./other.adoc[leveloffset=+2]

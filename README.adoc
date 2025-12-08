@@ -90,15 +90,7 @@ Dumper::todo($callback, 'Add error handling');
 
 Some more or less helpful hints and tips regarding usage of `Dumper`.
 
-***
-
-* link:aliases.adoc[custom aliases]
-* link:configuration.adoc[configuration]
-* link:ui.adoc[ui]
-* link:silence.adoc[silence]
-* link:other.adoc[other]
-
-***
+'''
 
 :leveloffset: +2
 
@@ -137,7 +129,7 @@ That's how easy it is to create a custom global shortcut function for Dumper.
 
 :leveloffset!:
 
-***
+'''
 
 :leveloffset: +2
 
@@ -378,7 +370,7 @@ define('INANE_DUMPER_HIDE_RUNKIT7', true);
 
 :leveloffset!:
 
-***
+'''
 
 :leveloffset: +2
 
@@ -484,7 +476,7 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 
 :leveloffset!:
 
-***
+'''
 
 :leveloffset: +2
 
@@ -620,7 +612,7 @@ doThis(); // <4>
 
 :leveloffset!:
 
-***
+'''
 
 :leveloffset: +2
 

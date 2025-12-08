@@ -1,6 +1,8 @@
 = README: Dumper
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
+:keywords: inanepain,library,composer,php,dumper,debug,assert,silence-counter,exception,log,logging
+:description: A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
 :revnumber: 1.16.0
 :revdate: 2025-04-29
 :copyright: Unlicense
@@ -15,7 +17,7 @@
 
 == Overview image:./icon.png[title={pkg-id},25] {pkg-id}
 
-A little tool to help with debugging by writing a `var_dump` like message unobtrusively to a collapsible panel at the bottom of a page.
+{description}
 
 :sectnums: |,all|
 

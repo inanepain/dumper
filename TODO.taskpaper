@@ -1,2 +1,0 @@
-inanepain/dumper:
-  A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.

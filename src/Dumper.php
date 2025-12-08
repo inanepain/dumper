@@ -749,7 +749,7 @@ DUMPER_HTML;
 
 		if (static::$bufferOutput) {
 			static::$dumps[] = $output;
-		} else {
+		} elseif (static::$enabled) {
 			$c = (object) static::$consoleColours;
 			fwrite(STDOUT, "{$c->dumper}DUMPER$c->reset:$output" . PHP_EOL);
 		}

@@ -18,14 +18,17 @@
         "wiki": "https://git.cathedral.co.za:3000/inanepain/dumper/wiki"
     },
     "keywords": [
-        "inane",
         "inanepain",
+        "library",
+        "composer",
+        "php",
         "dumper",
-        "log",
-        "logging",
         "debug",
         "assert",
-        "silence counter"
+        "silence-counter",
+        "exception",
+        "log",
+        "logging"
     ],
     "autoload": {
         "psr-4": {

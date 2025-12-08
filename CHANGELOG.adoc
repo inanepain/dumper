@@ -1,8 +1,10 @@
 = Changelog: Dumper
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
+:keywords: inanepain,library,composer,php,dumper,debug,assert,silence-counter,exception,log,logging
+:description: A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
 :revnumber: 1.17.0
-:revdate: 2025-05-01
+:revdate: 2025-12-08
 :copyright: Unlicense
 :experimental:
 :icons: font
@@ -15,9 +17,9 @@
 
 :leveloffset: +2
 
-= 1.17.0-dev @2025 Nov xx
-:revnumber: 1.17.x
-:revdate: 2025-11-01
+= 1.17.0 @2025 Dec 08
+:revnumber: 1.17.0
+:revdate: 2025-12-08
 
 * *update*: Console output divider line now stretches across the console width.
 * *update*: `Dumper::dump` methods now accept `OptionsInterface` objects.

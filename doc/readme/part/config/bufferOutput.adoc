@@ -1,12 +1,4 @@
 = bufferOutput
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Write dumps last. Just before php terminates. Set to `false` to have dumps inserted as the occur at runtime.
 

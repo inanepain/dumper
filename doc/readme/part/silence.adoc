@@ -1,12 +1,4 @@
-= Dumper: Silence
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
+= Silence
 
 You can use the `\Inane\Dumper\Silence` attribute to silence dumps, silence a specified number of dumps, only show a specified number of dumps then go silent, per *class*, *method* or *function*. The Silence attribute also allows you to set Silence's initial state and then set a counter after which the state will toggle.
 
@@ -101,7 +93,7 @@ Dumper::$additionalTypes[] = Type::Silence; // <1>
 // code
 Dumper::$additionalTypes = []; // <2>
 ----
-<1> future Silence checks will be shown in the Dumper panel. 
+<1> future Silence checks will be shown in the Dumper panel.
 <2> and Silence checks after this will no longer show in the Dumper panel.
 
 === Customising Silence checks

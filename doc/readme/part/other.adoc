@@ -1,12 +1,4 @@
 = Other Useful Information
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.15.0
-:revdate: 2025-02-18
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Dumper has a few more tricks up its sleve. Here are some of the more useful ones.
 

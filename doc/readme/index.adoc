@@ -1,15 +1,16 @@
-= README: Dumper
+= inanepain/dumper image:./icon.png[title=inanepain/dumper,25]
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
-:keywords: inanepain,library,composer,php,dumper,debug,assert,silence-counter,exception,log,logging
 :description: A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
+:keywords: inanepain,library,composer,php,dumper,debug,assert,silence-counter,exception,log,logging
+:homepage: https://github.com/inanepain/dumper
 :revnumber: 1.17.0
 :revdate: 2025-12-08
 :copyright: Unlicense
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
-:toc: auto
+:toc: left
 :sectanchors:
 :pkg-vendor: inanepain
 :pkg-name: dumper
@@ -19,39 +20,33 @@
 
 {description}
 
-:sectnums: |,all|
+:sectnums:
 
-== Install
+include::part/install.adoc[leveloffset=+1]
 
-[source,shell]
-----
-$ composer require inanepain/dumper
-----
+<<<
 
-include::./basic.adoc[leveloffset=+1]
+include::./part/basic.adoc[leveloffset=+1]
 
 == Getting more out of Dumper
-:sectnums:
 :view-mode: project
 
 Some more or less helpful hints and tips regarding usage of `Dumper`.
 
-'''
+include::./part/aliases.adoc[leveloffset=+2]
 
-include::./aliases.adoc[leveloffset=+2]
+<<<
 
-'''
+include::./part/configuration.adoc[leveloffset=+2]
 
-include::./configuration.adoc[leveloffset=+2]
+<<<
 
-'''
+include::./part/ui.adoc[leveloffset=+2]
 
-include::./ui.adoc[leveloffset=+2]
+<<<
 
-'''
+include::./part/silence.adoc[leveloffset=+2]
 
-include::./silence.adoc[leveloffset=+2]
+<<<
 
-'''
-
-include::./other.adoc[leveloffset=+2]
+include::./part/other.adoc[leveloffset=+2]

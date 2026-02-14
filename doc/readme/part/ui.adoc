@@ -1,12 +1,4 @@
-= Dumper: UI
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
+= UI
 
 Customising Dumpers look and feel.
 

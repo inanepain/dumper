@@ -1,14 +1,4 @@
-= Dumper: Configuration
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.13.1
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
-:sectnums: |,all|
-:sectanchors:
+= Configuration
 
 Dumper has a few static public properties you can use to change some of the default behaviours.
 

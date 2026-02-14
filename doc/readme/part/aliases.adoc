@@ -1,12 +1,4 @@
-= Dumper: Aliases
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
+= Aliases
 
 Creating a custom global function as an alias to `\Inane\Dumper\Dumper::dump` method.
 

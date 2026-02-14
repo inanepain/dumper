@@ -1,15 +1,16 @@
-= README: Dumper
+= inanepain/dumper image:./icon.png[title=inanepain/dumper,25]
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
-:keywords: inanepain,library,composer,php,dumper,debug,assert,silence-counter,exception,log,logging
 :description: A little tool to help with debugging by writing a `var_dump` like message unobtrusively into a collapsible panel at the bottom of a page.
+:keywords: inanepain,library,composer,php,dumper,debug,assert,silence-counter,exception,log,logging
+:homepage: https://github.com/inanepain/dumper
 :revnumber: 1.17.0
 :revdate: 2025-12-08
 :copyright: Unlicense
 :experimental:
 :icons: font
 :source-highlighter: highlight.js
-:toc: auto
+:toc: left
 :sectanchors:
 :pkg-vendor: inanepain
 :pkg-name: dumper
@@ -19,26 +20,25 @@
 
 {description}
 
-:sectnums: |,all|
+:sectnums:
 
-== Install
+:leveloffset: +1
 
+= Install
+
+.composer
 [source,shell]
-----
-$ composer require inanepain/dumper
-----
+====
+composer require {pkg-id}
+====
+
+:leveloffset!:
+
+<<<
 
 :leveloffset: +1
 
 = Basic Usage
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Dumper works right out the box. Once installed via *composer* you can use it straight away to dump your objects using either method; `dump` or `assert` on the `\Inane\Dumper\Dumper` object.
 
@@ -85,24 +85,13 @@ Dumper::todo($callback, 'Add error handling');
 :leveloffset!:
 
 == Getting more out of Dumper
-:sectnums:
 :view-mode: project
 
 Some more or less helpful hints and tips regarding usage of `Dumper`.
 
-'''
-
 :leveloffset: +2
 
-= Dumper: Aliases
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
+= Aliases
 
 Creating a custom global function as an alias to `\Inane\Dumper\Dumper::dump` method.
 
@@ -129,35 +118,17 @@ That's how easy it is to create a custom global shortcut function for Dumper.
 
 :leveloffset!:
 
-'''
+<<<
 
 :leveloffset: +2
 
-= Dumper: Configuration
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.13.1
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
-:sectnums: |,all|
-:sectanchors:
+= Configuration
 
 Dumper has a few static public properties you can use to change some of the default behaviours.
 
 :leveloffset: +1
 
 = enabled
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Dumper starts enabled but should you wish all Dumpers related content gone. Disable it here.
 
@@ -173,14 +144,6 @@ default: `true`
 :leveloffset: +1
 
 = bufferOutput
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Write dumps last. Just before php terminates. Set to `false` to have dumps inserted as the occur at runtime.
 
@@ -201,14 +164,6 @@ default: `true`
 :leveloffset: +1
 
 = useVarExport
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 By default Dumper uses its own variable parser to generate the output. Here you can tell Dumper to use `var_export` instead.
 
@@ -226,14 +181,6 @@ default: `false`
 :leveloffset: +1
 
 = highlight
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
 
@@ -258,14 +205,6 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 :leveloffset: +1
 
 = expanded
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 NOTE: *Since*: 1.8.0
 
@@ -286,14 +225,6 @@ default: `false`
 :leveloffset: +1
 
 = setColours
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 NOTE: *Since*: 1.14.0
 
@@ -339,14 +270,6 @@ $label = new \Inane\Cli\Pencil(colour: \Inane\Cli\Pencil\Colour::Green, backgrou
 :leveloffset: +1
 
 = Hide runkit7 support message
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 NOTE: *Since*: 1.16.0
 
@@ -370,19 +293,11 @@ define('INANE_DUMPER_HIDE_RUNKIT7', true);
 
 :leveloffset!:
 
-'''
+<<<
 
 :leveloffset: +2
 
-= Dumper: UI
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
+= UI
 
 Customising Dumpers look and feel.
 
@@ -409,14 +324,6 @@ Adjust the maximum height allowed of the Dumper panel when opened.
 :leveloffset: +1
 
 = expanded
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 NOTE: *Since*: 1.8.0
 
@@ -444,14 +351,6 @@ Switching Dumpers theme is done in the php by changing a static property on the 
 :leveloffset: +1
 
 = highlight
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 1.16.0
-:revdate: 2025-04-29
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Set the colour theme dumper uses. The default is to use the colours already set in your php.ini file.
 
@@ -476,19 +375,11 @@ default: `\Inane\Stdlib\Highlight::CURRENT`
 
 :leveloffset!:
 
-'''
+<<<
 
 :leveloffset: +2
 
-= Dumper: Silence
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.13.1
-:revdate: 2023-05-26
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
+= Silence
 
 You can use the `\Inane\Dumper\Silence` attribute to silence dumps, silence a specified number of dumps, only show a specified number of dumps then go silent, per *class*, *method* or *function*. The Silence attribute also allows you to set Silence's initial state and then set a counter after which the state will toggle.
 
@@ -612,19 +503,11 @@ doThis(); // <4>
 
 :leveloffset!:
 
-'''
+<<<
 
 :leveloffset: +2
 
 = Other Useful Information
-:author: Philip Michael Raab
-:email: <peep@inane.co.za>
-:revnumber: 1.15.0
-:revdate: 2025-02-18
-:experimental:
-:icons: font
-:source-highlighter: highlight.js
-:toc: auto
 
 Dumper has a few more tricks up its sleve. Here are some of the more useful ones.
 

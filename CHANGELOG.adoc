@@ -22,6 +22,8 @@
 :revdate: 2025-11-01
 :revremark: -dev
 
+* update: `$bufferOutput` default set to `null` for *auto*, `CLI` = *false* & `HTTP` = *true*.
+
 :leveloffset!:
 :leveloffset: +2
 

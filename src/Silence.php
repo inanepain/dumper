@@ -8,7 +8,7 @@
  * $Id$
  * $Date$
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @author Philip Michael Raab<philip@cathedral.co.za>
  * @package inanepain\dumper
@@ -30,6 +30,7 @@ use Inane\Stdlib\Options;
 use function in_array;
 use function is_null;
 use function is_string;
+
 use const null;
 use const true;
 

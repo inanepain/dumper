@@ -31,22 +31,22 @@ if (!function_exists('dd')) {
      * Add a dump to the collection
      *
      * options:
-	 *  - (bool=false) open true - creates dumps open (main panel not affected)
-	 *  - (bool=false) useVarExport true - uses `var_export` instead of dumper to generate dump string
+	 *  - (bool=false) open true - creates dumps open (the main panel not affected)
+	 *  - (bool=false) useVarExport true - uses `var_export` instead of dumper to generate a dump string
 	 *  - (Type=Dump) type Dump - set a custom type for the dump
 	 *  - (int=ref) parseDepth set the depth to which an object is parsed
      *
      * Chaining: You only need to bracket your arguments for repeated dumps.
      * Dumper::dump('one')('two', 'Label')
      *
-     * @param mixed                                        $data    item to dump
-     * @param null|string                                  $label
-     * @param array|\Inane\Stdlib\Options|OptionsInterface $options
+     * @param mixed                          $data    item to dump
+     * @param null|string                    $label
+     * @param array|Options|OptionsInterface $options
      *
-     * @return \Inane\Dumper\Dumper
+     * @return Dumper
      *
      * @throws \Inane\Stdlib\Exception\RuntimeException
-     * @throws \ReflectionException
+     * @throws \ReflectionException|\Inane\Stdlib\Exception\JsonException
      */
     function dd(mixed $data = null, ?string $label = null, array|Options|OptionsInterface $options = []): Dumper {
         return Dumper::dump($data, $label, $options);
@@ -57,11 +57,11 @@ if (!function_exists('da')) {
 	/**
 	 * Conditionally adds a dump to the collection
 	 * options:
-	 *  - (bool=false) open true - creates dumps open (main panel not affected)
-	 *  - (bool=false) useVarExport true - uses `var_export` instead of dumper to generate dump string
+	 *  - (bool=false) open true - creates dumps open (the main panel not affected)
+	 *  - (bool=false) useVarExport true - uses `var_export` instead of dumper to generate a dump string
 	 *  - (Type=Dump) type Dump - set a custom type for the dump
 	 *  - (int=ref) parseDepth set the depth to which an object is parsed
-	 * Chaining: You only need bracket your arguments for repeated dumps.
+	 * Chaining: You only need to bracket your arguments for repeated dumps.
 	 * Dumper::dump('one')('two', 'Label')
 	 *
 	 * @since 1.10.0
@@ -71,7 +71,7 @@ if (!function_exists('da')) {
 	 * @param null|string                    $label
 	 * @param array|Options|OptionsInterface $options
 	 *
-	 * @return \Inane\Dumper\Dumper
+	 * @return Dumper
 	 *
 	 * @throws \Inane\Stdlib\Exception\RuntimeException
 	 * @throws \ReflectionException

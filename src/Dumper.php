@@ -138,14 +138,15 @@ final class Dumper {
      * The maximum depth to parse when dumping data structures.
      *
      * Provided as a convenience method.
-     * @see \Inane\Stdlib\Parser\ObjectParser::$depth
      *
      * @since version bump
+     *
+     * @see ObjectParser
      *
      * @var int
      */
     public int $parseDepth {
-        get => isset($this->parseDepth) ? $this->parseDepth : \Inane\Stdlib\Parser\ObjectParser::$depth;
+        get => $this->parseDepth ?? ObjectParser::$depth;
         set(int $value) {
             $this->parseDepth = $value;
         }
@@ -329,9 +330,9 @@ final class Dumper {
      * @since 1.12.0 dump instruction on installing **runkit7** to enable creation of custom alias functions. Shown when custom alias requested and no runkit7.
      *
      */
-    public static function dumper(?string $dumpAlias = null, ?string $assertAlias = null): static {
-        if (!isset(static::$instance)) {
-            static::$instance = new static();
+    public static function dumper(?string $dumpAlias = null, ?string $assertAlias = null): self {
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
 
         static $checked = false;
@@ -347,7 +348,7 @@ final class Dumper {
                     runkit7_function_add($assertAlias, '$expression,$data = null,$label = null,$options = []', 'return \Inane\Dumper\Dumper::assert($expression, $data, $label, $options);');
                 }
             } else {
-                $hide = !static::$showRunkit7SupportMessage;
+                $hide = !self::$showRunkit7SupportMessage;
 
                 if (!$hide) {
                     $hide = \defined('INANE_DUMPER_HIDE_RUNKIT7');
@@ -357,20 +358,20 @@ final class Dumper {
                 }
 
                 if (!$hide) {
-                    static::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
+                    self::dump('pecl install runkit7-alpha', 'Enable creating global functions at runtime.');
                 }
             }
         }
 
         if (!is_null($dumpAlias) && !isset($GLOBALS[$dumpAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $dumpAlias)) {
-            $GLOBALS[$dumpAlias] = static::dump(...);
+            $GLOBALS[$dumpAlias] = self::dump(...);
         }
 
         if (!is_null($assertAlias) && !isset($GLOBALS[$assertAlias]) && preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $assertAlias)) {
-            $GLOBALS[$assertAlias] = static::assert(...);
+            $GLOBALS[$assertAlias] = self::assert(...);
         }
 
-        return static::$instance;
+        return self::$instance;
     }
 
     /**

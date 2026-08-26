@@ -38,6 +38,11 @@
             "src/bootstrap.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Inane\\Dumper\\Tests\\": "tests/"
+        }
+    },
     "config": {
         "preferred-install": "dist",
         "optimize-autoloader": true,
